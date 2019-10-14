@@ -1,0 +1,12 @@
+:root {
+  --blue: #235cff;
+  --red: #ff234a;
+}
+
+html {
+  /* background: #191919; */
+}
+
+body {
+  margin: 0;
+}
