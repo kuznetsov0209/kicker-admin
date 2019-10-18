@@ -300,7 +300,7 @@ const Leaders = observer(
           {!store.usersStats.all.length &&
           this.state.currentTab === OF_THE_WEEK ? (
             <Typography
-              variant="subheading"
+              variant="subtitle1"
               style={{ marginTop: "15px", textAlign: "center" }}
             >
               There were no games on this week yet

@@ -170,7 +170,7 @@ class Tournaments extends Component {
     ) : (
       <React.Fragment>
         <Typography
-          variant="subheading"
+          variant="subtitle1"
           style={{ marginTop: "15px", textAlign: "center" }}
         >
           There were no tournaments yet

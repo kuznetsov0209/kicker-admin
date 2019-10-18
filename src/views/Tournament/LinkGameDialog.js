@@ -83,7 +83,7 @@ class TournamentForm extends Component {
             </List>
           ) : (
             <Typography
-              variant="subheading"
+              variant="subtitle1"
               style={{ marginTop: "15px", textAlign: "center" }}
             >
               There were no games on this week yet

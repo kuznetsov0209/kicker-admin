@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { DatePicker } from "material-ui-pickers";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import { IconButton, withStyles } from "@material-ui/core";
 import { ArrowBack, ArrowForward } from "@material-ui/icons";
 
@@ -94,7 +94,7 @@ class CustomElements extends PureComponent {
         <IconButton onClick={this.openPrevWeek}>
           <ArrowBack />
         </IconButton>
-        <DatePicker
+        <KeyboardDatePicker
           label="Choose week"
           value={selectedDate}
           onChange={this.handleWeekChange}
