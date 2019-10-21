@@ -12,11 +12,12 @@ const TournamentStore = types
         const { tournaments } = yield api.get("/api/tournaments");
         self.tournaments = tournaments;
       }),
-      addTournament: flow(function*({ title, startDate, endDate }) {
+      addTournament: flow(function*({ title, startDate, endDate, status }) {
         const { tournament } = yield api.post("/api/tournaments", {
           title,
           startDate,
-          endDate
+          endDate,
+          status
         });
         self.tournaments.unshift(tournament);
       }),

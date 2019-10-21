@@ -59,6 +59,9 @@ class Tournaments extends Component {
 
     return store.tournaments.length ? (
       <React.Fragment>
+        <Button onClick={this.handleOpen} style={{ margin: "15px 0" }}>
+          Add tournament
+        </Button>
         <div style={{ overflowX: "auto" }}>
           <Table>
             <TableHead>
@@ -157,9 +160,6 @@ class Tournaments extends Component {
             </TableBody>
           </Table>
         </div>
-        <Button onClick={this.handleOpen} style={{ margin: "15px auto" }}>
-          Add tournament
-        </Button>
         {this.state.open && (
           <TournamentAddForm
             handleClose={this.handleClose}

@@ -18,14 +18,15 @@ class TournamentForm extends Component {
     this.state = {
       title: "",
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      status: "REGISTRATION"
     };
   }
 
   handleClick = () => {
-    const { title, startDate, endDate } = this.state;
+    const { title, startDate, endDate, status } = this.state;
     const { handleClose } = this.props;
-    store.addTournament({ title, startDate, endDate });
+    store.addTournament({ title, startDate, endDate, status });
     handleClose();
   };
 

@@ -8,11 +8,17 @@ const TournamentGame = types.model({
   team2: Team
 });
 
+const TournamentStatus = types.union(
+  types.literal("REGISTRATION"),
+  types.literal("ON GOING"),
+  types.literal("FINISHED")
+);
+
 const Tournament = types
   .model({
     id: types.maybe(types.number),
     title: types.string,
-    status: types.maybeNull(types.string),
+    status: TournamentStatus,
     startDate: types.string,
     endDate: types.string,
     TournamentGames: types.optional(types.array(TournamentGame), []),
