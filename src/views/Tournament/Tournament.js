@@ -54,7 +54,7 @@ class Tournament extends React.Component {
           this.tournament.stats.length !== 0 && (
             <Button
               color="primary"
-              variant="raised"
+              variant="text"
               onClick={() => this.tournament.createSchedule()}
             >
               CREATE SCHEDULE

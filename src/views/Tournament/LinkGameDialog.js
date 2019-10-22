@@ -72,7 +72,7 @@ class TournamentForm extends Component {
                     }}
                   >
                     <Button
-                      variant="raised"
+                      variant="text"
                       onClick={() => this.linkGame(game.id)}
                     >
                       LINK
