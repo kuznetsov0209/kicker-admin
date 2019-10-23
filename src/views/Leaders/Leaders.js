@@ -72,7 +72,7 @@ const Leaders = observer(
               <TableCell>#</TableCell>
               <TableCell />
               <TableCell style={{ width: "100%" }} />
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "games" ? "primary" : "default"
@@ -84,7 +84,7 @@ const Leaders = observer(
                   Games
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "wins" ? "primary" : "default"
@@ -96,7 +96,7 @@ const Leaders = observer(
                   Wins
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "defeats" ? "primary" : "default"
@@ -108,7 +108,7 @@ const Leaders = observer(
                   Defeats
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "goals" ? "primary" : "default"
@@ -120,7 +120,7 @@ const Leaders = observer(
                   Goals
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "goalsPerMatch"
@@ -134,7 +134,7 @@ const Leaders = observer(
                   <nobr>Goals per match</nobr>
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "keep" ? "primary" : "default"
@@ -146,7 +146,7 @@ const Leaders = observer(
                   Keep
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "keepPerMatch"
@@ -160,7 +160,7 @@ const Leaders = observer(
                   <nobr>Keep per match</nobr>
                 </Button>
               </TableCell>
-              <TableCell numeric="true">
+              <TableCell align="right">
                 <Button
                   color={
                     this.sortingProperty === "rating" ? "primary" : "default"
@@ -186,7 +186,7 @@ const Leaders = observer(
                   </TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "games" && 18
                     }}
@@ -194,7 +194,7 @@ const Leaders = observer(
                     {user.games}
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "wins" && 18
                     }}
@@ -202,7 +202,7 @@ const Leaders = observer(
                     {user.wins} ({user.winsPercent}%)
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "defeats" && 18
                     }}
@@ -210,7 +210,7 @@ const Leaders = observer(
                     {user.defeats} ({user.defeatsPercent}%)
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "goals" && 18
                     }}
@@ -218,7 +218,7 @@ const Leaders = observer(
                     {user.goals}
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "goalsPerMatch" && 18
                     }}
@@ -226,7 +226,7 @@ const Leaders = observer(
                     {user.goalsPerMatch}
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "keep" && 18
                     }}
@@ -234,7 +234,7 @@ const Leaders = observer(
                     {user.keep}
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "keepPerMatch" && 18
                     }}
@@ -242,7 +242,7 @@ const Leaders = observer(
                     {user.keepPerMatch}
                   </TableCell>
                   <TableCell
-                    numeric="true"
+                    align="right"
                     style={{
                       fontSize: this.sortingProperty === "rating" && 18
                     }}
