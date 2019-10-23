@@ -11,10 +11,12 @@ import {
   Button,
   Toolbar
 } from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
-import StarIcon from "@material-ui/icons/Star";
-import EventIcon from "@material-ui/icons/Event";
 
+// import EmojiEventsRoundedIcon from "@material-ui/icons/EmojiEventsRounded";
+import RestoreIcon from "@material-ui/icons/Restore";
+import PeopleIcon from "@material-ui/icons/People";
+
+import logoImage from "./image/mercury-development.svg";
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
 import { API_HOST } from "../api";
@@ -29,7 +31,24 @@ const styles = theme => ({
     justifyContent: "center"
   },
   tabs: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: "rgb(166,166,166)",
+    "&:hover": {
+      color: "rgb(67,144,218)"
+    }
+  },
+  appBar: {
+    backgroundColor: "rgb(50,50,50)"
+  },
+  typography: {
+    backgroundImage: "url(" + logoImage + ")",
+    backgroundRepeat: "no-repeat",
+    width: "220px",
+    height: "52px"
+  },
+  button: {
+    backgroundColor: "rgb(71,154,234)",
+    padding: "0 30px"
   }
 });
 
@@ -59,8 +78,9 @@ class ScrollableTabsButtonForce extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="static" className={classes.appBar} type="dark">
           <Toolbar>
+            <Typography className={classes.typography}></Typography>
             <Tabs
               value={value}
               onChange={this.handleChange}
@@ -73,18 +93,26 @@ class ScrollableTabsButtonForce extends React.Component {
                 root: classes.tabs
               }}
             >
-              <Tab label="GAMES" icon={<ListIcon />} value="/games" />
-              <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
+              <Tab label="GAMES" icon={<RestoreIcon />} value="/games" />
+              <Tab label="PLAYERS" icon={<PeopleIcon />} value="/leaders" />
               <Tab
                 label="TOURNAMENTS"
-                icon={<EventIcon />}
+                // icon={<EmojiEventsRoundedIcon />}
                 value="/tournaments"
               />
             </Tabs>
             {this.profile ? (
               <UserAvatar user={this.profile} size={32} />
             ) : (
-              <Button href={`${API_HOST}/auth/google`}>Login</Button>
+              <Button
+                size="medium"
+                color="primary"
+                className={classes.button}
+                variant="contained"
+                href={`${API_HOST}/auth/google`}
+              >
+                Login
+              </Button>
             )}
           </Toolbar>
         </AppBar>
