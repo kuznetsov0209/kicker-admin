@@ -48,7 +48,11 @@ class DeleteModal extends React.Component {
               color={"primary"}
               onClick={confirm}
             >
-              {inProgress ? <CircularProgress size={20} /> : "Confirm"}
+              {inProgress ? (
+                <CircularProgress color={"secondary"} size={20} />
+              ) : (
+                "Confirm"
+              )}
             </Button>
           </div>
         </div>
