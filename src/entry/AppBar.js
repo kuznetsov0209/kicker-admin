@@ -12,11 +12,11 @@ import {
   Toolbar
 } from "@material-ui/core";
 
+import Logo from './Logo';
 // import EmojiEventsRoundedIcon from "@material-ui/icons/EmojiEventsRounded";
 import RestoreIcon from "@material-ui/icons/Restore";
 import PeopleIcon from "@material-ui/icons/People";
 
-import logoImage from "./image/mercury-development.svg";
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
 import { API_HOST } from "../api";
@@ -33,22 +33,6 @@ const styles = theme => ({
   tabs: {
     flexGrow: 1,
     color: "rgb(166,166,166)",
-    "&:hover": {
-      color: "rgb(67,144,218)"
-    }
-  },
-  appBar: {
-    backgroundColor: "rgb(50,50,50)"
-  },
-  typography: {
-    backgroundImage: "url(" + logoImage + ")",
-    backgroundRepeat: "no-repeat",
-    width: "220px",
-    height: "52px"
-  },
-  button: {
-    backgroundColor: "rgb(71,154,234)",
-    padding: "0 30px"
   }
 });
 
@@ -78,9 +62,9 @@ class ScrollableTabsButtonForce extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" className={classes.appBar} type="dark">
+        <AppBar position="static">
           <Toolbar>
-            <Typography className={classes.typography}></Typography>
+            <Logo />
             <Tabs
               value={value}
               onChange={this.handleChange}
@@ -106,8 +90,7 @@ class ScrollableTabsButtonForce extends React.Component {
             ) : (
               <Button
                 size="medium"
-                color="primary"
-                className={classes.button}
+                color="secondary"
                 variant="contained"
                 href={`${API_HOST}/auth/google`}
               >
