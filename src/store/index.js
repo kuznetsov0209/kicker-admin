@@ -34,6 +34,16 @@ const Store = types
         const { usersStats } = yield api.get(`/api/stats?date=${date}`);
         self.usersStats = usersStats;
       }),
+      deleteGame: flow(function*(id) {
+        try {
+          yield api.deleteGame(`/api/games/${id}`);
+          return false;
+        } catch (e) {
+          if (e.status == 400 ) {
+            return true
+          }
+        }
+      }),
       applyGamesWeekFilter(payload) {
         self.gamesWeekFilter = payload;
       }

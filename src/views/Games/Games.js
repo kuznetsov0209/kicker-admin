@@ -12,6 +12,7 @@ class Games extends Component {
     this.state = {
       isLoading: true
     };
+    this.loadGamesIfNeeded = this.loadGamesIfNeeded.bind(this);
   }
 
   async loadGamesIfNeeded(filter) {
@@ -38,22 +39,36 @@ class Games extends Component {
     }
     return (
       <React.Fragment>
-        <WeekPicker
-          value={store.gamesWeekFilter}
-          onChange={this.updateGamesList}
-        />
-        {store.games.length ? (
-          <List style={{ width: "100%" }}>
-            {store.games.map(game => <Game key={game.id} game={game} />)}
-          </List>
-        ) : (
-          <Typography
-            variant="subtitle1"
-            style={{ marginTop: "15px", textAlign: "center" }}
-          >
-            There were no games on this week yet
-          </Typography>
-        )}
+        <div
+          style={{
+            minWidth: "90%",
+            maxWidth: 1400,
+            margin: "0 auto"
+          }}
+        >
+          <WeekPicker
+            value={store.gamesWeekFilter}
+            onChange={this.updateGamesList}
+          />
+          {store.games.length ? (
+            <List style={{ minWidth: "100%" }}>
+              {store.games.map(game => (
+                <Game
+                  key={game.id}
+                  game={game}
+                  loadGames={this.loadGamesIfNeeded}
+                />
+              ))}
+            </List>
+          ) : (
+            <Typography
+              variant="subtitle1"
+              style={{ marginTop: "15px", textAlign: "center" }}
+            >
+              There were no games on this week yet
+            </Typography>
+          )}
+        </div>
       </React.Fragment>
     );
   }
