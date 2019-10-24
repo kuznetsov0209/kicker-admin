@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import { DatePicker } from "material-ui-pickers";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import { store } from "../../store/tournamentStore";
 import {
   Button,
@@ -47,13 +47,13 @@ class TournamentForm extends Component {
             autoFocus
             label="Title"
           />
-          <DatePicker
+          <KeyboardDatePicker
             value={this.state.startDate}
             onChange={startDate => this.setState({ startDate })}
             required
             label="End Date"
           />
-          <DatePicker
+          <KeyboardDatePicker
             value={this.state.endDate}
             onChange={endDate => this.setState({ endDate })}
             required

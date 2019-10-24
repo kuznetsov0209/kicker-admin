@@ -9,7 +9,7 @@ import AppBar from "./AppBar";
 
 import "./App.css";
 
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
 class App extends Component {
