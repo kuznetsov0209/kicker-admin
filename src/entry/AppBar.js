@@ -70,8 +70,8 @@ class ScrollableTabsButtonForce extends React.Component {
               onChange={this.handleChange}
               scrollable="true"
               scrollButtons="on"
-              indicatorColor="primary"
-              textColor="primary"
+              indicatorColor="secondary"
+              textColor="secondary"
               classes={{
                 flexContainer: classes.flexContainer,
                 root: classes.tabs
