@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 
 import Logo from './Logo';
-// import EmojiEventsRoundedIcon from "@material-ui/icons/EmojiEventsRounded";
+import EmojiEventsRoundedIcon from "@material-ui/icons/EmojiEventsRounded";
 import RestoreIcon from "@material-ui/icons/Restore";
 import PeopleIcon from "@material-ui/icons/People";
 
@@ -81,7 +81,7 @@ class ScrollableTabsButtonForce extends React.Component {
               <Tab label="PLAYERS" icon={<PeopleIcon />} value="/leaders" />
               <Tab
                 label="TOURNAMENTS"
-                // icon={<EmojiEventsRoundedIcon />}
+                icon={<EmojiEventsRoundedIcon />}
                 value="/tournaments"
               />
             </Tabs>
