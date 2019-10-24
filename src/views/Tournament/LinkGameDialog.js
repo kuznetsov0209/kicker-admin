@@ -72,7 +72,7 @@ class TournamentForm extends Component {
                     }}
                   >
                     <Button
-                      variant="raised"
+                      variant="text"
                       onClick={() => this.linkGame(game.id)}
                     >
                       LINK
@@ -83,7 +83,7 @@ class TournamentForm extends Component {
             </List>
           ) : (
             <Typography
-              variant="subheading"
+              variant="subtitle1"
               style={{ marginTop: "15px", textAlign: "center" }}
             >
               There were no games on this week yet

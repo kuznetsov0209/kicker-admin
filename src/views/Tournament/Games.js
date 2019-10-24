@@ -31,7 +31,7 @@ class Games extends Component {
           const { team1, team2 } = gamesResultsGrouped[tournamentGameId][0];
           return (
             <div style={{ marginTop: 20 }}>
-              <Typography align="center" variant="headline">
+              <Typography align="center" variant="subtitle1">
                 {team1.name} — {team2.name}
               </Typography>
               {gamesResultsGrouped[tournamentGameId] && (
@@ -53,7 +53,7 @@ class Games extends Component {
                 }}
               >
                 <Button
-                  variant="raised"
+                  variant="text"
                   color="primary"
                   onClick={() =>
                     this.setState({
