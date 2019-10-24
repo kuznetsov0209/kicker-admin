@@ -47,25 +47,25 @@ class Standings extends Component {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell style={{ width: "100%" }} />
-            <TableCell numeric>
+            <TableCell align="right">
               {this.renderColumnButton({ property: "games", text: "Games" })}
             </TableCell>
-            <TableCell numeric>
+            <TableCell align="right">
               {this.renderColumnButton({ property: "wins", text: "Wins" })}
             </TableCell>
-            <TableCell numeric>
+            <TableCell align="right">
               {this.renderColumnButton({
                 property: "defeats",
                 text: "Defeats"
               })}
             </TableCell>
-            <TableCell numeric>
+            <TableCell align="right">
               {this.renderColumnButton({
                 property: "goalsScored",
                 text: "Goals Scored"
               })}
             </TableCell>
-            <TableCell numeric>
+            <TableCell align="right">
               {this.renderColumnButton({
                 property: "goalsMissed",
                 text: "Goals Missed"
@@ -93,31 +93,31 @@ class Standings extends Component {
                     </Typography>
                   </div>
                 </TableCell>
-                <TableCell numeric>
+                <TableCell align="right">
                   {this.renderColumnValue({
                     property: "games",
                     text: item.games
                   })}
                 </TableCell>
-                <TableCell numeric>
+                <TableCell align="right">
                   {this.renderColumnValue({
                     property: "wins",
                     text: item.wins
                   })}
                 </TableCell>
-                <TableCell numeric>
+                <TableCell align="right">
                   {this.renderColumnValue({
                     property: "defeats",
                     text: item.defeats
                   })}
                 </TableCell>
-                <TableCell numeric>
+                <TableCell align="right">
                   {this.renderColumnValue({
                     property: "goalsScored",
                     text: item.goalsScored
                   })}
                 </TableCell>
-                <TableCell numeric>
+                <TableCell align="right">
                   {this.renderColumnValue({
                     property: "goalsMissed",
                     text: item.goalsMissed
