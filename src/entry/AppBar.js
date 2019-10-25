@@ -91,20 +91,20 @@ class ScrollableTabsButtonForce extends React.Component {
                 value="/tournaments"
               />
             </Tabs>
-            {this.profile ? (
-              <UserAvatar user={this.profile} size={32} />
-            ) : (
             <div className={classes.button}>
-              <Button
-                size="medium"
-                color="secondary"
-                variant="contained"
-                href={`${API_HOST}/auth/google`}
-              >
-                Login
-              </Button>
+              {this.profile ? (
+                <UserAvatar user={this.profile} size={32} />
+              ) : (
+                <Button
+                  size="medium"
+                  color="secondary"
+                  variant="contained"
+                  href={`${API_HOST}/auth/google`}
+                >
+                  Login
+                </Button>
+              )}
             </div>
-            )}
           </Toolbar>
         </AppBar>
       </div>
