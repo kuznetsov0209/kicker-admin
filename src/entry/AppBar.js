@@ -27,9 +27,6 @@ const styles = theme => ({
     width: "100%",
     backgroundColor: theme.palette.background.paper
   },
-  flexContainer: {
-    justifyContent: "center"
-  },
   tabs: {
     flexGrow: 1
   },
@@ -78,8 +75,8 @@ class ScrollableTabsButtonForce extends React.Component {
               scrollButtons="on"
               indicatorColor="secondary"
               textColor="secondary"
+              centered
               classes={{
-                flexContainer: classes.flexContainer,
                 root: classes.tabs
               }}
             >
