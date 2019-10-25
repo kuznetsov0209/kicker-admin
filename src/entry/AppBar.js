@@ -31,8 +31,14 @@ const styles = theme => ({
     justifyContent: "center"
   },
   tabs: {
-    flexGrow: 1,
-    color: "rgb(166,166,166)",
+    flexGrow: 1
+  },
+  button: {
+    textAlign: "right",
+    width: '180px'
+  },
+  logo: {
+    width: '180px'
   }
 });
 
@@ -64,7 +70,7 @@ class ScrollableTabsButtonForce extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Logo />
+            <Logo  className={classes.logo}/>
             <Tabs
               value={value}
               onChange={this.handleChange}
@@ -88,6 +94,7 @@ class ScrollableTabsButtonForce extends React.Component {
             {this.profile ? (
               <UserAvatar user={this.profile} size={32} />
             ) : (
+            <div className={classes.button}>
               <Button
                 size="medium"
                 color="secondary"
@@ -96,6 +103,7 @@ class ScrollableTabsButtonForce extends React.Component {
               >
                 Login
               </Button>
+            </div>
             )}
           </Toolbar>
         </AppBar>
