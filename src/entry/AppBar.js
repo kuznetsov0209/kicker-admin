@@ -74,7 +74,6 @@ class ScrollableTabsButtonForce extends React.Component {
               scrollable="true"
               scrollButtons="on"
               indicatorColor="secondary"
-              textColor="secondary"
               centered
               classes={{
                 root: classes.tabs
