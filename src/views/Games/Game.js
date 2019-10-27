@@ -25,14 +25,12 @@ class Game extends Component {
     this.setState({ isRemoving: true });
     const tournamentGame = await store.deleteGame(id);
     if (tournamentGame) {
-      this.setState({ isRemoving: false });
-      this.closeDeleteModal();
       this.openAlert();
     } else {
-      this.setState({ isRemoving: false });
-      this.closeDeleteModal();
       this.props.loadGames(store.gamesWeekFilter);
     }
+    this.setState({ isRemoving: false });
+    this.closeDeleteModal();
   };
 
   openDeleteModal = () => {
