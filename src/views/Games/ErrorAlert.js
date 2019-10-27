@@ -8,8 +8,6 @@ class ErrorAlert extends React.Component {
 
     return (
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={open}
         onClose={close}
       >
@@ -21,7 +19,7 @@ class ErrorAlert extends React.Component {
           >
             Game is a part of a tournament
           </Typography>
-          <Typography variant="subtitle1" id="simple-modal-description">
+          <Typography variant="subtitle1">
           You can’t remove the game because it is a part of tournament.
           </Typography>
           <div className={classes.buttonsContainer}>

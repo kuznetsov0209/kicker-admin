@@ -16,8 +16,6 @@ class DeleteModal extends React.Component {
 
     return (
       <Modal
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
         open={open}
         onClose={close}
       >
@@ -29,7 +27,7 @@ class DeleteModal extends React.Component {
           >
             Remove game
           </Typography>
-          <Typography variant="subtitle1" id="simple-modal-description">
+          <Typography variant="subtitle1">
             Are you sure you want to remove the game?
           </Typography>
           <Typography variant="subtitle1">{names}</Typography>
