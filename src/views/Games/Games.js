@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { List, CircularProgress, Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import { store } from "../../store";
 import WeekPicker from "../../components/WeekPicker";
+import styles from "./Games.style";
 import Game from "./Game";
 
 @observer
@@ -33,22 +35,21 @@ class Games extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     if (this.state.isLoading) {
-      return <CircularProgress style={{ margin: "15px auto" }} />;
+      return (
+        <CircularProgress classes={{ root: classes.games__circularProgress }} />
+      );
     }
     return (
       <React.Fragment>
-        <div
-          style={{
-            width: "100%",
-          }}
-        >
+        <div className={classes.games}>
           <WeekPicker
             value={store.gamesWeekFilter}
             onChange={this.updateGamesList}
           />
           {store.games.length ? (
-            <List style={{ width: "100%" }}>
+            <List classes={{ root: classes.games__list }}>
               {store.games.map(game => (
                 <Game
                   key={game.id}
@@ -60,7 +61,7 @@ class Games extends Component {
           ) : (
             <Typography
               variant="subtitle1"
-              style={{ marginTop: "15px", textAlign: "center" }}
+              classes={{root: classes.game__noGameMessage}}
             >
               There were no games on this week yet
             </Typography>
@@ -71,4 +72,4 @@ class Games extends Component {
   }
 }
 
-export default Games;
+export default withStyles(styles)(Games);
