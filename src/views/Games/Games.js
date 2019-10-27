@@ -40,9 +40,7 @@ class Games extends Component {
       <React.Fragment>
         <div
           style={{
-            minWidth: "90%",
-            maxWidth: 1400,
-            margin: "0 auto"
+            width: "100%",
           }}
         >
           <WeekPicker
@@ -50,7 +48,7 @@ class Games extends Component {
             onChange={this.updateGamesList}
           />
           {store.games.length ? (
-            <List style={{ minWidth: "100%" }}>
+            <List style={{ width: "100%" }}>
               {store.games.map(game => (
                 <Game
                   key={game.id}
