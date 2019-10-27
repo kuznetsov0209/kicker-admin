@@ -1,5 +1,6 @@
 const styles = {
   listItem: {
+    width: "100%",
     backgroundColor: "#ebebeb",
     borderRadius: 10,
     marginBottom: 10,
@@ -27,20 +28,25 @@ const styles = {
     flex: "1 1 100%"
   },
   listItem__content_red: {
-    flex: 1,
+    width: 0,
+    flexGrow: 1,
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "center"
   },
   listItem__content_blue: {
-    flex: 1,
+    width: 0,
+    flexGrow: 1,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center"
   },
   listItem__userNames: {
     marginLeft: 5,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   listItem__badge: {
     marginRight: 10
