@@ -61,7 +61,7 @@ class Games extends Component {
           ) : (
             <Typography
               variant="subtitle1"
-              classes={{root: classes.game__noGameMessage}}
+              classes={{ root: classes.game__noGameMessage }}
             >
               There were no games on this week yet
             </Typography>
