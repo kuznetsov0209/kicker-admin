@@ -54,7 +54,9 @@ class Games extends Component {
                 <Game
                   key={game.id}
                   game={game}
-                  loadGames={this.loadGamesIfNeeded}
+                  callbackIfDeleted={() => {
+                    this.loadGamesIfNeeded(store.gamesWeekFilter);
+                  }}
                 />
               ))}
             </List>

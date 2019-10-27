@@ -27,7 +27,7 @@ class Game extends Component {
     if (tournamentGame) {
       this.openAlert();
     } else {
-      this.props.loadGames(store.gamesWeekFilter);
+      this.props.callbackIfDeleted ? this.props.callbackIfDeleted() : null;
     }
     this.setState({ isRemoving: false });
     this.closeDeleteModal();
