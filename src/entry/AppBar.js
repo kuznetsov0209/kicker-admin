@@ -14,6 +14,7 @@ import {
 import ListIcon from "@material-ui/icons/List";
 import StarIcon from "@material-ui/icons/Star";
 import EventIcon from "@material-ui/icons/Event";
+import GroupIcon from "@material-ui/icons/Group"
 
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
@@ -75,11 +76,8 @@ class ScrollableTabsButtonForce extends React.Component {
             >
               <Tab label="GAMES" icon={<ListIcon />} value="/games" />
               <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
-              <Tab
-                label="TOURNAMENTS"
-                icon={<EventIcon />}
-                value="/tournaments"
-              />
+              <Tab label="PLAYERS" icon={<GroupIcon />} value="/players" />
+              <Tab label="TOURNAMENTS" icon={<EventIcon />} value="/tournaments" />
             </Tabs>
             {this.profile ? (
               <UserAvatar user={this.profile} size={32} />
