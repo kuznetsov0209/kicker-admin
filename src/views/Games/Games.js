@@ -12,17 +12,16 @@ class Games extends Component {
     this.state = {
       isLoading: true
     };
-    this.loadGamesIfNeeded = this.loadGamesIfNeeded.bind(this);
   }
 
-  async loadGamesIfNeeded(filter) {
+  loadGamesIfNeeded = async filter => {
     this.setState({ isLoading: true });
     try {
       await store.loadGames(filter);
     } finally {
       this.setState({ isLoading: false });
     }
-  }
+  };
 
   componentDidMount() {
     this.loadGamesIfNeeded(store.gamesWeekFilter);

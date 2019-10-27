@@ -27,14 +27,9 @@ class Game extends Component {
       alertIsOpen: false,
       isRemoving: false
     };
-    this.openDeleteModal = this.openDeleteModal.bind(this);
-    this.closeDeleteModal = this.closeDeleteModal.bind(this);
-    this.openAlert = this.openAlert.bind(this);
-    this.closeAlert = this.closeAlert.bind(this);
-    this.tryToRemoveGame = this.tryToRemoveGame.bind(this);
   }
 
-  async tryToRemoveGame(id) {
+  tryToRemoveGame = async id => {
     this.setState({ isRemoving: true });
     const tournamentGame = await store.deleteGame(id);
     if (tournamentGame) {
@@ -44,24 +39,24 @@ class Game extends Component {
     } else {
       this.setState({ isRemoving: false });
       this.closeDeleteModal();
-      this.props.loadGames(store.gamesWeekFilter)
+      this.props.loadGames(store.gamesWeekFilter);
     }
-  }
+  };
 
-  openDeleteModal() {
+  openDeleteModal = () => {
     this.setState({ deleteModalIsOpen: true });
-  }
+  };
 
-  closeDeleteModal() {
+  closeDeleteModal = () => {
     this.setState({ deleteModalIsOpen: false });
     this.setState({ isRemoving: false });
-  }
+  };
 
-  openAlert() {
+  openAlert = () => {
     this.setState({ alertIsOpen: true });
   }
 
-  closeAlert() {
+  closeAlert = () => {
     this.setState({ alertIsOpen: false });
   }
 
