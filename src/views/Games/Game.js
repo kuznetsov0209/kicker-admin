@@ -15,8 +15,8 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
-      deleteModalIsOpen: false,
-      alertIsOpen: false,
+      isModalOpen: false,
+      isAlertOpen: false,
       isRemoving: false
     };
   }
@@ -36,20 +36,20 @@ class Game extends Component {
   };
 
   openDeleteModal = () => {
-    this.setState({ deleteModalIsOpen: true });
+    this.setState({ isModalOpen: true });
   };
 
   closeDeleteModal = () => {
-    this.setState({ deleteModalIsOpen: false });
+    this.setState({ isModalOpen: false });
     this.setState({ isRemoving: false });
   };
 
   openAlert = () => {
-    this.setState({ alertIsOpen: true });
+    this.setState({ isAlertOpen: true });
   }
 
   closeAlert = () => {
-    this.setState({ alertIsOpen: false });
+    this.setState({ isAlertOpen: false });
   }
 
   render() {
@@ -167,7 +167,7 @@ class Game extends Component {
           <Cancel />
         </IconButton>
         <DeleteModal
-          open={this.state.deleteModalIsOpen}
+          open={this.state.isModalOpen}
           close={this.closeDeleteModal}
           confirm={() => this.tryToRemoveGame(game.id)}
           inProgress={this.state.isRemoving}
@@ -177,7 +177,7 @@ class Game extends Component {
             "ddd, hh:MM, mmm dS, yyyy "
           )}
         />
-        <ErrorAlert open={this.state.alertIsOpen} close={this.closeAlert} />
+        <ErrorAlert open={this.state.isAlertOpen} close={this.closeAlert} />
       </ListItem>
     );
   }
