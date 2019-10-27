@@ -10,14 +10,6 @@ import ErrorAlert from "./ErrorAlert";
 import { store } from "../../store";
 import styles from "./Game.style";
 
-function limitStr(str, max) {
-  if (str.length > max) {
-    return str.substr(0, max - 3) + "...";
-  } else {
-    return str;
-  }
-}
-
 @withRouter
 class Game extends Component {
   constructor() {
@@ -64,10 +56,10 @@ class Game extends Component {
     const { game, classes } = this.props;
 
     const redUsers = game.redUsers
-      .map(user => limitStr(user.name, 20))
+      .map(user => user.name)
       .join(", ");
     const blueUsers = game.blueUsers
-      .map(user => limitStr(user.name, 20))
+      .map(user => user.name)
       .join(", ");
 
     return (
@@ -124,7 +116,7 @@ class Game extends Component {
               ))}
 
               <Typography classes={{ root: classes.listItem__userNames }}>
-                <nobr>{redUsers}</nobr>
+                {redUsers}
               </Typography>
             </div>
 
@@ -136,7 +128,7 @@ class Game extends Component {
             </Typography>
             <div className={classes.listItem__content_blue}>
               <Typography classes={{ root: classes.listItem__userNames }}>
-                <nobr>{blueUsers}</nobr>
+                {blueUsers}
               </Typography>
               {game.blueUsers.map(user => (
                 <Badge
