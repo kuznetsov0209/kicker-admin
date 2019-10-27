@@ -44,21 +44,17 @@ class Game extends Component {
 
   openAlert = () => {
     this.setState({ isAlertOpen: true });
-  }
+  };
 
   closeAlert = () => {
     this.setState({ isAlertOpen: false });
-  }
+  };
 
   render() {
     const { game, classes } = this.props;
 
-    const redUsers = game.redUsers
-      .map(user => user.name)
-      .join(", ");
-    const blueUsers = game.blueUsers
-      .map(user => user.name)
-      .join(", ");
+    const redUsers = game.redUsers.map(user => user.name).join(", ");
+    const blueUsers = game.blueUsers.map(user => user.name).join(", ");
 
     return (
       <ListItem classes={{ root: classes.listItem }}>
@@ -158,9 +154,7 @@ class Game extends Component {
         </div>
         <IconButton
           classes={{ root: classes.listItem__deleteButton }}
-          onClick={() => {
-            this.openDeleteModal();
-          }}
+          onClick={this.openDeleteModal}
         >
           <Cancel />
         </IconButton>
