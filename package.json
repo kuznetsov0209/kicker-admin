@@ -21,8 +21,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --production",
-    "prettier": "prettier --single-quote --use-tabs --trailing-comma es5 --write \"**/*.{js,css,json,md}\""
+    "build": "webpack --production"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
