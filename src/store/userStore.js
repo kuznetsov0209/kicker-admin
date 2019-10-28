@@ -4,7 +4,7 @@ import User from "./user";
 
 const UserStore = types
   .model({
-    user: types.optional(types.array(User), [])
+    users: types.optional(types.array(User), [])
   })
   .actions(self => {
     return {
