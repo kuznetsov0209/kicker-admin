@@ -12,10 +12,10 @@ import {
   Toolbar
 } from "@material-ui/core";
 
-import Logo from './Logo';
-import EmojiEventsSharpIcon from '@material-ui/icons/EmojiEventsSharp';
-import RestoreSharpIcon from '@material-ui/icons/RestoreSharp';
-import GroupSharpIcon from '@material-ui/icons/GroupSharp';
+import Logo from "./Logo";
+import EmojiEventsSharpIcon from "@material-ui/icons/EmojiEventsSharp";
+import RestoreSharpIcon from "@material-ui/icons/RestoreSharp";
+import GroupSharpIcon from "@material-ui/icons/GroupSharp";
 
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
@@ -32,10 +32,10 @@ const styles = theme => ({
   },
   button: {
     textAlign: "right",
-    width: '180px'
+    width: "180px"
   },
   logo: {
-    width: '180px'
+    width: "180px"
   }
 });
 
@@ -67,7 +67,7 @@ class ScrollableTabsButtonForce extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Logo  className={classes.logo}/>
+            <Logo className={classes.logo} />
             <Tabs
               value={value}
               onChange={this.handleChange}
