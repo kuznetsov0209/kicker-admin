@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
-import {
-  Button,
-  Container,
-  CircularProgress,
-  Typography
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import CircularProgress  from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
-import { grey } from "@material-ui/core/colors";
-import { AddCircleOutline, Create, Delete } from "@material-ui/icons";
+import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
+import Create from "@material-ui/icons/Create";
+import Delete from "@material-ui/icons/Delete";
 import MaterialTable from "material-table";
 import { styles } from "./Tournaments.styles";
 import { store } from "../../store/tournamentStore";
 import dateFormat from "dateformat";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
 
 @withRouter
