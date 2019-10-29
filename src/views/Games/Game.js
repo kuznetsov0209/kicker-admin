@@ -156,7 +156,7 @@ class Game extends Component {
 
         <DeleteModal
           open={this.state.isModalOpen}
-          close={this.closeDeleteModal}
+          handleClose={this.closeDeleteModal}
           confirm={() => this.tryToRemoveGame(game.id)}
           inProgress={this.state.isRemoving}
           names={`${redUsers} - ${blueUsers}`}
@@ -165,7 +165,7 @@ class Game extends Component {
             "ddd, hh:MM, mmm dS, yyyy "
           )}
         />
-        <ErrorAlert open={this.state.isAlertOpen} close={this.closeAlert} />
+        <ErrorAlert open={this.state.isAlertOpen} handleClose={this.closeAlert} />
       </ListItem>
     );
   }

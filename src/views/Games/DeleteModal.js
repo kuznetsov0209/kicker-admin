@@ -1,85 +1,41 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { Typography, Modal, Button, CircularProgress } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 class DeleteModal extends React.Component {
   render() {
-    const {
-      classes,
-      open,
-      close,
-      confirm,
-      inProgress,
-      names,
-      date
-    } = this.props;
+    const { open, handleClose, confirm, inProgress, names, date } = this.props;
 
     return (
-      <Modal
-        open={open}
-        onClose={close}
-      >
-        <div className={classes.paper}>
-          <Typography
-            variant="h6"
-            id="modal-title"
-            classes={{ root: classes.title }}
-          >
-            Remove game
-          </Typography>
-          <Typography variant="subtitle1">
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Remove game</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             Are you sure you want to remove the game?
-          </Typography>
-          <Typography variant="subtitle1">{names}</Typography>
-          <Typography variant="subtitle1">{date}</Typography>
-          <div className={classes.buttonsContainer}>
-            <Button
-              classes={{ root: classes.button }}
-              variant={"outlined"}
-              onClick={close}
-            >
-              Cancel
-            </Button>
-            <Button
-              classes={{ root: classes.button }}
-              variant={"contained"}
-              color={"primary"}
-              onClick={confirm}
-            >
-              {inProgress ? (
-                <CircularProgress color={"secondary"} size={20} />
-              ) : (
-                "Confirm"
-              )}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+          </DialogContentText>
+          <DialogContentText>{names}</DialogContentText>
+          <DialogContentText>{date}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant={"outlined"} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant={"contained"} color={"primary"} onClick={confirm}>
+            {inProgress ? (
+              <CircularProgress color={"secondary"} size={20} />
+            ) : (
+              "Confirm"
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
 
-const styles = theme => ({
-  paper: {
-    margin: "200px auto",
-    width: theme.spacing(50),
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(4),
-    borderRadius: 10
-  },
-  title: {
-    marginBottom: 20
-  },
-  button: {
-    borderRadius: 0,
-    marginLeft: 10
-  },
-  buttonsContainer: {
-    marginTop: 20,
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end"
-  }
-});
-
-export default withStyles(styles)(DeleteModal);
+export default DeleteModal;

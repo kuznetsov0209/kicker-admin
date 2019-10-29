@@ -1,64 +1,31 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { Typography, Modal, Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 class ErrorAlert extends React.Component {
   render() {
-    const { classes, open, close } = this.props;
+    const { open, handleClose } = this.props;
 
     return (
-      <Modal
-        open={open}
-        onClose={close}
-      >
-        <div className={classes.paper}>
-          <Typography
-            variant="h6"
-            id="modal-title"
-            classes={{ root: classes.title }}
-          >
-            Game is a part of a tournament
-          </Typography>
-          <Typography variant="subtitle1">
-          You can’t remove the game because it is a part of tournament.
-          </Typography>
-          <div className={classes.buttonsContainer}>
-            <Button
-              classes={{ root: classes.button }}
-              variant={"contained"}
-              color={"primary"}
-              onClick={close}
-            >
-              ОК
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Game is a part of a tournament</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You can’t remove the game because it is a part of tournament.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant={"contained"} color={"primary"} onClick={handleClose}>
+            ОК
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }
 
-const styles = theme => ({
-  paper: {
-    margin: "200px auto",
-    width: theme.spacing(50),
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(4),
-    borderRadius: 10
-  },
-  title: {
-    marginBottom: 20
-  },
-  button: {
-    borderRadius: 0,
-    marginLeft: 10
-  },
-  buttonsContainer: {
-    marginTop: 20,
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end"
-  }
-});
-
-export default withStyles(styles)(ErrorAlert);
+export default ErrorAlert;
