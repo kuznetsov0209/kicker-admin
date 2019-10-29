@@ -58,7 +58,6 @@ class Tournaments extends Component {
       }
     }
     this.state = {
-      sortingProperty: "startDate",
       isLoading: true,
       open: false
     };
