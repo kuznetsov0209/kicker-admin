@@ -28,17 +28,11 @@ const api = {
       body: JSON.stringify(body)
     });
   },
-  delete: async (path, body) => {
+  delete: async (path) => {
     return await request(path, {
-      method: "delete",
-      body: JSON.stringify(body)
+      method: "delete"
     });
   },
-  deleteGame: async (path) => {
-    return await request(path, {
-      method: "delete",
-    });
-  }
 };
 
 export default api;

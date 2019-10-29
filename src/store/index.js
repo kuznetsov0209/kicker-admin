@@ -37,7 +37,7 @@ const Store = types
       deleteGame: flow(function*(id) {
         const game = self.games.find(game => game.id == id)
         try {
-          yield api.deleteGame(`/api/games/${id}`);
+          yield api.delete(`/api/games/${id}`);
           self.games.remove(game)
           return false;
         } catch (e) {
