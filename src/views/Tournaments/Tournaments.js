@@ -51,9 +51,6 @@ class Tournaments extends Component {
         actionsColumnIndex: -1,
         draggable: false,
         paging: false,
-        rowStyle: {
-          backgroundColor: grey[200]
-        },
         search: false,
         showTitle: false,
         sorting: false,
