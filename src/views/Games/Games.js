@@ -44,7 +44,9 @@ class Games extends Component {
         />
         {store.games.length ? (
           <List style={{ width: "100%" }}>
-            {store.games.map(game => <Game key={game.id} game={game} />)}
+            {store.games.map(game => (
+              <Game key={game.id} game={game} />
+            ))}
           </List>
         ) : (
           <Typography
