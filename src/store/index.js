@@ -35,12 +35,14 @@ const Store = types
         self.usersStats = usersStats;
       }),
       deleteGame: flow(function*(id) {
+        const game = self.games.find(game => game.id == id)
         try {
           yield api.deleteGame(`/api/games/${id}`);
+          self.games.remove(game)
           return false;
         } catch (e) {
-          if (e.status == 400 ) {
-            return true
+          if (e.status == 400) {
+            return true;
           }
         }
       }),

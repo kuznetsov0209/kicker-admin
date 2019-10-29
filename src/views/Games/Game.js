@@ -31,8 +31,6 @@ class Game extends Component {
     const tournamentGame = await store.deleteGame(id);
     if (tournamentGame) {
       this.openAlert();
-    } else {
-      this.props.callbackIfDeleted ? this.props.callbackIfDeleted() : null;
     }
     this.setState({ isRemoving: false });
     this.closeDeleteModal();
