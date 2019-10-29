@@ -60,14 +60,6 @@ class Game extends Component {
 
     const redUsers = game.redUsers.map(user => user.name).join(", ");
     const blueUsers = game.blueUsers.map(user => user.name).join(", ");
-    const modalText = [
-      "Are you sure you want to remove the game?",
-      `${redUsers} - ${blueUsers}`,
-      dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")
-    ];
-    const alertText = [
-      "You can’t remove the game because it is a part of tournament."
-    ];
 
     return (
       <ListItem>
@@ -168,14 +160,22 @@ class Game extends Component {
           open={this.state.isModalOpen}
           handleClose={this.closeDeleteModal}
           handleConfirm={() => this.tryToRemoveGame(game.id)}
-          contentText={modalText}
+          contentText={
+            <>
+              Are you sure you want to remove the game?
+              <br />
+              {redUsers} - {blueUsers}
+              <br />
+              {dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")}
+            </>
+          }
           title="Remove game"
         />
         <ErrorDialog
           open={this.state.isAlertOpen}
           handleClose={this.closeAlert}
           title="Game is a part of a tournament"
-          contentText={alertText}
+          contentText="You can’t remove the game because it is a part of tournament."
         />
       </ListItem>
     );

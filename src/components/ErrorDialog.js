@@ -14,9 +14,7 @@ class ErrorDialog extends React.Component {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          {contentText.map((text, index) => (
-            <DialogContentText key={index}>{text}</DialogContentText>
-          ))}
+          <DialogContentText>{contentText}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button variant={"contained"} color={"primary"} onClick={handleClose}>
