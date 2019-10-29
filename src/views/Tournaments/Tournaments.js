@@ -99,7 +99,6 @@ class Tournaments extends Component {
     return (
       <React.Fragment>
         <Container
-          maxWidth="md"
           className={classes.container}
         >
           <div style={{ overflowX: "auto" }}>
