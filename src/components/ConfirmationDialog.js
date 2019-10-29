@@ -7,26 +7,44 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-class DeleteModal extends React.Component {
+class ConfirmationDialog extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      inProgress: false
+    };
+  }
+
+  handleConfirm = async () => {
+    const { handleConfirm } = this.props;
+    try {
+      this.setState({ isLoading: true });
+      await handleConfirm();
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
   render() {
-    const { open, handleClose, confirm, inProgress, names, date } = this.props;
+    const { open, handleClose, title, contentText } = this.props;
 
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Remove game</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to remove the game?
-          </DialogContentText>
-          <DialogContentText>{names}</DialogContentText>
-          <DialogContentText>{date}</DialogContentText>
+          {contentText.map((text, index) => (
+            <DialogContentText key={index}>{text}</DialogContentText>
+          ))}
         </DialogContent>
         <DialogActions>
           <Button variant={"outlined"} onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant={"contained"} color={"primary"} onClick={confirm}>
-            {inProgress ? (
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            onClick={this.handleConfirm}
+          >
+            {this.state.inProgress ? (
               <CircularProgress color={"secondary"} size={20} />
             ) : (
               "Confirm"
@@ -38,4 +56,4 @@ class DeleteModal extends React.Component {
   }
 }
 
-export default DeleteModal;
+export default ConfirmationDialog;

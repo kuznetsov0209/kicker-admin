@@ -10,7 +10,7 @@ import { Cancel } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import dateFormat from "dateformat";
 import UserAvatar from "../../components/UserAvatar";
-import DeleteModal from "./DeleteModal";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 import ErrorAlert from "./ErrorAlert";
 import { store } from "../../store";
 import styles from "./Game.style";
@@ -21,18 +21,15 @@ class Game extends Component {
     super();
     this.state = {
       isModalOpen: false,
-      isAlertOpen: false,
-      isRemoving: false
+      isAlertOpen: false
     };
   }
 
   tryToRemoveGame = async id => {
-    this.setState({ isRemoving: true });
     const tournamentGame = await store.deleteGame(id);
     if (tournamentGame) {
       this.openAlert();
     }
-    this.setState({ isRemoving: false });
     this.closeDeleteModal();
   };
 
@@ -42,7 +39,6 @@ class Game extends Component {
 
   closeDeleteModal = () => {
     this.setState({ isModalOpen: false });
-    this.setState({ isRemoving: false });
   };
 
   openAlert = () => {
@@ -58,6 +54,11 @@ class Game extends Component {
 
     const redUsers = game.redUsers.map(user => user.name).join(", ");
     const blueUsers = game.blueUsers.map(user => user.name).join(", ");
+    const modalText = [
+      "Are you sure you want to remove the game?",
+      `${redUsers} - ${blueUsers}`,
+      dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")
+    ];
 
     return (
       <ListItem>
@@ -154,18 +155,17 @@ class Game extends Component {
           </CardActions>
         </Card>
 
-        <DeleteModal
+        <ConfirmationDialog
           open={this.state.isModalOpen}
           handleClose={this.closeDeleteModal}
-          confirm={() => this.tryToRemoveGame(game.id)}
-          inProgress={this.state.isRemoving}
-          names={`${redUsers} - ${blueUsers}`}
-          date={dateFormat(
-            new Date(game.createdAt),
-            "ddd, hh:MM, mmm dS, yyyy "
-          )}
+          handleConfirm={() => this.tryToRemoveGame(game.id)}
+          contentText={modalText}
+          title="Remove game"
         />
-        <ErrorAlert open={this.state.isAlertOpen} handleClose={this.closeAlert} />
+        <ErrorAlert
+          open={this.state.isAlertOpen}
+          handleClose={this.closeAlert}
+        />
       </ListItem>
     );
   }
