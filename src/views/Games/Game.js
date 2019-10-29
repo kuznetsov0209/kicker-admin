@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { ListItem, Typography, IconButton, Badge } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
 import { Cancel } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import dateFormat from "dateformat";
@@ -10,7 +15,7 @@ import ErrorAlert from "./ErrorAlert";
 import { store } from "../../store";
 import styles from "./Game.style";
 
-@withRouter
+@withStyles(styles)
 class Game extends Component {
   constructor() {
     super();
@@ -57,28 +62,17 @@ class Game extends Component {
     const blueUsers = game.blueUsers.map(user => user.name).join(", ");
 
     return (
-      <ListItem classes={{ root: classes.listItem }}>
-        <div className={classes.listItem__container}>
-          <div className={classes.listItem__dateContainer}>
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              classes={{ root: classes.listItem__date }}
-              noWrap={true}
-            >
+      <ListItem>
+        <Card className={classes.listItem}>
+          <CardContent className={classes.listItem__dateContainer}>
+            <Typography variant="caption" color="textSecondary">
               {dateFormat(new Date(game.createdAt), "ddd, hh:MM")}
+              <br />
+              {dateFormat(new Date(game.createdAt), " mmm dS, yyyy")}
             </Typography>
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              classes={{ root: classes.listItem__date }}
-              noWrap={true}
-            >
-              {dateFormat(new Date(game.createdAt), "mmm dS, yyyy ")}
-            </Typography>
-          </div>
+          </CardContent>
 
-          <div className={classes.listItem__teamsContainer}>
+          <CardContent className={classes.listItem__teamsContainer}>
             <div className={classes.listItem__content_red}>
               {game.redUsers.map(user => (
                 <Badge
@@ -93,7 +87,10 @@ class Game extends Component {
                   <Badge
                     color={"error"}
                     overlap={"circle"}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
                     badgeContent={
                       game.getUserOwnGoals(user.id) == 0
                         ? 0
@@ -109,19 +106,16 @@ class Game extends Component {
                 </Badge>
               ))}
 
-              <Typography classes={{ root: classes.listItem__userNames }}>
+              <Typography className={classes.listItem__userNames} noWrap={true}>
                 {redUsers}
               </Typography>
             </div>
 
-            <Typography
-              variant="h6"
-              classes={{ root: classes.listItem__score }}
-            >
+            <Typography variant="h6" className={classes.listItem__score}>
               {game.score}
             </Typography>
             <div className={classes.listItem__content_blue}>
-              <Typography classes={{ root: classes.listItem__userNames }}>
+              <Typography className={classes.listItem__userNames} noWrap={true}>
                 {blueUsers}
               </Typography>
               {game.blueUsers.map(user => (
@@ -138,7 +132,10 @@ class Game extends Component {
                   <Badge
                     color={"error"}
                     overlap={"circle"}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right"
+                    }}
                     badgeContent={
                       game.getUserOwnGoals(user.id) == 0
                         ? 0
@@ -150,14 +147,15 @@ class Game extends Component {
                 </Badge>
               ))}
             </div>
-          </div>
-        </div>
-        <IconButton
-          classes={{ root: classes.listItem__deleteButton }}
-          onClick={this.openDeleteModal}
-        >
-          <Cancel />
-        </IconButton>
+          </CardContent>
+
+          <CardActions>
+            <IconButton onClick={this.openDeleteModal}>
+              <Cancel />
+            </IconButton>
+          </CardActions>
+        </Card>
+
         <DeleteModal
           open={this.state.isModalOpen}
           close={this.closeDeleteModal}
@@ -175,4 +173,4 @@ class Game extends Component {
   }
 }
 
-export default withStyles(styles)(Game);
+export default Game;
