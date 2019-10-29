@@ -1,7 +1,12 @@
-import React, { forwardRef, Component } from "react"
+import React, { forwardRef, Component } from "react";
 import { store } from "../../store/userStore";
-import MaterialTable from "material-table"
-import { Container, withStyles, Avatar, CircularProgress } from "@material-ui/core"
+import MaterialTable from "material-table";
+import {
+  Container,
+  withStyles,
+  Avatar,
+  CircularProgress
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import EditIcon from "@material-ui/icons/Edit";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -19,7 +24,7 @@ class Players extends Component {
     super(props);
     this.state = {
       isLoading: true
-    }
+    };
   }
 
   async loadUsersIfNeeded() {
@@ -43,58 +48,65 @@ class Players extends Component {
     }
 
     return (
-      <Container className={ classes.container }>
-        <MaterialTable 
+      <Container className={classes.container}>
+        <MaterialTable
           title=""
           pagination={{
-            labelRowsPerPage: "1"}
-          }
+            labelRowsPerPage: "1"
+          }}
           icons={{
-            Search: forwardRef((props, ref) => <SearchIcon {...props} ref={ref} />),
-            ResetSearch: forwardRef((props, ref) => <ClearIcon {...props} ref={ref} />),
-            NextPage: forwardRef((props, ref) => <ChevronRightIcon {...props} ref={ref} />),
-            PreviousPage: forwardRef((props, ref) => <ChevronLeftIcon {...props} ref={ref} />)
+            Search: forwardRef((props, ref) => (
+              <SearchIcon {...props} ref={ref} />
+            )),
+            ResetSearch: forwardRef((props, ref) => (
+              <ClearIcon {...props} ref={ref} />
+            )),
+            NextPage: forwardRef((props, ref) => (
+              <ChevronRightIcon {...props} ref={ref} />
+            )),
+            PreviousPage: forwardRef((props, ref) => (
+              <ChevronLeftIcon {...props} ref={ref} />
+            ))
           }}
           columns={[
-            { 
-              title: "User", 
+            {
+              title: "User",
               field: "photoUrl",
               headerStyle: {
                 color: "#808080"
-              }, 
+              },
               render: rowData => (
                 <Avatar alt="Player avatar" src={rowData.photoUrl} />
               )
             },
             {
-              title: "Name", 
+              title: "Name",
               field: "name",
+              defaultSort: "asc",
               headerStyle: {
                 color: "#808080"
-              }, 
+              }
             },
             {
-              title: "E-mail", 
+              title: "E-mail",
               field: "email",
               headerStyle: {
                 color: "#808080"
-              }, 
+              }
             }
           ]}
           data={store.users}
-          options={
-            {
-              rowStyle: {
-                backgroundColor: "#eee"
-              }, 
-              searchFieldAlignment: "left",
-              actionsColumnIndex: -1,
-              pageSize: 20,
-              pageSizeOptions: [],
-              paginationType: "stepped",
-              sorting: false
-            }
-          }
+          options={{
+            rowStyle: {
+              backgroundColor: "#eee"
+            },
+            searchFieldAlignment: "left",
+            actionsColumnIndex: -1,
+            pageSize: 20,
+            pageSizeOptions: [],
+            paginationType: "stepped",
+            sorting: false
+          }}
           actions={[
             {
               icon: () => <EditIcon />,
@@ -104,7 +116,7 @@ class Players extends Component {
           ]}
         />
       </Container>
-    )
+    );
   }
 }
 
