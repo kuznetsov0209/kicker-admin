@@ -124,9 +124,7 @@ class Tournaments extends Component {
                   this.tableConfig.columns
                 }
                 data={
-                  store.tournaments.sort((a, b) => {
-                    return new Date(a.startDate) - new Date(b.startDate);
-                  }).map((tour, index) => (
+                  store.tournaments.map((tour, index) => (
                     {
                       number: ++index,
                       title: tour.title,
