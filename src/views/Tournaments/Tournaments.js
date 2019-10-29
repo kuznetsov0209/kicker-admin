@@ -22,24 +22,36 @@ class Tournaments extends Component {
   constructor(props) {
     super(props);
     this.tableConfig = {
-      addButton: {
-        icon: () => {
-          return (
-          <Button
-            color="primary"
-            startIcon={
-              <AddCircleOutline
-                color="primary"
-              />
-            }
-          >
-            Add new tournament
-          </Button>
-        )},
-        tooltip: "Add Tournament",
-        isFreeAction: true,
-        onClick: this.handleOpen
-      },
+      actions: [
+        {
+          icon: () => {
+            return (
+            <Button
+              color="primary"
+              startIcon={
+                <AddCircleOutline
+                  color="primary"
+                />
+              }
+            >
+              Add new tournament
+            </Button>
+          )},
+          tooltip: "Add Tournament",
+          isFreeAction: true,
+          onClick: this.handleOpen
+        },
+        {
+          icon: Create,
+          tooltip: "Edit Tournament",
+          onClick: () => {}
+        },
+        {
+          icon: Delete,
+          tooltip: "Delete Tournament",
+          onClick: () => {}
+        }
+      ],
       columns: [
         { title: "№", field: "number" },
         { title: "Title", field: "title" },
@@ -47,6 +59,11 @@ class Tournaments extends Component {
         { title: "Finish Date", field: "endDate", type: "date" },
         { title: "Status", field: "status" },
       ],
+      localization: {
+        body: {
+          emptyDataSourceMessage: "There are no tournaments yet"
+        }
+      },
       options: {
         actionsColumnIndex: -1,
         draggable: false,
