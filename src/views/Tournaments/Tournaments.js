@@ -118,59 +118,19 @@ class Tournaments extends Component {
           className={classes.container}
         >
           <div style={{ overflowX: "auto" }}>
-            {store.tournaments.length ? (
-              <MaterialTable
-                actions={[
+            <MaterialTable
+              { ...this.tableConfig }
+              data={
+                store.tournaments.map((tour, index) => (
                   {
-                    ...this.tableConfig.addButton
-                  },
-                  {
-                    icon: Create,
-                    tooltip: "Edit Tournament",
-                    onClick: () => {}
-                  },
-                  {
-                    icon: Delete,
-                    tooltip: "Delete Tournament",
-                    onClick: () => {}
+                    number: ++index,
+                    title: tour.title,
+                    startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
+                    endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
                   }
-                ]}
-                columns={
-                  this.tableConfig.columns
-                }
-                data={
-                  store.tournaments.map((tour, index) => (
-                    {
-                      number: ++index,
-                      title: tour.title,
-                      startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
-                      endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
-                    }
-                  ))
-                }
-                options={
-                  this.tableConfig.options
-                }
-              />
-            ) : (
-              <MaterialTable
-                actions={[
-                  this.tableConfig.addButton
-                ]}
-                columns={
-                  this.tableConfig.columns
-                }
-                localization={{
-                  body: {
-                    emptyDataSourceMessage: "There are no tournaments yet"
-                  }
-                }}
-                options={{
-                  ...this.tableConfig.options,
-                  header: false
-                }}
-              />
-            )}
+                ))
+              }
+            />
           </div>
           {this.state.open && (
             <TournamentAddForm
