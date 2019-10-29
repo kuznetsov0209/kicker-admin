@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import dateFormat from "dateformat";
 import UserAvatar from "../../components/UserAvatar";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-import ErrorAlert from "./ErrorAlert";
+import ErrorDialog from "../../components/ErrorDialog"
 import { store } from "../../store";
 import styles from "./Game.style";
 
@@ -58,6 +58,9 @@ class Game extends Component {
       "Are you sure you want to remove the game?",
       `${redUsers} - ${blueUsers}`,
       dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")
+    ];
+    const alertText = [
+      "You can’t remove the game because it is a part of tournament."
     ];
 
     return (
@@ -162,9 +165,11 @@ class Game extends Component {
           contentText={modalText}
           title="Remove game"
         />
-        <ErrorAlert
+        <ErrorDialog
           open={this.state.isAlertOpen}
           handleClose={this.closeAlert}
+          title="Game is a part of a tournament"
+          contentText={alertText}
         />
       </ListItem>
     );

@@ -6,17 +6,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-class ErrorAlert extends React.Component {
+class ErrorDialog extends React.Component {
   render() {
-    const { open, handleClose } = this.props;
+    const { open, handleClose, title, contentText } = this.props;
 
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Game is a part of a tournament</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            You can’t remove the game because it is a part of tournament.
-          </DialogContentText>
+          {contentText.map((text, index) => (
+            <DialogContentText key={index}>{text}</DialogContentText>
+          ))}
         </DialogContent>
         <DialogActions>
           <Button variant={"contained"} color={"primary"} onClick={handleClose}>
@@ -28,4 +28,4 @@ class ErrorAlert extends React.Component {
   }
 }
 
-export default ErrorAlert;
+export default ErrorDialog;
