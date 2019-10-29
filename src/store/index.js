@@ -14,18 +14,12 @@ const UserStats = types.model({
 const Store = types
   .model({
     authStore: AuthStore,
-
-    users: types.optional(types.array(User), []),
     games: types.optional(types.array(Game), []),
     usersStats: types.optional(UserStats, {}),
     gamesWeekFilter: types.optional(types.Date, new Date())
   })
   .actions(self => {
     return {
-      loadUsers: flow(function*() {
-        const { users } = yield api.get("/api/users");
-        self.users = users;
-      }),
       loadGames: flow(function*(date) {
         const { games } = yield api.get(`/api/games?date=${date}`);
         self.games = games;
