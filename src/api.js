@@ -2,16 +2,20 @@ export const API_HOST = "http://localhost:3000";
 
 async function request(path, options = {}) {
   const url = `${API_HOST}${path}`;
-  const json = await fetch(url, {
+  const response = await fetch(url, {
     credentials: "include",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     ...options
-  }).then(response => response.json());
+  });
 
-  return json;
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw response;
+  }
 }
 
 const api = {
@@ -24,12 +28,11 @@ const api = {
       body: JSON.stringify(body)
     });
   },
-  delete: async (path, body) => {
+  delete: async (path) => {
     return await request(path, {
-      method: "delete",
-      body: JSON.stringify(body)
+      method: "delete"
     });
-  }
+  },
 };
 
 export default api;
