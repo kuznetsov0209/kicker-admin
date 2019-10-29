@@ -5,6 +5,7 @@ import Games from "../views/Games";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
 import Leaders from "../views/Leaders";
+import AddTeamForm from "./AddTeamForm";
 import AppBar from "./AppBar";
 
 import "./App.css";
@@ -24,6 +25,11 @@ class App extends Component {
               <Route exact path="/leaders" component={Leaders} />
               <Route exact path="/tournaments" component={Tournaments} />
               <Route exact path="/tournaments/:id" component={Tournament} />
+              <Route
+                exact
+                path="/tournaments/:id/teams"
+                component={AddTeamForm}
+              />
               <Redirect to="/leaders" />
             </Switch>
           </div>
