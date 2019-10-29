@@ -11,7 +11,7 @@ class ConfirmationDialog extends React.Component {
   constructor() {
     super();
     this.state = {
-      inProgress: false
+      isLoading: false
     };
   }
 
@@ -44,7 +44,7 @@ class ConfirmationDialog extends React.Component {
             color={"primary"}
             onClick={this.handleConfirm}
           >
-            {this.state.inProgress ? (
+            {this.state.isLoading ? (
               <CircularProgress color={"secondary"} size={20} />
             ) : (
               "Confirm"

@@ -11,8 +11,9 @@ import { withStyles } from "@material-ui/core/styles";
 import dateFormat from "dateformat";
 import UserAvatar from "../../components/UserAvatar";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-import ErrorDialog from "../../components/ErrorDialog"
+import ErrorDialog from "../../components/ErrorDialog";
 import { store } from "../../store";
+import GameIsLinkedWithTournamentError from "../../apiErrors";
 import styles from "./Game.style";
 
 @withStyles(styles)
@@ -26,11 +27,17 @@ class Game extends Component {
   }
 
   tryToRemoveGame = async id => {
-    const tournamentGame = await store.deleteGame(id);
-    if (tournamentGame) {
-      this.openAlert();
+    try {
+      await store.deleteGame(id);
+    } catch (error) {
+      if (error instanceof GameIsLinkedWithTournamentError) {
+        this.openAlert();
+      } else {
+        alert("Произошла ошибка при удалении игры");
+      }
+    } finally {
+      this.closeDeleteModal();
     }
-    this.closeDeleteModal();
   };
 
   openDeleteModal = () => {
