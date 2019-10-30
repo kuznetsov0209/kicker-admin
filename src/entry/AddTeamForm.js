@@ -44,7 +44,7 @@ export default function AddTeamForm() {
   return (
     <div style={{ textAlign: "center" }}>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Create new team
+        ADD NEW TEAM
       </Button>
       <Dialog
         open={open}
