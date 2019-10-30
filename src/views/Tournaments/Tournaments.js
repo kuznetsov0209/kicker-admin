@@ -13,6 +13,7 @@ import dateFormat from "dateformat";
 import { withRouter } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
 
+@withStyles(styles)
 @withRouter
 @observer
 class Tournaments extends Component {
@@ -133,4 +134,4 @@ class Tournaments extends Component {
   }
 }
 
-export default withStyles(styles)(Tournaments);
+export default Tournaments;
