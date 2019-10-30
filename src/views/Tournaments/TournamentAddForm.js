@@ -8,10 +8,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle
+  DialogTitle,
+  CircularProgress
 } from "@material-ui/core";
-import { start } from "pretty-error";
 
 @withRouter
 class TournamentAddForm extends Component {
@@ -20,15 +19,23 @@ class TournamentAddForm extends Component {
     this.state = {
       title: "",
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      isLoading: false
     };
   }
 
-  handleCreate = () => {
+  handleCreate = async () => {
     const { title, startDate, endDate } = this.state;
     const { handleClose } = this.props;
-    store.addTournament({ title, startDate, endDate });
-    handleClose();
+    try {
+      this.setState({ isLoading: true });
+      await store.addTournament({ title, startDate, endDate });
+    } catch (error) {
+      alert(`Ошибка при создании турнира: ${error.name} ${error.message}`);
+    } finally {
+      this.setState({ isLoading: false });
+      handleClose();
+    }
   };
 
   handleTitleChange = e => {
@@ -89,8 +96,16 @@ class TournamentAddForm extends Component {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleCreate} color="primary">
-            Save
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            onClick={this.handleCreate}
+          >
+            {this.state.isLoading ? (
+              <CircularProgress color={"secondary"} size={20} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
