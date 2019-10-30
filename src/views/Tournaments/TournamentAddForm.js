@@ -1,6 +1,6 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { store } from "../../store/tournamentStore";
 import {
@@ -12,7 +12,8 @@ import {
   DialogTitle
 } from "@material-ui/core";
 
-class TournamentForm extends Component {
+@withRouter
+class TournamentAddForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +35,10 @@ class TournamentForm extends Component {
   render() {
     const { handleClose } = this.props;
     return (
-      <Dialog open={this.props.open} onClose={handleClose}>
+      <Dialog open={
+        // this.props.open
+        true
+        } onClose={handleClose}>
         <DialogTitle>Add Tournament</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -73,4 +77,4 @@ class TournamentForm extends Component {
   }
 }
 
-export default TournamentForm;
+export default TournamentAddForm;

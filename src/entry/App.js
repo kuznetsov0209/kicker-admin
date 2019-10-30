@@ -3,6 +3,7 @@ import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import localeRu from "date-fns/locale/ru";
 import Games from "../views/Games";
 import Tournaments from "../views/Tournaments";
+import TournamentAddForm from "../views/Tournaments/TournamentAddForm"
 import Tournament from "../views/Tournament";
 import Leaders from "../views/Leaders";
 import AppBar from "./AppBar";
@@ -23,6 +24,7 @@ class App extends Component {
               <Route exact path="/games" component={Games} />
               <Route exact path="/leaders" component={Leaders} />
               <Route exact path="/tournaments" component={Tournaments} />
+              <Route exact path="/tournaments/create" component={TournamentAddForm} />
               <Route exact path="/tournaments/:id" component={Tournament} />
               <Redirect to="/leaders" />
             </Switch>
