@@ -23,7 +23,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/games" component={Games} />
               <Route exact path="/leaders" component={Leaders} />
-              <Route exact path="/player" component={Player} />
+              <Route exact path="/player/:id" component={Player} />
               <Route exact path="/tournaments" component={Tournaments} />
               <Route exact path="/tournaments/:id" component={Tournament} />
               <Redirect to="/leaders" />
