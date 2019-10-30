@@ -10,7 +10,7 @@ import {
   Typography
 } from "@material-ui/core";
 import DialogTitleWithBtn from "../../components/DialogTitleWithBtn";
-import photoPlaceholder from "./user-placeholder.jpg";
+import photoPlaceholder from "../../resources/Players/user-placeholder.jpg";
 import DialogActions from "@material-ui/core/DialogActions";
 import CancelIcon from "@material-ui/icons/Cancel";
 import DialogApplyChangesDecision from "../../components/DialogApplyChangesDecision";
