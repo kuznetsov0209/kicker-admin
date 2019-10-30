@@ -39,11 +39,8 @@ class TournamentAddForm extends Component {
         // this.props.open
         true
         } onClose={handleClose}>
-        <DialogTitle>Add Tournament</DialogTitle>
+        <DialogTitle>Create Tournament</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter your title for tournament here.
-          </DialogContentText>
           <TextField
             value={this.state.title}
             onChange={e => this.setState({ title: e.target.value })}
@@ -55,7 +52,7 @@ class TournamentAddForm extends Component {
             value={this.state.startDate}
             onChange={startDate => this.setState({ startDate })}
             required
-            label="End Date"
+            label="Start date"
           />
           <KeyboardDatePicker
             value={this.state.endDate}
@@ -69,7 +66,7 @@ class TournamentAddForm extends Component {
             Cancel
           </Button>
           <Button onClick={this.handleClick} color="primary">
-            Add
+            Save
           </Button>
         </DialogActions>
       </Dialog>
