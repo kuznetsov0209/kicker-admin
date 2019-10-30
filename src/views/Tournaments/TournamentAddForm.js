@@ -11,6 +11,7 @@ import {
   DialogContentText,
   DialogTitle
 } from "@material-ui/core";
+import { start } from "pretty-error";
 
 @withRouter
 class TournamentAddForm extends Component {
@@ -23,40 +24,63 @@ class TournamentAddForm extends Component {
     };
   }
 
-  handleClick = () => {
+  handleCreate = () => {
     const { title, startDate, endDate } = this.state;
     const { handleClose } = this.props;
     store.addTournament({ title, startDate, endDate });
     handleClose();
   };
 
-  handleChange = e => {};
+  handleTitleChange = e => {
+    this.setState({ title: e.target.value });
+  };
+
+  setStartDate = startDate => {
+    if (startDate > this.state.endDate) {
+      this.setState({ endDate: startDate });
+    }
+    this.setState({ startDate });
+  };
+
+  setEndDate = endDate => {
+    if (this.state.startDate <= endDate) {
+      this.setState({ endDate });
+    } else {
+      this.setState({ endDate: this.state.startDate });
+    }
+  };
 
   render() {
-    const { handleClose } = this.props;
+    const { handleClose, open } = this.props;
     return (
-      <Dialog open={
-        // this.props.open
-        true
-        } onClose={handleClose}>
+      <Dialog
+        open={
+          //раскомментировать при использовании
+          // open
+
+          //удалить при использовании
+          true
+        }
+        onClose={handleClose}
+      >
         <DialogTitle>Create Tournament</DialogTitle>
         <DialogContent>
           <TextField
             value={this.state.title}
-            onChange={e => this.setState({ title: e.target.value })}
+            onChange={this.handleTitleChange}
             required
             autoFocus
             label="Title"
           />
           <KeyboardDatePicker
             value={this.state.startDate}
-            onChange={startDate => this.setState({ startDate })}
+            onChange={this.setStartDate}
             required
             label="Start date"
           />
           <KeyboardDatePicker
             value={this.state.endDate}
-            onChange={endDate => this.setState({ endDate })}
+            onChange={this.setEndDate}
             required
             label="End Date"
           />
@@ -65,7 +89,7 @@ class TournamentAddForm extends Component {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleClick} color="primary">
+          <Button onClick={this.handleCreate} color="primary">
             Save
           </Button>
         </DialogActions>
