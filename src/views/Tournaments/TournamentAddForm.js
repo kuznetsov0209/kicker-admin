@@ -9,9 +9,17 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  CircularProgress
+  CircularProgress,
+  withStyles
 } from "@material-ui/core";
 
+const styles = {
+  picker: {
+    margin: "10px 10px 10px 0"
+  }
+};
+
+@withStyles(styles)
 @withRouter
 class TournamentAddForm extends Component {
   constructor(props) {
@@ -58,7 +66,7 @@ class TournamentAddForm extends Component {
   };
 
   render() {
-    const { handleClose, open } = this.props;
+    const { classes, handleClose, open } = this.props;
     return (
       <Dialog
         open={
@@ -75,17 +83,20 @@ class TournamentAddForm extends Component {
           <TextField
             value={this.state.title}
             onChange={this.handleTitleChange}
+            fullWidth={true}
             required
             autoFocus
             label="Title"
           />
           <KeyboardDatePicker
+            classes={{ root: classes.picker }}
             value={this.state.startDate}
             onChange={this.setStartDate}
             required
             label="Start date"
           />
           <KeyboardDatePicker
+            classes={{ root: classes.picker }}
             value={this.state.endDate}
             onChange={this.setEndDate}
             required
