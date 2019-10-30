@@ -43,15 +43,15 @@ class Player extends React.Component {
   }
 
   componentDidMount = () => {
-    //TODO download the information
-    this.loadPlayer(this.props.playerId);
+    this.loadPlayer();
   };
 
-  async loadPlayer(id) {
+  async loadPlayer() {
     this.setState({ playerIsLoading: true });
     try {
       await store.loadUsers();
     } finally {
+      let id = parseInt(this.props.match.params.id);
       const playerInfo = store.getUserById(id);
       if (playerInfo) {
         this.setState({
