@@ -4,6 +4,7 @@ import localeRu from "date-fns/locale/ru";
 import Games from "../views/Games";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
+import TournamentEditForm from "../views/Tournament/TournamentEditForm";
 import Leaders from "../views/Leaders";
 import AppBar from "./AppBar";
 
@@ -11,6 +12,7 @@ import "./App.css";
 
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+
 
 class App extends Component {
   render() {
@@ -24,6 +26,7 @@ class App extends Component {
               <Route exact path="/leaders" component={Leaders} />
               <Route exact path="/tournaments" component={Tournaments} />
               <Route exact path="/tournaments/:id" component={Tournament} />
+              <Route exact path="/tournaments/:id/edit" component={TournamentEditForm} />
               <Redirect to="/leaders" />
             </Switch>
           </div>
