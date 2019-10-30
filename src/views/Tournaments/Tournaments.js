@@ -111,21 +111,19 @@ class Tournaments extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ overflowX: "auto" }}>
-          <MaterialTable
-            { ...this.tableConfig }
-            data={
-              store.tournaments.map((tour, index) => (
-                {
-                  number: ++index,
-                  title: tour.title,
-                  startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
-                  endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
-                }
-              ))
-            }
-          />
-        </div>
+        <MaterialTable
+          { ...this.tableConfig }
+          data={
+            store.tournaments.map((tour, index) => (
+              {
+                number: ++index,
+                title: tour.title,
+                startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
+                endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
+              }
+            ))
+          }
+        />
         {this.state.open && (
           <TournamentAddForm
             handleClose={this.handleClose}
