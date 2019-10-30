@@ -4,6 +4,7 @@ import localeRu from "date-fns/locale/ru";
 import Games from "../views/Games";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
+import Player from "../views/Players/Player";
 import Leaders from "../views/Leaders";
 import AppBar from "./AppBar";
 
@@ -22,6 +23,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/games" component={Games} />
               <Route exact path="/leaders" component={Leaders} />
+              <Route exact path="/player" component={Player} />
               <Route exact path="/tournaments" component={Tournaments} />
               <Route exact path="/tournaments/:id" component={Tournament} />
               <Redirect to="/leaders" />
