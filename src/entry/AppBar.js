@@ -11,9 +11,11 @@ import {
   Button,
   Toolbar
 } from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
-import StarIcon from "@material-ui/icons/Star";
-import EventIcon from "@material-ui/icons/Event";
+
+import Logo from "./Logo";
+import EmojiEventsSharpIcon from "@material-ui/icons/EmojiEventsSharp";
+import RestoreSharpIcon from "@material-ui/icons/RestoreSharp";
+import GroupSharpIcon from "@material-ui/icons/GroupSharp";
 
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
@@ -25,11 +27,15 @@ const styles = theme => ({
     width: "100%",
     backgroundColor: theme.palette.background.paper
   },
-  flexContainer: {
-    justifyContent: "center"
-  },
   tabs: {
     flexGrow: 1
+  },
+  button: {
+    textAlign: "right",
+    width: "180px"
+  },
+  logo: {
+    width: "180px"
   }
 });
 
@@ -59,33 +65,42 @@ class ScrollableTabsButtonForce extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+        <AppBar position="static">
           <Toolbar>
+            <Logo className={classes.logo} />
             <Tabs
               value={value}
               onChange={this.handleChange}
               scrollable="true"
               scrollButtons="on"
-              indicatorColor="primary"
-              textColor="primary"
+              indicatorColor="secondary"
+              centered
               classes={{
-                flexContainer: classes.flexContainer,
                 root: classes.tabs
               }}
             >
-              <Tab label="GAMES" icon={<ListIcon />} value="/games" />
-              <Tab label="LEADERS" icon={<StarIcon />} value="/leaders" />
+              <Tab label="GAMES" icon={<RestoreSharpIcon />} value="/games" />
+              <Tab label="PLAYERS" icon={<GroupSharpIcon />} value="/leaders" />
               <Tab
                 label="TOURNAMENTS"
-                icon={<EventIcon />}
+                icon={<EmojiEventsSharpIcon />}
                 value="/tournaments"
               />
             </Tabs>
-            {this.profile ? (
-              <UserAvatar user={this.profile} size={32} />
-            ) : (
-              <Button href={`${API_HOST}/auth/google`}>Login</Button>
-            )}
+            <div className={classes.button}>
+              {this.profile ? (
+                <UserAvatar user={this.profile} size={32} />
+              ) : (
+                <Button
+                  size="medium"
+                  color="secondary"
+                  variant="contained"
+                  href={`${API_HOST}/auth/google`}
+                >
+                  Login
+                </Button>
+              )}
+            </div>
           </Toolbar>
         </AppBar>
       </div>

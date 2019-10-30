@@ -114,7 +114,7 @@ class CustomElements extends PureComponent {
 
 const styles = theme => ({
   container: {
-    margin: "15px auto"
+    margin: "15px 0"
   },
   dayWrapper: {
     position: "relative"
