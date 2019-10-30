@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
 import CircularProgress  from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
@@ -112,31 +111,27 @@ class Tournaments extends Component {
 
     return (
       <React.Fragment>
-        <Container
-          className={classes.container}
-        >
-          <div style={{ overflowX: "auto" }}>
-            <MaterialTable
-              { ...this.tableConfig }
-              data={
-                store.tournaments.map((tour, index) => (
-                  {
-                    number: ++index,
-                    title: tour.title,
-                    startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
-                    endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
-                  }
-                ))
-              }
-            />
-          </div>
-          {this.state.open && (
-            <TournamentAddForm
-              handleClose={this.handleClose}
-              open={this.state.open}
-            />
-          )}
-        </Container>
+        <div style={{ overflowX: "auto" }}>
+          <MaterialTable
+            { ...this.tableConfig }
+            data={
+              store.tournaments.map((tour, index) => (
+                {
+                  number: ++index,
+                  title: tour.title,
+                  startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
+                  endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
+                }
+              ))
+            }
+          />
+        </div>
+        {this.state.open && (
+          <TournamentAddForm
+            handleClose={this.handleClose}
+            open={this.state.open}
+          />
+        )}
       </React.Fragment>
     );
   }
