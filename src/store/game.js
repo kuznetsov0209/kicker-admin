@@ -22,6 +22,11 @@ const Game = types
         goal => goal.UserId === userId && goal.ownGoal === false
       ).length;
     },
+    getUserOwnGoals(userId) {
+      return self.Goals.filter(
+        goal => goal.UserId === userId && goal.ownGoal === true
+      ).length;
+    },
     get redUsers() {
       return self.Users.filter(user => user.GamePlayer.team === TEAM_RED);
     },
