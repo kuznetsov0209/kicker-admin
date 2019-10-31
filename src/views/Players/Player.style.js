@@ -21,7 +21,6 @@ const styles = {
   },
   player__input: {
     width: "100%",
-    color: "red"
   },
   player__buttonContainer: {
     padding: 24,
