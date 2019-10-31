@@ -7,6 +7,7 @@ const User = types
   .model({
     id: types.number,
     name: types.string,
+    email: types.maybeNull(types.string),
     photoUrl: types.maybeNull(types.string),
     GamePlayer: types.maybe(GamePlayer),
     stats: types.maybe(UserStat)
