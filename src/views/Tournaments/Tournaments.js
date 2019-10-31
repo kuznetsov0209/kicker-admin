@@ -91,12 +91,35 @@ class Tournaments extends Component {
               onClick: () => {}
             }
           ]}
+          data={ store.tournaments.map(tournament => tournament) }
           columns={[
-            { title: "№", field: "number" },
-            { title: "Title", field: "title" },
-            { title: "Start Date", field: "startDate", type: "date" },
-            { title: "Finish Date", field: "endDate", type: "date" },
-            { title: "Status", field: "status" }
+            {
+              title: "№",
+              field: "number",
+              render: rowData => rowData.tableData.id + 1
+            },
+            {
+              title: "Title",
+              field: "title",
+              render: rowData => rowData.title
+            },
+            {
+              title: "Start Date",
+              field: "startDate",
+              type: "date",
+              render: rowData => dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
+            },
+            {
+              title: "Finish Date",
+              field: "endDate",
+              type: "date",
+              render: rowData => dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
+            },
+            {
+              title: "Status",
+              field: "status",
+              render: rowData => rowData.status
+            }
           ]}
           localization={{
             body: {
@@ -112,16 +135,6 @@ class Tournaments extends Component {
             sorting: false,
             toolbarButtonAlignment: "left"
           }}
-          data={
-            store.tournaments.map((tour, index) => (
-              {
-                number: ++index,
-                title: tour.title,
-                startDate: dateFormat(tour.startDate, "dddd, mmmm dS, yyyy"),
-                endDate: dateFormat(tour.endDate, "dddd, mmmm dS, yyyy")
-              }
-            ))
-          }
         />
         {this.state.open && (
           <TournamentAddForm
