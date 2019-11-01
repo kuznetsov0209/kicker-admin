@@ -1,6 +1,5 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { store } from "../../store";
 import {
   Avatar,
   Button,
@@ -13,12 +12,10 @@ import DialogTitleWithBtn from "../../components/DialogTitleWithBtn";
 import photoPlaceholder from "../../resources/Players/user-placeholder.jpg";
 import DialogActions from "@material-ui/core/DialogActions";
 import CancelIcon from "@material-ui/icons/Cancel";
-import DialogApplyChangesDecision from "../../components/DialogApplyChangesDecision";
-import DialogConfirmAction from "../../components/DialogConfirmAction";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import styles from "./Player.style";
 
 const ACCEPTABLE_FILE_TYPES = ["image/png", "image/jpg", "image/jpeg"];
@@ -33,7 +30,6 @@ class Player extends React.Component {
       name: "",
       srcPhoto: photoPlaceholder,
       playerIsOpen: true,
-      playerIsLoading: false,
       closePopupIsOpen: false,
       makePlayerInactivePopupIsOpen: false,
       fileSizeIsError: false,
@@ -43,30 +39,13 @@ class Player extends React.Component {
   }
 
   componentDidMount = () => {
-    this.loadPlayer();
+    const playerInfo = this.props.player;
+    this.setState({
+      email: playerInfo.email ? playerInfo.email : "",
+      name: playerInfo.name ? playerInfo.name : "",
+      srcPhoto: playerInfo.photoUrl ? playerInfo.photoUrl : photoPlaceholder
+    });
   };
-
-  async loadPlayer() {
-    this.setState({ playerIsLoading: true });
-    try {
-      await store.loadUsers();
-    } finally {
-      let id = parseInt(this.props.match.params.id);
-      const playerInfo = store.getUserById(id);
-      if (playerInfo) {
-        this.setState({
-          email: playerInfo.email ? playerInfo.email : "",
-          name: playerInfo.name ? playerInfo.name : "",
-          srcPhoto: playerInfo.photoUrl
-            ? playerInfo.photoUrl
-            : photoPlaceholder,
-          playerIsLoading: false
-        });
-      } else {
-        this.setState({ playerIsLoading: false });
-      }
-    }
-  }
 
   handleChangeEmail = e => {
     this.setState({ email: e.target.value });
@@ -78,6 +57,7 @@ class Player extends React.Component {
 
   closePlayerDialog = () => {
     this.setState({ closePopupIsOpen: false, playerIsOpen: false });
+    this.props.handleClosePlayer();
   };
 
   openClosePopup = () => {
@@ -109,6 +89,7 @@ class Player extends React.Component {
 
   closeSnackbar = () => {
     this.setState({ sucessSnackbarIsOpen: false, playerIsOpen: false });
+    this.props.handleClosePlayer();
   };
 
   fileValidation = e => {
@@ -138,9 +119,6 @@ class Player extends React.Component {
 
   render() {
     const { classes } = this.props;
-    if (this.state.playerIsLoading) {
-      return <CircularProgress className={classes.player__circularProgress} />;
-    }
     return (
       <Dialog
         open={this.state.playerIsOpen}
@@ -218,28 +196,21 @@ class Player extends React.Component {
           </Button>
         </DialogActions>
         {this.state.closePopupIsOpen ? (
-          <DialogApplyChangesDecision
+          <ConfirmationDialog
             open={this.state.closePopupIsOpen}
-            onClose={this.closeClosePopup}
-            classNameDialogTitle={classes.player__dialogTitle}
-            titleText="Close popup"
+            handleClose={this.closeClosePopup}
+            title="Close popup"
             contentText="Are you sure you want to close the popup? All changes will be lost."
-            btnCancelText="Cancel"
-            btnCancelOnClick={this.closeClosePopup}
-            btnConfirmText="OK"
-            btnConfirmOnClick={this.closePlayerDialog}
+            handleConfirm={this.closePlayerDialog}
           />
         ) : null}
         {this.state.makePlayerInactivePopupIsOpen ? (
-          <DialogConfirmAction
+          <ConfirmationDialog
             open={this.state.makePlayerInactivePopupIsOpen}
-            onClose={this.closePlayerInactiveDialog}
-            titleText="Make player inactive"
-            classNameDialogTitle={classes.player__dialogTitle}
-            cancelIconTitleOnClick={this.closePlayerInactiveDialog}
+            handleClose={this.closePlayerInactiveDialog}
+            title="Make player inactive"
             contentText={`Are you sure you want to make player ${this.state.name} inactive?`}
-            btnConfirmText="Confirm"
-            btnConfirmOnClick={this.makePlayerInactive}
+            handleConfirm={this.makePlayerInactive}
           />
         ) : null}
         {this.state.sucessSnackbarIsOpen ? (
