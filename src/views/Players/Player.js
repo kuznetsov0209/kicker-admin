@@ -211,25 +211,20 @@ class Player extends React.Component {
             Save
           </Button>
         </DialogActions>
-        {this.state.closePopupIsOpen ? (
-          <ConfirmationDialog
-            open={this.state.closePopupIsOpen}
-            handleClose={this.closeClosePopup}
-            title="Close popup"
-            contentText="Are you sure you want to close the popup? All changes will be lost."
-            handleConfirm={this.closePlayerDialog}
-          />
-        ) : null}
-        {this.state.makePlayerInactiveDialogIsOpen ? (
-          <ConfirmationDialog
-            open={this.state.makePlayerInactiveDialogIsOpen}
-            handleClose={this.closePlayerInactiveDialog}
-            title="Make player inactive"
-            contentText={`Are you sure you want to make player ${this.state.name} inactive?`}
-            handleConfirm={this.makePlayerInactive}
-          />
-        ) : null}
-        {this.state.sucessSnackbarIsOpen ? (
+        <ConfirmationDialog
+          open={this.state.closePopupIsOpen}
+          handleClose={this.closeClosePopup}
+          title="Close popup"
+          contentText="Are you sure you want to close the popup? All changes will be lost."
+          handleConfirm={this.closePlayerDialog}
+        />
+        <ConfirmationDialog
+          open={this.state.makePlayerInactiveDialogIsOpen}
+          handleClose={this.closePlayerInactiveDialog}
+          title="Make player inactive"
+          contentText={`Are you sure you want to make player ${this.state.name} inactive?`}
+          handleConfirm={this.makePlayerInactive}
+        />
           <Snackbar
             open={this.state.sucessSnackbarIsOpen}
             //autoHideDuration={10000}
@@ -248,7 +243,6 @@ class Player extends React.Component {
               </IconButton>
             ]}
           />
-        ) : null}
       </Dialog>
     );
   }
