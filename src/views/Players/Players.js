@@ -91,7 +91,7 @@ class Players extends Component {
             {
               icon: () => <EditIcon />,
               tooltip: "Edit User",
-              onClick: (rowData) => {
+              onClick: (event, rowData) => {
                 this.setState({ playerIsOpen: true, player: rowData });
               }
             }
