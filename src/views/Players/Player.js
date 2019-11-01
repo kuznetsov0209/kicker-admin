@@ -31,7 +31,7 @@ class Player extends React.Component {
       srcPhoto: photoPlaceholder,
       playerIsOpen: true,
       closePopupIsOpen: false,
-      makePlayerInactivePopupIsOpen: false,
+      makePlayerInactiveDialogIsOpen: false,
       fileSizeIsError: false,
       fileTypeIsError: false,
       sucessSnackbarIsOpen: false,
@@ -79,11 +79,11 @@ class Player extends React.Component {
   };
 
   openPlayerInactiveDialog = e => {
-    this.setState({ makePlayerInactivePopupIsOpen: true });
+    this.setState({ makePlayerInactiveDialogIsOpen: true });
   };
 
   closePlayerInactiveDialog = () => {
-    this.setState({ makePlayerInactivePopupIsOpen: false });
+    this.setState({ makePlayerInactiveDialogIsOpen: false });
   };
 
   makePlayerInactive = () => {
@@ -220,9 +220,9 @@ class Player extends React.Component {
             handleConfirm={this.closePlayerDialog}
           />
         ) : null}
-        {this.state.makePlayerInactivePopupIsOpen ? (
+        {this.state.makePlayerInactiveDialogIsOpen ? (
           <ConfirmationDialog
-            open={this.state.makePlayerInactivePopupIsOpen}
+            open={this.state.makePlayerInactiveDialogIsOpen}
             handleClose={this.closePlayerInactiveDialog}
             title="Make player inactive"
             contentText={`Are you sure you want to make player ${this.state.name} inactive?`}
