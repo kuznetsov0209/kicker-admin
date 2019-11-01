@@ -8,7 +8,7 @@ import {
   DialogContent,
   Typography
 } from "@material-ui/core";
-import DialogTitleWithBtn from "../../components/DialogTitleWithBtn";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import photoPlaceholder from "../../resources/Players/user-placeholder.jpg";
 import DialogActions from "@material-ui/core/DialogActions";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -34,7 +34,8 @@ class Player extends React.Component {
       makePlayerInactivePopupIsOpen: false,
       fileSizeIsError: false,
       fileTypeIsError: false,
-      sucessSnackbarIsOpen: false
+      sucessSnackbarIsOpen: false,
+      playerInfoIncoming: {}
     };
   }
 
@@ -43,7 +44,8 @@ class Player extends React.Component {
     this.setState({
       email: playerInfo.email ? playerInfo.email : "",
       name: playerInfo.name ? playerInfo.name : "",
-      srcPhoto: playerInfo.photoUrl ? playerInfo.photoUrl : photoPlaceholder
+      srcPhoto: playerInfo.photoUrl ? playerInfo.photoUrl : photoPlaceholder,
+      playerInfoIncoming: playerInfo
     });
   };
 
@@ -53,6 +55,14 @@ class Player extends React.Component {
 
   handleChangeName = e => {
     this.setState({ name: e.target.value });
+  };
+
+  onClosePlayerDialog = () => {
+    if (this.checkPlayerDataIsChanged()) {
+      this.openClosePopup();
+    } else {
+      this.closePlayerDialog();
+    }
   };
 
   closePlayerDialog = () => {
@@ -72,14 +82,14 @@ class Player extends React.Component {
     this.setState({ makePlayerInactivePopupIsOpen: true });
   };
 
+  closePlayerInactiveDialog = () => {
+    this.setState({ makePlayerInactivePopupIsOpen: false });
+  };
+
   makePlayerInactive = () => {
     this.closePlayerInactiveDialog();
     this.setState({ sucessSnackbarIsOpen: true });
     //TODO: send request to server to make this player inactive
-  };
-
-  closePlayerInactiveDialog = () => {
-    this.setState({ makePlayerInactivePopupIsOpen: false });
   };
 
   saveChanges = () => {
@@ -117,23 +127,29 @@ class Player extends React.Component {
     }
   };
 
+  checkPlayerDataIsChanged = () => {
+    if (
+      this.state.playerInfoIncoming.email === this.state.email &&
+      this.state.playerInfoIncoming.name === this.state.name &&
+      this.state.playerInfoIncoming.srcPhoto === this.state.photoUrl
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <Dialog
         open={this.state.playerIsOpen}
-        onClose={this.closePlayerDialog}
+        onClose={this.onClosePlayerDialog}
         className={classes.player}
         fullWidth={true}
         maxWidth="xs"
-        disableBackdropClick={true}
-        disableEscapeKeyDown={true}
       >
-        <DialogTitleWithBtn
-          className={classes.player__dialogTitle}
-          titleText="Edit player information"
-          onClose={this.openClosePopup}
-        />
+        <DialogTitle>Edit player information</DialogTitle>
         <DialogContent className={classes.player__content}>
           <Avatar
             className={classes.player__avatar}
