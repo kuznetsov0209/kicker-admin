@@ -91,8 +91,12 @@ class Player extends React.Component {
   };
 
   saveChanges = () => {
-    //TODO send request to server to update the data
-    this.setState({ sucessSnackbarIsOpen: true });
+    if (this.checkPlayerDataIsChanged()) {
+      //TODO send request to server to update the data
+      this.setState({ sucessSnackbarIsOpen: true });
+    } else {
+      this.closePlayerDialog();
+    }
   };
 
   closeSnackbar = () => {
