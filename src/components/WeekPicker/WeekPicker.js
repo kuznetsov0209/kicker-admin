@@ -15,6 +15,7 @@ import {
   getNextWeek,
   getPrevWeek
 } from "./dateFnsWrappers";
+import { flexbox } from "@material-ui/system";
 
 class CustomElements extends PureComponent {
   static propTypes = {
@@ -114,6 +115,8 @@ class CustomElements extends PureComponent {
 
 const styles = theme => ({
   container: {
+    display: "flex",
+    justifyContent: "center",
     margin: "15px 0"
   },
   dayWrapper: {

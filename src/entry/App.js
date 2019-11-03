@@ -6,6 +6,7 @@ import Players from "../views/Players";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
 import AppBar from "./AppBar";
+import Container from "@material-ui/core/Container";
 
 import "./App.css";
 
@@ -19,13 +20,15 @@ class App extends Component {
         <HashRouter>
           <div className="App">
             <AppBar />
-            <Switch>
-              <Route exact path="/games" component={Games} />
-              <Route exact path="/players" component={Players} />
-              <Route exact path="/tournaments" component={Tournaments} />
-              <Route exact path="/tournaments/:id" component={Tournament} />
-              <Redirect to="/players" />
-            </Switch>
+            <Container>
+              <Switch>
+                <Route exact path="/games" component={Games} />
+                <Route exact path="/players" component={Players} />
+                <Route exact path="/tournaments" component={Tournaments} />
+                <Route exact path="/tournaments/:id" component={Tournament} />
+                <Redirect to="/players" />
+              </Switch>
+            </Container>
           </div>
         </HashRouter>
       </MuiPickersUtilsProvider>
