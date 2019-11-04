@@ -15,13 +15,13 @@ const UserStat = types
   .views(self => ({
     get winsPercent() {
       if (self.games > 0) {
-        return Math.round(self.wins / self.games * 100);
+        return Math.round((self.wins / self.games) * 100);
       }
       return 0;
     },
     get defeatsPercent() {
       if (self.games > 0) {
-        return Math.round(self.defeats / self.games * 100);
+        return Math.round((self.defeats / self.games) * 100);
       }
       return 0;
     },
