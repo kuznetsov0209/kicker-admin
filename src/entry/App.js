@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Container } from "@material-ui/core";
 import localeRu from "date-fns/locale/ru";
 import Games from "../views/Games";
 import Players from "../views/Players";
@@ -20,11 +21,13 @@ class App extends Component {
           <div className="App">
             <AppBar />
             <Switch>
-              <Route exact path="/games" component={Games} />
-              <Route exact path="/players" component={Players} />
-              <Route exact path="/tournaments" component={Tournaments} />
-              <Route exact path="/tournaments/:id" component={Tournament} />
-              <Redirect to="/players" />
+              <Container maxWidth="lg">
+                <Route exact path="/games" component={Games} />
+                <Route exact path="/players" component={Players} />
+                <Route exact path="/tournaments" component={Tournaments} />
+                <Route exact path="/tournaments/:id" component={Tournament} />
+                <Redirect to="/players" />
+              </Container>
             </Switch>
           </div>
         </HashRouter>
