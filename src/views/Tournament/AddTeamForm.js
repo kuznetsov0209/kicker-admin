@@ -11,21 +11,39 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import SelectPlayersForm from "./SelectPlayersForm";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { store } from "../../store/tournamentStore";
 
 const DEFAULT_STATE = {
+  isLoading: false,
   isOpenDialog: false,
   isOpenPlayerList1: false,
   isOpenPlayerList2: false,
   selectedPlayer1: "",
   selectedPlayer2: "",
   isDisabledSaveButton: true,
-  teamName: ""
+  teamName: "",
+  tournaments: []
 };
 
 class AddTeamForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = DEFAULT_STATE;
+  }
+
+  async loadTournaments() {
+    try {
+      this.setState({ isLoading: true });
+      await store.getTournaments();
+      this.setState({ tournaments: store.tournaments });
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  componentDidMount() {
+    this.loadTournaments();
   }
 
   writeTeamName = event => {
@@ -72,6 +90,17 @@ class AddTeamForm extends React.Component {
     this.openOrCloseAddTeamForm();
   };
 
+  createNewTeam = () => {
+    const team = {
+      name: this.state.teamName,
+      player1: this.state.selectedPlayer1.id,
+      player2: this.state.selectedPlayer2.id,
+      tournament: this.state.tournaments[0].id
+    };
+    console.log(team);
+    this.cleanAddTeamForm();
+  };
+
   render() {
     const {
       isOpenDialog,
@@ -82,6 +111,9 @@ class AddTeamForm extends React.Component {
       selectedPlayer2,
       teamName
     } = this.state;
+    if (this.state.isLoading) {
+      return <CircularProgress color={"secondary"} size={20} />;
+    }
     return (
       <div style={{ textAlign: "center" }}>
         <Button
@@ -136,7 +168,7 @@ class AddTeamForm extends React.Component {
               Cancel
             </Button>
             <Button
-              onClick={this.openOrCloseAddTeamForm}
+              onClick={this.createNewTeam}
               variant="contained"
               color="primary"
               disabled={isDisabledSaveButton}

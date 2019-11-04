@@ -67,7 +67,7 @@ class SelectPlayersForm extends React.Component {
     const { open, close, select } = this.props;
     const { value } = this.state;
     if (this.state.IsLoading) {
-      return <CircularProgress />;
+      return <CircularProgress color={"secondary"} size={20} />;
     }
     return (
       <Dialog fullWidth disableBackdropClick={true} open={open}>
