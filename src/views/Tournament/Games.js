@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Typography, Button } from "@material-ui/core";
+import { List, Typography } from "@material-ui/core";
 import LinkGameDialog from "./LinkGameDialog";
 import Game from "./Game";
 
@@ -26,7 +26,7 @@ class Games extends Component {
       : {};
 
     return (
-      <React.Fragment>
+      <>
         {Object.keys(gamesResultsGrouped).map(tournamentGameId => {
           const { team1, team2 } = gamesResultsGrouped[tournamentGameId][0];
           return (
@@ -35,7 +35,14 @@ class Games extends Component {
                 {team1.name} — {team2.name}
               </Typography>
               {gamesResultsGrouped[tournamentGameId] && (
-                <List style={{ width: "100%" }}>
+                <List
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap"
+                  }}
+                >
                   {gamesResultsGrouped[tournamentGameId].map(
                     (gameResult, index) => (
                       <Game key={index} gameResult={gameResult} />
@@ -43,16 +50,8 @@ class Games extends Component {
                   )}
                 </List>
               )}
-              <div
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 40
-                }}
-              >
-                <Button
+              {/* TODO: Нету в новом дизайне */}
+              {/* <Button
                   variant="text"
                   color="primary"
                   onClick={() =>
@@ -65,8 +64,7 @@ class Games extends Component {
                   }
                 >
                   Link game
-                </Button>
-              </div>
+                </Button> */}
             </div>
           );
         })}
@@ -80,7 +78,7 @@ class Games extends Component {
             handleClose={() => this.setState({ isLinkDialogVisible: false })}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
