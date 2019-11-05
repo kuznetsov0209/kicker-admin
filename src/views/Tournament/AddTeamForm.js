@@ -12,7 +12,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import SelectPlayersForm from "./SelectPlayersForm";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { store } from "../../store/tournamentStore";
+import * as api from "../../store/tournamentStats";
 
 const DEFAULT_STATE = {
   isLoading: false,
@@ -23,7 +23,8 @@ const DEFAULT_STATE = {
   selectedPlayer2: "",
   isDisabledSaveButton: true,
   teamName: "",
-  tournaments: []
+  tournament: [],
+  disabledPlayer: ""
 };
 
 class AddTeamForm extends React.Component {
@@ -32,23 +33,28 @@ class AddTeamForm extends React.Component {
     this.state = DEFAULT_STATE;
   }
 
-  async loadTournaments() {
-    try {
-      this.setState({ isLoading: true });
-      await store.getTournaments();
-      this.setState({ tournaments: store.tournaments });
-    } finally {
-      this.setState({ isLoading: false });
+  loadTournamentData = async id => {
+    const [tournament] = await Promise.all([api.fetchTournament(id)]);
+    this.setState({ tournament });
+
+    if (tournament) {
+      const { usersStats } = await api.fetchTournamentStats({
+        tournamentId: tournament.id
+      });
+      this.setState({
+        disabledPlayer: usersStats.all
+      });
     }
-  }
+  };
 
   componentDidMount() {
-    this.loadTournaments();
+    this.loadTournamentData(2);
   }
 
   writeTeamName = event => {
-    this.setState({ teamName: event.target.value });
-    this.controlButtonDisabled();
+    this.setState({ teamName: event.target.value }, () => {
+      this.controlButtonDisabled();
+    });
   };
 
   openOrCloseAddTeamForm = () => {
@@ -64,15 +70,21 @@ class AddTeamForm extends React.Component {
   };
 
   selectAndClosePlayerList1 = value => {
-    this.setState({ selectedPlayer1: value });
-    this.openOrClosePlayerList1();
-    this.controlButtonDisabled();
+    this.setState({ selectedPlayer1: value }, () => {
+      if (this.compareSelectedPlayers1(value)) {
+        this.controlButtonDisabled();
+        this.openOrClosePlayerList1();
+      }
+    });
   };
 
   selectAndClosePlayerList2 = value => {
-    this.setState({ selectedPlayer2: value });
-    this.openOrClosePlayerList2();
-    this.controlButtonDisabled();
+    this.setState({ selectedPlayer2: value }, () => {
+      if (this.compareSelectedPlayers2(value)) {
+        this.controlButtonDisabled();
+        this.openOrClosePlayerList2();
+      }
+    });
   };
 
   controlButtonDisabled = () => {
@@ -95,10 +107,24 @@ class AddTeamForm extends React.Component {
       name: this.state.teamName,
       player1: this.state.selectedPlayer1.id,
       player2: this.state.selectedPlayer2.id,
-      tournament: this.state.tournaments[0].id
+      tournament: this.state.tournament.id
     };
     console.log(team);
     this.cleanAddTeamForm();
+  };
+
+  compareSelectedPlayers1 = value => {
+    if (value.id === this.state.selectedPlayer2.id) {
+      console.log("Так нельзя");
+      return false;
+    } else return true;
+  };
+
+  compareSelectedPlayers2 = value => {
+    if (value.id === this.state.selectedPlayer1.id) {
+      console.log("Так нельзя");
+      return false;
+    } else return true;
   };
 
   render() {
@@ -143,6 +169,7 @@ class AddTeamForm extends React.Component {
               <ListItemText primary={selectedPlayer1.name || "Игрок 1"} />
             </ListItem>
             <SelectPlayersForm
+              disabledPlayer={this.state.disabledPlayer}
               close={this.openOrClosePlayerList1}
               open={isOpenPlayerList1}
               select={this.selectAndClosePlayerList1}
@@ -154,6 +181,7 @@ class AddTeamForm extends React.Component {
               <ListItemText primary={selectedPlayer2.name || "Игрок 2"} />
             </ListItem>
             <SelectPlayersForm
+              disabledPlayer={this.state.disabledPlayer}
               close={this.openOrClosePlayerList2}
               open={isOpenPlayerList2}
               select={this.selectAndClosePlayerList2}

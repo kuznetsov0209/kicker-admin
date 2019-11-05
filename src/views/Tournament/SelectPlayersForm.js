@@ -34,7 +34,20 @@ class SelectPlayersForm extends React.Component {
     try {
       this.setState({ isLoading: true });
       await store.getUsers();
-      const sorted = store.users.sort(function(a, b) {
+
+      const players = store.users;
+
+      const disabledPlayers = this.props.disabledPlayer;
+
+      const filteredPlayers = players.filter(function(player) {
+        return (
+          disabledPlayers.filter(function(disabledPlayer) {
+            return player.id === disabledPlayer.id;
+          }).length == 0
+        );
+      });
+
+      const sorted = filteredPlayers.sort(function(a, b) {
         if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1;
         }
@@ -50,7 +63,12 @@ class SelectPlayersForm extends React.Component {
   }
 
   searchPlayer = event => {
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.target.value }, () => {
+      this.filterPlayer();
+    });
+  };
+
+  filterPlayer = () => {
     const players = this.state.showData;
 
     if (this.state.value != "") {

@@ -22,8 +22,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack --production",
-    "prettier": "prettier --write \"**/*.js\""
+    "build": "webpack --production"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
