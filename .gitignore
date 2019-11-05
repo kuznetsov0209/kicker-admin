@@ -22,3 +22,5 @@ yarn-error.log*
 
 dist/
 .cache/
+
+.MERGE_MSG.swp
