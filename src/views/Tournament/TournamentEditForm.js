@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import { store } from "../../store/tournamentStore";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -12,15 +10,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Toolbar from "@material-ui/core/Toolbar";
+import { Grid } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { withStyles } from "@material-ui/core/styles";
-
+import TournamentForm from "../../components/TournamentForm";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-import styles from "./TournamentEditForm.style";
 
-@withStyles(styles)
 @withRouter
 class TournamentEditForm extends Component {
   constructor(props) {
@@ -101,25 +96,6 @@ class TournamentEditForm extends Component {
     this.setState({ isForceFinished: e.target.checked });
   };
 
-  handleTitleChange = e => {
-    this.setState({ title: e.target.value });
-  };
-
-  setStartDate = startDate => {
-    if (startDate > this.state.endDate) {
-      this.setState({ endDate: startDate });
-    }
-    this.setState({ startDate });
-  };
-
-  setEndDate = endDate => {
-    if (this.state.startDate <= endDate) {
-      this.setState({ endDate });
-    } else {
-      this.setState({ endDate: this.state.startDate });
-    }
-  };
-
   tryToClose = () => {
     const { handleClose } = this.props;
     const firstState = this.firstState;
@@ -141,6 +117,10 @@ class TournamentEditForm extends Component {
     this.setState({ isExitDialogOpen: false });
   };
 
+  handleFormChanges = state => {
+    this.setState(state);
+  };
+
   render() {
     const { classes, handleClose, open } = this.props;
     return (
@@ -154,43 +134,27 @@ class TournamentEditForm extends Component {
         }
         onClose={handleClose}
       >
-        <Toolbar classes={{ root: classes.title }}>
-          <DialogTitle classes={{ root: classes.titleText }}>
-            Edit Tournament
-          </DialogTitle>
+        <Grid container justify={"space-between"}>
+          <DialogTitle>Edit Tournament</DialogTitle>
           <IconButton onClick={this.tryToClose}>
             <CloseIcon />
           </IconButton>
-        </Toolbar>
+        </Grid>
 
         <DialogContent>
-          <TextField
-            value={this.state.title}
-            onChange={this.handleTitleChange}
-            fullWidth={true}
-            autoFocus
-            label="Title"
-          />
-          <KeyboardDatePicker
-            classes={{ root: classes.picker }}
-            value={this.state.startDate}
-            onChange={this.setStartDate}
-            label="Start date"
-          />
-          <KeyboardDatePicker
-            classes={{ root: classes.picker }}
-            value={this.state.endDate}
-            onChange={this.setEndDate}
-            label="End Date"
+          <TournamentForm
+            title={this.state.title}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            handleChanges={this.handleFormChanges}
           />
           <FormControlLabel
-            classes={{ root: classes.switch }}
             control={<Switch onChange={this.handleSwitch} color="primary" />}
             label="FORCE FINISH"
             labelPlacement="start"
           />
         </DialogContent>
-        <DialogActions classes={{ root: classes.buttonsContainer }}>
+        <DialogActions>
           <Button
             onClick={this.openDeleteModal}
             variant="outlined"
