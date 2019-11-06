@@ -8,15 +8,15 @@ import EditIcon from "@material-ui/icons/Edit";
 import ClearIcon from "@material-ui/icons/Clear";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Player from "./Player";
+import PlayerDialog from "./PlayerDialog";
 
 class Players extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      playerIsOpen: false,
-      player: {}
+      isPlayerDialogVisible: false,
+      player: null
     };
   }
 
@@ -33,8 +33,8 @@ class Players extends Component {
     this.loadUsersIfNeeded();
   }
 
-  closePlayerItem = () => {
-    this.setState({ playerIsOpen: false });
+  closePlayerDialog = () => {
+    this.setState({ isPlayerDialogVisible: false });
   };
 
   render() {
@@ -43,7 +43,7 @@ class Players extends Component {
     }
 
     return (
-      <div>
+      <>
         <MaterialTable
           title=""
           icons={{
@@ -91,19 +91,18 @@ class Players extends Component {
             {
               icon: () => <EditIcon />,
               tooltip: "Edit User",
-              onClick: (event, rowData) => {
-                this.setState({ playerIsOpen: true, player: rowData });
+              onClick: (event, player) => {
+                this.setState({ isPlayerDialogVisible: true, player });
               }
             }
           ]}
         />
-        {this.state.playerIsOpen ? (
-          <Player
-            player={this.state.player}
-            handleClosePlayer={this.closePlayerItem}
-          />
-        ) : null}
-      </div>
+        <PlayerDialog
+          open={this.state.isPlayerDialogVisible}
+          player={this.state.player}
+          onClose={this.closePlayerDialog}
+        />
+      </>
     );
   }
 }
