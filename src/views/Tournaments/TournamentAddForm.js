@@ -1,23 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "@material-ui/core/styles";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import { store } from "../../store/tournamentStore";
+import TournamentForm from "../../components/TournamentForm"
 
-const styles = {
-  picker: {
-    margin: "10px 10px 10px 0"
-  }
-};
-
-@withStyles(styles)
 @withRouter
 class TournamentAddForm extends Component {
   constructor(props) {
@@ -44,27 +35,12 @@ class TournamentAddForm extends Component {
     }
   };
 
-  handleTitleChange = e => {
-    this.setState({ title: e.target.value });
-  };
-
-  setStartDate = startDate => {
-    if (startDate > this.state.endDate) {
-      this.setState({ endDate: startDate });
-    }
-    this.setState({ startDate });
-  };
-
-  setEndDate = endDate => {
-    if (this.state.startDate <= endDate) {
-      this.setState({ endDate });
-    } else {
-      this.setState({ endDate: this.state.startDate });
-    }
-  };
+  handleFormChanges = state => {
+    this.setState(state)
+  }
 
   render() {
-    const { classes, handleClose, open } = this.props;
+    const { handleClose, open } = this.props;
     return (
       <Dialog
         open={
@@ -78,27 +54,11 @@ class TournamentAddForm extends Component {
       >
         <DialogTitle>Create Tournament</DialogTitle>
         <DialogContent>
-          <TextField
-            value={this.state.title}
-            onChange={this.handleTitleChange}
-            fullWidth={true}
-            required
-            autoFocus
-            label="Title"
-          />
-          <KeyboardDatePicker
-            classes={{ root: classes.picker }}
-            value={this.state.startDate}
-            onChange={this.setStartDate}
-            required
-            label="Start date"
-          />
-          <KeyboardDatePicker
-            classes={{ root: classes.picker }}
-            value={this.state.endDate}
-            onChange={this.setEndDate}
-            required
-            label="End Date"
+          <TournamentForm 
+            title={this.state.title}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            handleChanges={this.handleFormChanges}
           />
         </DialogContent>
         <DialogActions>
