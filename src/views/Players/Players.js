@@ -9,6 +9,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PlayerDialog from "./PlayerDialog";
+import DataTable from "./../../components/DataTable";
 
 class Players extends Component {
   constructor(props) {
@@ -44,7 +45,8 @@ class Players extends Component {
 
     return (
       <>
-        <MaterialTable
+        <DataTable data={store.users} columns={["name", "email"]} />
+        {/* <MaterialTable
           title=""
           icons={{
             Search: forwardRef((props, ref) => (
@@ -96,7 +98,7 @@ class Players extends Component {
               }
             }
           ]}
-        />
+        /> */}
         <PlayerDialog
           open={this.state.isPlayerDialogVisible}
           player={this.state.player}
