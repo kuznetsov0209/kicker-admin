@@ -41,6 +41,11 @@ class App extends Component {
                   <Route exact path="/players" component={Players} />
                   <Route exact path="/tournaments" component={Tournaments} />
                   <Route exact path="/tournaments/:id" component={Tournament} />
+                  <Route
+                    exact
+                    path="/tournaments/:id/teams"
+                    component={AddTeamForm}
+                  />
                   <Redirect to="/players" />
                 </Switch>
               </Container>

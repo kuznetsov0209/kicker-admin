@@ -12,7 +12,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import SelectPlayersForm from "./SelectPlayersForm";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import * as api from "../../store/tournamentStats";
+import { store } from "../../store/tournamentStore";
 
 const DEFAULT_STATE = {
   isLoading: false,
@@ -23,7 +23,6 @@ const DEFAULT_STATE = {
   selectedPlayer2: "",
   isDisabledSaveButton: true,
   teamName: "",
-  tournament: [],
   disabledPlayer: ""
 };
 
@@ -33,22 +32,20 @@ class AddTeamForm extends React.Component {
     this.state = DEFAULT_STATE;
   }
 
-  loadTournamentData = async id => {
-    const [tournament] = await Promise.all([api.fetchTournament(id)]);
-    this.setState({ tournament });
-
-    if (tournament) {
-      const { usersStats } = await api.fetchTournamentStats({
-        tournamentId: tournament.id
-      });
+  async loadTournaments(id) {
+    try {
+      this.setState({ isLoading: true });
+      await store.loadStats(id);
       this.setState({
-        disabledPlayer: usersStats.all
+        disabledPlayer: store.usersStats.all
       });
+    } finally {
+      this.setState({ isLoading: false });
     }
-  };
+  }
 
   componentDidMount() {
-    this.loadTournamentData(2);
+    this.loadTournaments(2);
   }
 
   writeTeamName = event => {
@@ -107,7 +104,7 @@ class AddTeamForm extends React.Component {
       name: this.state.teamName,
       player1: this.state.selectedPlayer1.id,
       player2: this.state.selectedPlayer2.id,
-      tournament: this.state.tournament.id
+      tournament: "2"
     };
     console.log(team);
     this.cleanAddTeamForm();
