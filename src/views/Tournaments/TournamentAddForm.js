@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -7,9 +6,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
-import TournamentForm from "../../components/TournamentForm"
+import TournamentForm from "../../components/TournamentForm";
 
-@withRouter
 class TournamentAddForm extends Component {
   constructor(props) {
     super(props);
@@ -36,25 +34,16 @@ class TournamentAddForm extends Component {
   };
 
   handleFormChanges = state => {
-    this.setState(state)
-  }
+    this.setState(state);
+  };
 
   render() {
     const { handleClose, open } = this.props;
     return (
-      <Dialog
-        open={
-          //раскомментировать при использовании
-          // open
-
-          //удалить при использовании
-          true
-        }
-        onClose={handleClose}
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Create Tournament</DialogTitle>
         <DialogContent>
-          <TournamentForm 
+          <TournamentForm
             title={this.state.title}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
