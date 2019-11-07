@@ -23,7 +23,7 @@ class Player extends React.Component {
     super(props);
     this.state = {
       player: props.player,
-      message:"",
+      message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
       isDialogClosingRequested: false,
@@ -86,7 +86,11 @@ class Player extends React.Component {
   };
 
   closeDialog = () => {
-    this.setState({ isDialogClosingRequested: false, isFileSizeInvalid: false, isFileTypeInvalid: false });
+    this.setState({
+      isDialogClosingRequested: false,
+      isFileSizeInvalid: false,
+      isFileTypeInvalid: false
+    });
     this.props.onClose();
   };
 
@@ -106,14 +110,9 @@ class Player extends React.Component {
   };
 
   saveChanges = () => {
-    if (this.isPlayerChanged) {
-      // TODO: send request to server to update the data
-
-      this.showMessage("Player information was successfully updated");
-      this.closeDialog();
-    } else {
-      this.closeDialog();
-    }
+    // TODO: send request to server to update the data
+    this.showMessage("Player information was successfully updated");
+    this.closeDialog();
   };
 
   showMessage = message => {
@@ -190,7 +189,7 @@ class Player extends React.Component {
               <TextField
                 fullWidth
                 label="Player name"
-                value={player.name ? player.name : ""}
+                value={player.name || ""}
                 margin="normal"
                 onChange={this.handleChangeName}
               />
@@ -199,7 +198,7 @@ class Player extends React.Component {
                 fullWidth
                 color="secondary"
                 label="E-mail"
-                value={player.email ? player.email : ""}
+                value={player.email || ""}
                 margin="normal"
                 onChange={this.handleChangeEmail}
                 type="email"
@@ -220,6 +219,7 @@ class Player extends React.Component {
               variant="contained"
               color="primary"
               onClick={this.saveChanges}
+              disabled={!this.isPlayerChanged}
             >
               Save
             </Button>
