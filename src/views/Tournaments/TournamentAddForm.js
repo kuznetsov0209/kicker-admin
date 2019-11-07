@@ -7,6 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
 import TournamentForm from "../../components/TournamentForm";
+import ErrorDialog from "../../components/ErrorDialog"
 
 class TournamentAddForm extends Component {
   constructor(props) {
@@ -15,7 +16,9 @@ class TournamentAddForm extends Component {
       title: "",
       startDate: new Date(),
       endDate: new Date(),
-      isLoading: false
+      isLoading: false,
+      isAlertOpen: false,
+      alertMessage: ""
     };
   }
 
@@ -25,12 +28,19 @@ class TournamentAddForm extends Component {
     try {
       this.setState({ isLoading: true });
       await store.addTournament({ title, startDate, endDate });
+      handleClose();
     } catch (error) {
-      alert(`Ошибка при создании турнира: ${error.name} ${error.message}`);
+      this.setState({
+        alertMessage: `${error.name} ${error.message}`,
+        isAlertOpen: true
+      });
     } finally {
       this.setState({ isLoading: false });
-      handleClose();
     }
+  };
+
+  handleAlertClose = () => {
+    this.setState({ isAlertOpen: false });
   };
 
   handleFormChanges = state => {
@@ -66,6 +76,12 @@ class TournamentAddForm extends Component {
             )}
           </Button>
         </DialogActions>
+        <ErrorDialog 
+          open={this.state.isAlertOpen}
+          handleClose={this.handleAlertClose}
+          title={"Ошибка при создании турнира"}
+          contentText={this.state.alertMessage}
+        />
       </Dialog>
     );
   }
