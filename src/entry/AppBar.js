@@ -49,13 +49,27 @@ class ScrollableTabsButtonForce extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.unlistenHistory = this.props.history.listen(this.onHistoryChange);
+  }
+
+  componentWillUnmount() {
+    this.unlistenHistory();
+  }
+
+  onHistoryChange = location => {
+    console.log(location.pathname);
+    this.setState({
+      value: location.pathname
+    });
+  };
+
   @computed
   get profile() {
     return store.authStore.profile;
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  onTabChange = (event, value) => {
     this.props.history.push(value);
   };
 
@@ -70,7 +84,7 @@ class ScrollableTabsButtonForce extends React.Component {
             <Logo className={classes.logo} />
             <Tabs
               value={value}
-              onChange={this.handleChange}
+              onChange={this.onTabChange}
               scrollable="true"
               scrollButtons="on"
               indicatorColor="secondary"
