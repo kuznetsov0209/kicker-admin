@@ -1,13 +1,8 @@
-import React, { forwardRef, Component } from "react";
+import React, { Component } from "react";
 import { store } from "../../store/userStore";
-import MaterialTable from "material-table";
 import Avatar from "@material-ui/core/Avatar";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import SearchIcon from "@material-ui/icons/Search";
 import EditIcon from "@material-ui/icons/Edit";
-import ClearIcon from "@material-ui/icons/Clear";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PlayerDialog from "./PlayerDialog";
 import DataTable from "./../../components/DataTable";
 
@@ -45,23 +40,8 @@ class Players extends Component {
 
     return (
       <>
-        <DataTable data={store.users} columns={["name", "email"]} />
-        {/* <MaterialTable
-          title=""
-          icons={{
-            Search: forwardRef((props, ref) => (
-              <SearchIcon {...props} ref={ref} />
-            )),
-            ResetSearch: forwardRef((props, ref) => (
-              <ClearIcon {...props} ref={ref} />
-            )),
-            NextPage: forwardRef((props, ref) => (
-              <ChevronRightIcon {...props} ref={ref} />
-            )),
-            PreviousPage: forwardRef((props, ref) => (
-              <ChevronLeftIcon {...props} ref={ref} />
-            ))
-          }}
+        <DataTable
+          data={store.users}
           columns={[
             {
               title: "User",
@@ -72,33 +52,26 @@ class Players extends Component {
             },
             {
               title: "Name",
-              field: "name",
-              defaultSort: "asc"
+              field: "name"
             },
             {
               title: "E-mail",
               field: "email"
-            }
-          ]}
-          data={store.users}
-          options={{
-            searchFieldAlignment: "left",
-            actionsColumnIndex: -1,
-            pageSize: 20,
-            pageSizeOptions: [],
-            paginationType: "stepped",
-            sorting: false
-          }}
-          actions={[
+            },
             {
-              icon: () => <EditIcon />,
-              tooltip: "Edit User",
-              onClick: (event, player) => {
-                this.setState({ isPlayerDialogVisible: true, player });
-              }
+              render: rowData => (
+                <EditIcon
+                  onClick={() =>
+                    this.setState({
+                      isPlayerDialogVisible: true,
+                      player: rowData
+                    })
+                  }
+                />
+              )
             }
           ]}
-        /> */}
+        />
         <PlayerDialog
           open={this.state.isPlayerDialogVisible}
           player={this.state.player}
