@@ -45,6 +45,7 @@ class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpenPopup: false,
       value: this.props.location.pathname
     };
   }
@@ -53,6 +54,51 @@ class ScrollableTabsButtonForce extends React.Component {
   get profile() {
     return store.authStore.profile;
   }
+
+  // checkPopup = () => {
+  //   const check = setInterval(() => {
+  //     const { popup } = this;
+  //     if (!popup || popup.closed || popup.closed === undefined) {
+  //       clearInterval(check);
+  //       this.setState({ isOpenPopup: false});
+  //     }
+  //   }, 1000);
+  // };
+
+  closePopup = () => {
+    this.popup.close();
+    this.setState({ isOpenPopup: false });
+  };
+
+  openPopup = () => {
+    this.setState({ isOpenPopup: true });
+    const width = 600;
+    const height = 600;
+    const left = window.screenLeft + window.innerWidth / 2 - width / 2;
+    const top = window.screenTop + window.innerHeight / 2 - height / 2;
+    const url = `${API_HOST}/auth/google`;
+
+    return window.open(
+      url,
+      "",
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+      scrollbars=no, resizable=no, copyhistory=no, width=${width}, 
+      height=${height}, top=${top}, left=${left}`
+    );
+  };
+
+  startAuth = e => {
+    if (!this.state.isOpenPopup) {
+      e.preventDefault();
+      const callback = window.location.href;
+      this.popup = this.openPopup();
+      setTimeout(() => {
+        this.closePopup();
+        window.open(callback, "_self");
+      }, 3000);
+      // this.checkPopup();
+    }
+  };
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -95,7 +141,7 @@ class ScrollableTabsButtonForce extends React.Component {
                   size="medium"
                   color="secondary"
                   variant="contained"
-                  href={`${API_HOST}/auth/google`}
+                  onClick={this.startAuth}
                 >
                   Login
                 </Button>
