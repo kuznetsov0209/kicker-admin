@@ -46,16 +46,15 @@ class SelectPlayersForm extends React.Component {
         );
       });
 
-      const sorted = filteredPlayers.sort(function(a, b) {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) {
-          return 1;
-        }
-        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+      filteredPlayers.sort(function(a, b) {
+        if (a.name.toLowerCase().localeCompare(b.name.toLowerCase()) < 0) {
           return -1;
-        }
-        return 0;
+        } else return 1;
       });
-      this.setState({ defaultData: sorted, showData: sorted });
+      this.setState({
+        defaultData: filteredPlayers,
+        showData: filteredPlayers
+      });
     } finally {
       this.setState({ isLoading: false });
     }
