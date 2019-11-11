@@ -6,8 +6,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import Fab from "@material-ui/core/Fab";
-import CloseSharpIcon from "@material-ui/icons/CloseSharp";
+import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
@@ -91,9 +90,14 @@ class SelectPlayersForm extends React.Component {
       <Dialog fullWidth disableBackdropClick={true} open={open}>
         <div style={{ display: "flex" }}>
           <DialogTitle style={{ flex: "1" }}>Choose a player</DialogTitle>
-          <Fab style={{ margin: "8px 16px" }} size="small" onClick={close}>
-            <CloseSharpIcon />
-          </Fab>
+          <Button
+            size="small"
+            style={{ margin: "16px 16px" }}
+            variant="contained"
+            onClick={close}
+          >
+            Cancel
+          </Button>
         </div>
         <Paper>
           <IconButton aria-label="search">
