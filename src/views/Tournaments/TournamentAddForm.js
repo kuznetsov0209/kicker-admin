@@ -1,76 +1,92 @@
 import React, { Component } from "react";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from "@material-ui/core";
+import TournamentForm from "./TournamentForm";
+import ErrorDialog from "../../components/ErrorDialog"
 
-class TournamentForm extends Component {
+class TournamentAddForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: "",
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      isLoading: false,
+      isAlertOpen: false,
+      alertMessage: ""
     };
   }
 
-  handleClick = () => {
+  handleCreate = async () => {
     const { title, startDate, endDate } = this.state;
     const { handleClose } = this.props;
-    store.addTournament({ title, startDate, endDate });
-    handleClose();
+    try {
+      this.setState({ isLoading: true });
+      await store.addTournament({ title, startDate, endDate });
+      handleClose();
+    } catch (error) {
+      this.setState({
+        alertMessage: `${error.name} ${error.message}`,
+        isAlertOpen: true
+      });
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
-  handleChange = e => {};
+  handleAlertClose = () => {
+    this.setState({ isAlertOpen: false });
+  };
+
+  onFormChange = state => {
+    this.setState(state);
+  };
 
   render() {
-    const { handleClose } = this.props;
+    const { handleClose, open } = this.props;
     return (
-      <Dialog open={this.props.open} onClose={handleClose}>
-        <DialogTitle>Add Tournament</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Create Tournament</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter your title for tournament here.
-          </DialogContentText>
-          <TextField
-            value={this.state.title}
-            onChange={e => this.setState({ title: e.target.value })}
-            required
-            autoFocus
-            label="Title"
-          />
-          <KeyboardDatePicker
-            value={this.state.startDate}
-            onChange={startDate => this.setState({ startDate })}
-            required
-            label="End Date"
-          />
-          <KeyboardDatePicker
-            value={this.state.endDate}
-            onChange={endDate => this.setState({ endDate })}
-            required
-            label="End Date"
+          <TournamentForm
+            title={this.state.title}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onChange={this.onFormChange}
+            id={"AddForm"}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.handleClick} color="primary">
-            Add
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            onClick={this.handleCreate}
+            form="AddForm"
+          >
+            {this.state.isLoading ? (
+              <CircularProgress color={"secondary"} size={20} />
+            ) : (
+              "Save"
+            )}
           </Button>
         </DialogActions>
+        <ErrorDialog 
+          open={this.state.isAlertOpen}
+          handleClose={this.handleAlertClose}
+          title={"Ошибка при создании турнира"}
+          contentText={this.state.alertMessage}
+        />
       </Dialog>
     );
   }
 }
 
-export default TournamentForm;
+export default TournamentAddForm;

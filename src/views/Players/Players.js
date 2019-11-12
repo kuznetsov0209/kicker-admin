@@ -1,0 +1,110 @@
+import React, { forwardRef, Component } from "react";
+import { store } from "../../store/userStore";
+import MaterialTable from "material-table";
+import Avatar from "@material-ui/core/Avatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import SearchIcon from "@material-ui/icons/Search";
+import EditIcon from "@material-ui/icons/Edit";
+import ClearIcon from "@material-ui/icons/Clear";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import PlayerDialog from "./PlayerDialog";
+
+class Players extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      isPlayerDialogVisible: false,
+      player: null
+    };
+  }
+
+  async loadUsersIfNeeded() {
+    try {
+      this.setState({ isLoading: true });
+      await store.getUsers();
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
+  componentDidMount() {
+    this.loadUsersIfNeeded();
+  }
+
+  closePlayerDialog = () => {
+    this.setState({ isPlayerDialogVisible: false });
+  };
+
+  render() {
+    if (this.state.isLoading) {
+      return <CircularProgress style={{ margin: "15px auto" }} />;
+    }
+
+    return (
+      <>
+        <MaterialTable
+          title=""
+          icons={{
+            Search: forwardRef((props, ref) => (
+              <SearchIcon {...props} ref={ref} />
+            )),
+            ResetSearch: forwardRef((props, ref) => (
+              <ClearIcon {...props} ref={ref} />
+            )),
+            NextPage: forwardRef((props, ref) => (
+              <ChevronRightIcon {...props} ref={ref} />
+            )),
+            PreviousPage: forwardRef((props, ref) => (
+              <ChevronLeftIcon {...props} ref={ref} />
+            ))
+          }}
+          columns={[
+            {
+              title: "User",
+              field: "photoUrl",
+              render: rowData => (
+                <Avatar alt="Player avatar" src={rowData.photoUrl} />
+              )
+            },
+            {
+              title: "Name",
+              field: "name",
+              defaultSort: "asc"
+            },
+            {
+              title: "E-mail",
+              field: "email"
+            }
+          ]}
+          data={store.users}
+          options={{
+            searchFieldAlignment: "left",
+            actionsColumnIndex: -1,
+            pageSize: 20,
+            pageSizeOptions: [],
+            paginationType: "stepped",
+            sorting: false
+          }}
+          actions={[
+            {
+              icon: () => <EditIcon />,
+              tooltip: "Edit User",
+              onClick: (event, player) => {
+                this.setState({ isPlayerDialogVisible: true, player });
+              }
+            }
+          ]}
+        />
+        <PlayerDialog
+          open={this.state.isPlayerDialogVisible}
+          player={this.state.player}
+          onClose={this.closePlayerDialog}
+        />
+      </>
+    );
+  }
+}
+
+export default Players;

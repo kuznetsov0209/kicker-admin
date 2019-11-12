@@ -65,7 +65,7 @@ class ScrollableTabsButtonForce extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <Logo className={classes.logo} />
             <Tabs
@@ -80,7 +80,7 @@ class ScrollableTabsButtonForce extends React.Component {
               }}
             >
               <Tab label="GAMES" icon={<RestoreSharpIcon />} value="/games" />
-              <Tab label="PLAYERS" icon={<GroupSharpIcon />} value="/leaders" />
+              <Tab label="PLAYERS" icon={<GroupSharpIcon />} value="/players" />
               <Tab
                 label="TOURNAMENTS"
                 icon={<EmojiEventsSharpIcon />}
