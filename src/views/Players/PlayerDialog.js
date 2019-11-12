@@ -23,6 +23,7 @@ class Player extends React.Component {
     super(props);
     this.state = {
       player: props.player,
+      playerPhotoPreview: "",
       message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
@@ -70,6 +71,23 @@ class Player extends React.Component {
         isFileSizeInvalid: file.size > MAX_FILE_SIZE,
         isFileTypeInvalid: !SUPPORTED_FILE_TYPES.includes(file.type)
       });
+      if (
+        file.size < MAX_FILE_SIZE &&
+        SUPPORTED_FILE_TYPES.includes(file.type)
+      ) {
+        this.revokePhotoPreviewObjectIfNeed();
+        const photoUrl = URL.createObjectURL(file);
+        this.setState(state => ({
+          player: { ...state.player, photoUrl },
+          playerPhotoPreview: photoUrl
+        }));
+      }
+    }
+  };
+
+  revokePhotoPreviewObjectIfNeed = () => {
+    if (this.state.playerPhotoPreview != "") {
+      URL.revokeObjectURL(this.state.playerPhotoPreview);
     }
   };
 
@@ -91,6 +109,7 @@ class Player extends React.Component {
       isFileSizeInvalid: false,
       isFileTypeInvalid: false
     });
+    this.revokePhotoPreviewObjectIfNeed();
     this.props.onClose();
   };
 
