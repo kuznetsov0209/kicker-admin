@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import { KeyboardDatePicker } from "@material-ui/pickers";
-import { Grid } from "@material-ui/core";
+import  Grid  from "@material-ui/core/Grid";
 
 class TournamentForm extends Component {
   constructor(props) {
