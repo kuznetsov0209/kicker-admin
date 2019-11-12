@@ -8,7 +8,7 @@ import Players from "../views/Players";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
 import Leaders from "../views/Leaders";
-import AddTeamForm from "../views/Tournament/AddTeamForm";
+import AddTeamDialog from "../views/Tournament/AddTeamDialog";
 import AppBar from "./AppBar";
 import Container from "@material-ui/core/Container";
 
@@ -44,7 +44,7 @@ class App extends Component {
                   <Route
                     exact
                     path="/tournaments/:id/teams"
-                    component={AddTeamForm}
+                    component={AddTeamDialog}
                   />
                   <Redirect to="/players" />
                 </Switch>

@@ -14,15 +14,21 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { store } from "../../store/userStore";
 
-class SelectPlayersForm extends React.Component {
+class SelectPlayerDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: "",
       IsLoading: false,
-      defaultData: [],
-      showData: []
+      users: [],
+      filteredUsers: []
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.disabledPlayers !== prevProps.disabledPlayers) {
+      this.loadUsers();
+    }
   }
 
   componentDidMount() {
@@ -36,13 +42,13 @@ class SelectPlayersForm extends React.Component {
 
       const players = store.users;
 
-      const disabledPlayers = this.props.disabledPlayer;
+      const disabledPlayers = this.props.disabledPlayers;
 
       const filteredPlayers = players.filter(function(player) {
         return (
-          disabledPlayers.filter(function(disabledPlayer) {
-            return player.id === disabledPlayer.id;
-          }).length == 0
+          disabledPlayers.find(
+            disabledPlayer => player.id === disabledPlayer.id
+          ) === undefined
         );
       });
 
@@ -52,31 +58,29 @@ class SelectPlayersForm extends React.Component {
         } else return 1;
       });
       this.setState({
-        defaultData: filteredPlayers,
-        showData: filteredPlayers
+        users: filteredPlayers,
+        filteredUsers: filteredPlayers
       });
     } finally {
       this.setState({ isLoading: false });
     }
   }
 
-  searchPlayer = event => {
+  handleSearchFieldChange = event => {
     this.setState({ value: event.target.value }, () => {
-      this.filterPlayer();
+      const players = this.state.filteredUsers;
+
+      if (this.state.value != "") {
+        const result = players.filter(item => {
+          if (
+            item.name.toLowerCase().includes(this.state.value.toLowerCase())
+          ) {
+            return item;
+          }
+        });
+        this.setState({ filteredUsers: result });
+      } else this.setState({ filteredUsers: this.state.users });
     });
-  };
-
-  filterPlayer = () => {
-    const players = this.state.showData;
-
-    if (this.state.value != "") {
-      const result = players.filter(item => {
-        if (item.name.toLowerCase().includes(this.state.value.toLowerCase())) {
-          return item;
-        }
-      });
-      this.setState({ showData: result });
-    } else this.setState({ showData: this.state.defaultData });
   };
 
   render() {
@@ -90,9 +94,10 @@ class SelectPlayersForm extends React.Component {
         <div style={{ display: "flex" }}>
           <DialogTitle style={{ flex: "1" }}>Choose a player</DialogTitle>
           <Button
+            variant="outlined"
+            color="primary"
             size="small"
             style={{ margin: "16px 16px" }}
-            variant="contained"
             onClick={close}
           >
             Cancel
@@ -103,13 +108,13 @@ class SelectPlayersForm extends React.Component {
             <SearchIcon />
           </IconButton>
           <InputBase
-            onChange={this.searchPlayer}
+            onChange={this.handleSearchFieldChange}
             placeholder="Search"
             value={value}
           />
         </Paper>
         <List>
-          {this.state.showData.map(player => (
+          {this.state.filteredUsers.map(player => (
             <ListItem button onClick={() => select(player)} key={player}>
               <ListItemAvatar>
                 <Avatar src={player.photoUrl}></Avatar>
@@ -123,4 +128,4 @@ class SelectPlayersForm extends React.Component {
   }
 }
 
-export default SelectPlayersForm;
+export default SelectPlayerDialog;

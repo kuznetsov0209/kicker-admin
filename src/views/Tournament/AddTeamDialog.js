@@ -10,7 +10,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
-import SelectPlayersForm from "./SelectPlayersForm";
+import SelectPlayerDialog from "./SelectPlayerDialog";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
 
@@ -21,12 +21,11 @@ const DEFAULT_STATE = {
   isOpenPlayerList2: false,
   selectedPlayer1: "",
   selectedPlayer2: "",
-  isDisabledSaveButton: true,
   teamName: "",
-  disabledPlayer: ""
+  disabledPlayers: []
 };
 
-class AddTeamForm extends React.Component {
+class AddTeamDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = DEFAULT_STATE;
@@ -37,66 +36,60 @@ class AddTeamForm extends React.Component {
       this.setState({ isLoading: true });
       await store.loadStats(id);
       this.setState({
-        disabledPlayer: store.usersStats.all
+        disabledPlayers: store.usersStats.all
       });
     } finally {
       this.setState({ isLoading: false });
     }
   }
 
-  componentDidMount() {
-    this.loadTournaments(2);
+  componentDidMount(id = 2) {
+    this.loadTournaments(id);
   }
 
-  writeTeamName = event => {
-    this.setState({ teamName: event.target.value }, () => {
-      this.controlButtonDisabled();
-    });
+  handleTeamNameFieldChange = event => {
+    this.setState({ teamName: event.target.value });
   };
 
-  openOrCloseAddTeamForm = () => {
+  toggleNewTeamDialog = () => {
     this.setState({ isOpenDialog: !this.state.isOpenDialog });
   };
 
-  openOrClosePlayerList1 = () => {
+  togglePlayerList1 = () => {
     this.setState({ isOpenPlayerList1: !this.state.isOpenPlayerList1 });
   };
 
-  openOrClosePlayerList2 = () => {
+  togglePlayerList2 = () => {
     this.setState({ isOpenPlayerList2: !this.state.isOpenPlayerList2 });
   };
 
   selectAndClosePlayerList1 = value => {
-    this.setState({ selectedPlayer1: value }, () => {
-      if (this.compareSelectedPlayers1(value)) {
-        this.controlButtonDisabled();
-        this.openOrClosePlayerList1();
+    this.setState(
+      {
+        selectedPlayer1: value,
+        disabledPlayers: [...this.state.disabledPlayers, value]
+      },
+      () => {
+        this.togglePlayerList1();
       }
-    });
+    );
   };
 
   selectAndClosePlayerList2 = value => {
-    this.setState({ selectedPlayer2: value }, () => {
-      if (this.compareSelectedPlayers2(value)) {
-        this.controlButtonDisabled();
-        this.openOrClosePlayerList2();
+    this.setState(
+      {
+        selectedPlayer2: value,
+        disabledPlayers: [...this.state.disabledPlayers, value]
+      },
+      () => {
+        this.togglePlayerList2();
       }
-    });
-  };
-
-  controlButtonDisabled = () => {
-    if (
-      this.state.teamName &&
-      this.state.selectedPlayer1 &&
-      this.state.selectedPlayer2
-    ) {
-      this.setState({ isDisabledSaveButton: false });
-    }
+    );
   };
 
   cleanAddTeamForm = () => {
     this.setState(DEFAULT_STATE);
-    this.openOrCloseAddTeamForm();
+    this.toggleNewTeamDialog();
   };
 
   createNewTeam = () => {
@@ -110,30 +103,16 @@ class AddTeamForm extends React.Component {
     this.cleanAddTeamForm();
   };
 
-  compareSelectedPlayers1 = value => {
-    if (value.id === this.state.selectedPlayer2.id) {
-      console.log("Так нельзя");
-      return false;
-    } else return true;
-  };
-
-  compareSelectedPlayers2 = value => {
-    if (value.id === this.state.selectedPlayer1.id) {
-      console.log("Так нельзя");
-      return false;
-    } else return true;
-  };
-
   render() {
     const {
       isOpenDialog,
       isOpenPlayerList1,
       isOpenPlayerList2,
-      isDisabledSaveButton,
       selectedPlayer1,
       selectedPlayer2,
       teamName
     } = this.state;
+    const isDisabledSaveButton = teamName && selectedPlayer1 && selectedPlayer2;
     if (this.state.isLoading) {
       return <CircularProgress color={"secondary"} size={20} />;
     }
@@ -142,11 +121,15 @@ class AddTeamForm extends React.Component {
         <Button
           variant="outlined"
           color="primary"
-          onClick={this.openOrCloseAddTeamForm}
+          onClick={this.toggleNewTeamDialog}
         >
           ADD NEW TEAM
         </Button>
-        <Dialog open={isOpenDialog} onClose={this.openAddTeamForm} fullWidth>
+        <Dialog
+          open={isOpenDialog}
+          onClose={this.toggleNewTeamDialog}
+          fullWidth
+        >
           <DialogTitle>Create new team</DialogTitle>
           <DialogContent>
             <TextField
@@ -154,32 +137,32 @@ class AddTeamForm extends React.Component {
               margin="dense"
               label="Team name"
               fullWidth
-              onChange={this.writeTeamName}
+              onChange={this.handleTeamNameFieldChange}
               value={teamName}
             />
           </DialogContent>
           <List>
-            <ListItem button onClick={this.openOrClosePlayerList1}>
+            <ListItem button onClick={this.togglePlayerList1}>
               <ListItemAvatar>
                 <Avatar src={selectedPlayer1.photoUrl}></Avatar>
               </ListItemAvatar>
               <ListItemText primary={selectedPlayer1.name || "Игрок 1"} />
             </ListItem>
-            <SelectPlayersForm
-              disabledPlayer={this.state.disabledPlayer}
-              close={this.openOrClosePlayerList1}
+            <SelectPlayerDialog
+              disabledPlayers={this.state.disabledPlayers}
+              close={this.togglePlayerList1}
               open={isOpenPlayerList1}
               select={this.selectAndClosePlayerList1}
             />
-            <ListItem button onClick={this.openOrClosePlayerList2}>
+            <ListItem button onClick={this.togglePlayerList2}>
               <ListItemAvatar>
                 <Avatar src={selectedPlayer2.photoUrl}></Avatar>
               </ListItemAvatar>
               <ListItemText primary={selectedPlayer2.name || "Игрок 2"} />
             </ListItem>
-            <SelectPlayersForm
-              disabledPlayer={this.state.disabledPlayer}
-              close={this.openOrClosePlayerList2}
+            <SelectPlayerDialog
+              disabledPlayers={this.state.disabledPlayers}
+              close={this.togglePlayerList2}
               open={isOpenPlayerList2}
               select={this.selectAndClosePlayerList2}
             />
@@ -196,7 +179,7 @@ class AddTeamForm extends React.Component {
               onClick={this.createNewTeam}
               variant="contained"
               color="primary"
-              disabled={isDisabledSaveButton}
+              disabled={!isDisabledSaveButton}
             >
               Save
             </Button>
@@ -207,4 +190,4 @@ class AddTeamForm extends React.Component {
   }
 }
 
-export default AddTeamForm;
+export default AddTeamDialog;
