@@ -49,20 +49,15 @@ class ScrollableTabsButtonForce extends React.Component {
     };
   }
 
-  componentWillMount() {
-    this.unlistenHistory = this.props.history.listen(this.onHistoryChange);
-  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.location.pathname);
 
-  componentWillUnmount() {
-    this.unlistenHistory();
+    if (nextProps.location.pathname !== this.state.value) {
+      this.setState({
+        value: nextProps.location.pathname
+      });
+    }
   }
-
-  onHistoryChange = location => {
-    console.log(location.pathname);
-    this.setState({
-      value: location.pathname
-    });
-  };
 
   @computed
   get profile() {
