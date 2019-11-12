@@ -9,14 +9,14 @@ class TournamentForm extends Component {
     this.props.onChange({ title: e.target.value });
   };
 
-  setStartDate = startDate => {
+  handleStartDateChange = startDate => {
     if (startDate > this.props.endDate) {
       this.props.onChange({ endDate: startDate });
     }
     this.props.onChange({ startDate });
   };
 
-  setEndDate = endDate => {
+  handleEndDateChange = endDate => {
     if (this.props.startDate <= endDate) {
       this.props.onChange({ endDate });
     } else {
@@ -26,7 +26,7 @@ class TournamentForm extends Component {
 
   render() {
     return (
-      <>
+      <form id={this.props.formName}>
         <TextField
           value={this.props.title}
           onChange={this.handleTitleChange}
@@ -40,7 +40,7 @@ class TournamentForm extends Component {
             <KeyboardDatePicker
               margin="normal"
               value={this.props.startDate}
-              onChange={this.setStartDate}
+              onChange={this.handleStartDateChange}
               required
               label="Start date"
             />
@@ -49,13 +49,13 @@ class TournamentForm extends Component {
             <KeyboardDatePicker
               margin="normal"
               value={this.props.endDate}
-              onChange={this.setEndDate}
+              onChange={this.handleEndDateChange}
               required
               label="End Date"
             />
           </Grid>
         </Grid>
-      </>
+      </form>
     );
   }
 }
