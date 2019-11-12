@@ -23,6 +23,27 @@ const TournamentStore = types
       getTournament: flow(function*(id) {
         const { tournament } = yield api.get(`/api/tournaments/${id}`);
         return Tournament.create(tournament);
+      }),
+      editTournament: flow(function*({
+        id,
+        title,
+        startDate,
+        endDate,
+        isForceFinished
+      }) {
+        yield api.post(`/api/tournaments/${id}/edit`, {
+          title,
+          startDate,
+          endDate,
+          isForceFinished
+        });
+      }),
+      removeTournament: flow(function*(id) {
+        const tournament = self.tournaments.find(
+          tournament => tournament.id == id
+        );
+        yield api.delete(`/api/tournaments/${id}`);
+        self.tournaments.remove(tournament);
       })
     };
   });
