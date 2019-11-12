@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
-import TournamentForm from "../../components/TournamentForm";
+import TournamentForm from "./TournamentForm";
 import ErrorDialog from "../../components/ErrorDialog"
 
 class TournamentAddForm extends Component {
