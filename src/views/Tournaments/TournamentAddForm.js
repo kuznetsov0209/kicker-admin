@@ -58,6 +58,7 @@ class TournamentAddForm extends Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onChange={this.onFormChange}
+            id={"AddForm"}
           />
         </DialogContent>
         <DialogActions>
@@ -68,6 +69,7 @@ class TournamentAddForm extends Component {
             variant={"contained"}
             color={"primary"}
             onClick={this.handleCreate}
+            form="AddForm"
           >
             {this.state.isLoading ? (
               <CircularProgress color={"secondary"} size={20} />

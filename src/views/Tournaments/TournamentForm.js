@@ -26,7 +26,7 @@ class TournamentForm extends Component {
 
   render() {
     return (
-      <form id={this.props.formName}>
+      <form id={this.props.id}>
         <TextField
           value={this.props.title}
           onChange={this.handleTitleChange}
