@@ -4,27 +4,23 @@ import { KeyboardDatePicker } from "@material-ui/pickers";
 import  Grid  from "@material-ui/core/Grid";
 
 class TournamentForm extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChanges = this.props.handleChanges;
-  }
 
   handleTitleChange = e => {
-    this.handleChanges({ title: e.target.value });
+    this.props.onChange({ title: e.target.value });
   };
 
   setStartDate = startDate => {
     if (startDate > this.props.endDate) {
-      this.handleChanges({ endDate: startDate });
+      this.props.onChange({ endDate: startDate });
     }
-    this.handleChanges({ startDate });
+    this.props.onChange({ startDate });
   };
 
   setEndDate = endDate => {
     if (this.props.startDate <= endDate) {
-      this.handleChanges({ endDate });
+      this.props.onChange({ endDate });
     } else {
-      this.handleChanges({ endDate: this.props.startDate });
+      this.props.onChange({ endDate: this.props.startDate });
     }
   };
 

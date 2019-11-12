@@ -43,7 +43,7 @@ class TournamentAddForm extends Component {
     this.setState({ isAlertOpen: false });
   };
 
-  handleFormChanges = state => {
+  onFormChange = state => {
     this.setState(state);
   };
 
@@ -57,7 +57,7 @@ class TournamentAddForm extends Component {
             title={this.state.title}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
-            handleChanges={this.handleFormChanges}
+            onChange={this.onFormChange}
           />
         </DialogContent>
         <DialogActions>
