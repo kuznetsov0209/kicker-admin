@@ -7,7 +7,6 @@ import Games from "../views/Games";
 import Players from "../views/Players";
 import Tournaments from "../views/Tournaments";
 import Tournament from "../views/Tournament";
-import Leaders from "../views/Leaders";
 import AppBar from "./AppBar";
 import Container from "@material-ui/core/Container";
 
