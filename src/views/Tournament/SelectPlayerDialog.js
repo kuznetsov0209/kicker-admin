@@ -2,6 +2,8 @@ import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -12,117 +14,87 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
-import { store } from "../../store/userStore";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
 class SelectPlayerDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
-      IsLoading: false,
-      users: [],
-      filteredUsers: []
+      searchValue: "",
+      isLoading: false,
+      users: props.users
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.disabledPlayers !== prevProps.disabledPlayers) {
-      this.loadUsers();
-    }
-  }
-
-  componentDidMount() {
-    this.loadUsers();
-  }
-
-  async loadUsers() {
-    try {
-      this.setState({ isLoading: true });
-      await store.getUsers();
-
-      const players = store.users;
-
-      const disabledPlayers = this.props.disabledPlayers;
-
-      const filteredPlayers = players.filter(function(player) {
-        return (
-          disabledPlayers.find(
-            disabledPlayer => player.id === disabledPlayer.id
-          ) === undefined
-        );
-      });
-
-      filteredPlayers.sort(function(a, b) {
-        if (a.name.toLowerCase().localeCompare(b.name.toLowerCase()) < 0) {
-          return -1;
-        } else return 1;
-      });
-      this.setState({
-        users: filteredPlayers,
-        filteredUsers: filteredPlayers
-      });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
   handleSearchFieldChange = event => {
-    this.setState({ value: event.target.value }, () => {
-      const players = this.state.filteredUsers;
-
-      if (this.state.value != "") {
-        const result = players.filter(item => {
-          if (
-            item.name.toLowerCase().includes(this.state.value.toLowerCase())
-          ) {
-            return item;
-          }
-        });
-        this.setState({ filteredUsers: result });
-      } else this.setState({ filteredUsers: this.state.users });
-    });
+    const searchValue = event.target.value;
+    this.setState({ searchValue });
   };
 
   render() {
-    const { open, close, select } = this.props;
-    const { value } = this.state;
-    if (this.state.IsLoading) {
+    const { users, open, onClose, onSelect } = this.props;
+    const { searchValue, isLoading } = this.state;
+
+    if (isLoading) {
       return <CircularProgress color={"secondary"} size={20} />;
     }
+
+    const searchValueLowerCase = searchValue.toLowerCase();
+    const filteredUsers = searchValue
+      ? users.filter(user => user.name.toLowerCase().includes(searchValue))
+      : users;
+
     return (
-      <Dialog fullWidth disableBackdropClick={true} open={open}>
-        <div style={{ display: "flex" }}>
-          <DialogTitle style={{ flex: "1" }}>Choose a player</DialogTitle>
+      <Dialog fullWidth open={open} onClose={onClose}>
+        <DialogTitle disableTypography>
+          <Typography variant="h6" gutterBottom>
+            Choose a player
+          </Typography>
+
+          <TextField
+            margin="normal"
+            placeholder="Search"
+            onChange={this.handleSearchFieldChange}
+            value={searchValue}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+        </DialogTitle>
+        <DialogContent>
+          <List>
+            {filteredUsers.map(player => (
+              <ListItem
+                disableGutters
+                button
+                onClick={() => onSelect(player)}
+                key={player}
+              >
+                <ListItemAvatar>
+                  <Avatar src={player.photoUrl}></Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={player.name} />
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+        <DialogActions>
           <Button
             variant="outlined"
             color="primary"
             size="small"
-            style={{ margin: "16px 16px" }}
-            onClick={close}
+            onClick={onClose}
           >
             Cancel
           </Button>
-        </div>
-        <Paper>
-          <IconButton aria-label="search">
-            <SearchIcon />
-          </IconButton>
-          <InputBase
-            onChange={this.handleSearchFieldChange}
-            placeholder="Search"
-            value={value}
-          />
-        </Paper>
-        <List>
-          {this.state.filteredUsers.map(player => (
-            <ListItem button onClick={() => select(player)} key={player}>
-              <ListItemAvatar>
-                <Avatar src={player.photoUrl}></Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={player.name} />
-            </ListItem>
-          ))}
-        </List>
+        </DialogActions>
       </Dialog>
     );
   }
