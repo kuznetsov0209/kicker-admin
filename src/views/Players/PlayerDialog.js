@@ -23,7 +23,7 @@ class Player extends React.Component {
     super(props);
     this.state = {
       player: props.player,
-      playerPhotoPreview: "",
+      playerPhotoPreview: undefined,
       message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
@@ -83,7 +83,7 @@ class Player extends React.Component {
   };
 
   revokePhotoPreviewObjectIfNeed = () => {
-    if (this.state.playerPhotoPreview != "") {
+    if (this.state.playerPhotoPreview) {
       URL.revokeObjectURL(this.state.playerPhotoPreview);
     }
   };
@@ -102,7 +102,7 @@ class Player extends React.Component {
 
   closeDialog = () => {
     this.setState({
-      playerPhotoPreview: "",
+      playerPhotoPreview: undefined,
       isDialogClosingRequested: false,
       isFileSizeInvalid: false,
       isFileTypeInvalid: false
@@ -164,13 +164,13 @@ class Player extends React.Component {
               <div className={classes.player__avatarContainer}>
                 <Avatar
                   src={
-                    player.photoUrl && playerPhotoPreview === ""
+                    player.photoUrl && !playerPhotoPreview
                       ? player.photoUrl
                       : playerPhotoPreview
                   }
                   className={classes.player__avatar}
                 >
-                  {!player.photoUrl && playerPhotoPreview === "" && (
+                  {!player.photoUrl && !playerPhotoPreview && (
                     <PersonIcon className={classes.player__avatarIcon} />
                   )}
                 </Avatar>
