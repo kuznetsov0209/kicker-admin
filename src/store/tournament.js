@@ -2,10 +2,17 @@ import { types, flow } from "mobx-state-tree";
 import api from "../api";
 import Team from "./team";
 import Game from "./game";
+import UserStat from "./userStat";
 
 const TournamentGame = types.model({
   team1: Team,
   team2: Team
+});
+
+const UserStats = types.model({
+  all: types.optional(types.array(UserStat), []),
+  forwards: types.optional(types.array(UserStat), []),
+  defenders: types.optional(types.array(UserStat), [])
 });
 
 const Tournament = types
@@ -41,12 +48,16 @@ const Tournament = types
         })
       ),
       []
-    )
+    ),
+    usersStats: types.optional(UserStats, {})
   })
   .actions(self => ({
     loadStats: flow(function*() {
-      const { stats } = yield api.get(`/api/tournaments/${self.id}/stats`);
+      const { stats, usersStats } = yield api.get(
+        `/api/tournaments/${self.id}/stats`
+      );
       self.stats = stats;
+      self.usersStats = usersStats;
     }),
     loadGamesResults: flow(function*() {
       const { gamesResults } = yield api.get(

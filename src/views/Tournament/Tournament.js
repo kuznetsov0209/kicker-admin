@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { store } from "../../store/tournamentStore";
 import Standings from "./Standings";
 import Games from "./Games";
+import AddTeamDialog from "./AddTeamDialog";
 
 @withRouter
 @observer
@@ -13,7 +14,8 @@ class Tournament extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      isNewTeamDialogOpen: false
     };
   }
 
@@ -26,6 +28,12 @@ class Tournament extends React.Component {
   get tournamentId() {
     return this.props.match.params.id;
   }
+
+  toggleNewTeamDialog = () => {
+    this.setState(state => ({
+      isNewTeamDialogOpen: !state.isNewTeamDialogOpen
+    }));
+  };
 
   async loadTournament() {
     try {
@@ -41,12 +49,22 @@ class Tournament extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <CircularProgress style={{ margin: "15px auto" }} />;
+    const { isLoading, isNewTeamDialogOpen } = this.state;
+
+    if (isLoading) {
+      return <CircularProgress />;
     }
 
     return (
-      <React.Fragment>
+      <>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={this.toggleNewTeamDialog}
+        >
+          ADD NEW TEAM
+        </Button>
+
         <Standings tournament={this.tournament} />
         <Games tournament={this.tournament} />
 
@@ -60,7 +78,13 @@ class Tournament extends React.Component {
               CREATE SCHEDULE
             </Button>
           )}
-      </React.Fragment>
+
+        <AddTeamDialog
+          tournamentId={this.tournamentId}
+          open={isNewTeamDialogOpen}
+          onClose={this.toggleNewTeamDialog}
+        />
+      </>
     );
   }
 }

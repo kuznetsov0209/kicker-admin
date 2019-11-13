@@ -29,22 +29,22 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeRu}>
-        <HashRouter>
-          <div className="App">
-            <AppBar />
-            <Container>
-              <Switch>
-                <Route exact path="/games" component={Games} />
-                <Route exact path="/players" component={Players} />
-                <Route exact path="/tournaments" component={Tournaments} />
-                <Route exact path="/tournaments/:id" component={Tournament} />
-                <Redirect to="/players" />
-              </Switch>
-            </Container>
-          </div>
-        </HashRouter>
-      </MuiPickersUtilsProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={localeRu}>
+          <HashRouter>
+            <div className="App">
+              <AppBar />
+              <Container>
+                <Switch>
+                  <Route exact path="/games" component={Games} />
+                  <Route exact path="/players" component={Players} />
+                  <Route exact path="/tournaments" component={Tournaments} />
+                  <Route exact path="/tournaments/:id" component={Tournament} />
+                  <Redirect to="/players" />
+                </Switch>
+              </Container>
+            </div>
+          </HashRouter>
+        </MuiPickersUtilsProvider>
       </ThemeProvider>
     );
   }
