@@ -44,19 +44,6 @@ const styles = theme => ({
 class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: this.props.location.pathname
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps.location.pathname);
-
-    if (nextProps.location.pathname !== this.state.value) {
-      this.setState({
-        value: nextProps.location.pathname
-      });
-    }
   }
 
   @computed
@@ -70,7 +57,6 @@ class ScrollableTabsButtonForce extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
 
     return (
       <div className={classes.root}>
@@ -78,7 +64,7 @@ class ScrollableTabsButtonForce extends React.Component {
           <Toolbar>
             <Logo className={classes.logo} />
             <Tabs
-              value={value}
+              value={this.props.location.pathname}
               onChange={this.onTabChange}
               scrollable="true"
               scrollButtons="on"
