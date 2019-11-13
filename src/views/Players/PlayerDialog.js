@@ -45,7 +45,7 @@ class Player extends React.Component {
       this.state.player &&
       (this.state.player.email !== this.props.player.email ||
         this.state.player.name !== this.props.player.name ||
-        this.state.player.photoUrl !== this.props.player.photoUrl)
+        this.state.playerPhotoPreview)
     );
   }
 
