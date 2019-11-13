@@ -102,6 +102,7 @@ class Player extends React.Component {
 
   closeDialog = () => {
     this.setState({
+      playerPhotoPreview: "",
       isDialogClosingRequested: false,
       isFileSizeInvalid: false,
       isFileTypeInvalid: false
