@@ -77,10 +77,7 @@ class Player extends React.Component {
       ) {
         this.revokePhotoPreviewObjectIfNeed();
         const photoUrl = URL.createObjectURL(file);
-        this.setState(state => ({
-          player: { ...state.player, photoUrl },
-          playerPhotoPreview: photoUrl
-        }));
+        this.setState({ playerPhotoPreview: photoUrl });
       }
     }
   };
@@ -146,6 +143,7 @@ class Player extends React.Component {
     const { classes, open } = this.props;
     const {
       player,
+      playerPhotoPreview,
       message,
       isFileSizeInvalid,
       isFileTypeInvalid
@@ -164,10 +162,14 @@ class Player extends React.Component {
             <DialogContent className={classes.player__content}>
               <div className={classes.player__avatarContainer}>
                 <Avatar
-                  src={player.photoUrl}
+                  src={
+                    player.photoUrl && playerPhotoPreview === ""
+                      ? player.photoUrl
+                      : playerPhotoPreview
+                  }
                   className={classes.player__avatar}
                 >
-                  {!player.photoUrl && (
+                  {!player.photoUrl && playerPhotoPreview === "" && (
                     <PersonIcon className={classes.player__avatarIcon} />
                   )}
                 </Avatar>
