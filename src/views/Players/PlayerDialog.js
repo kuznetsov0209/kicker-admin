@@ -82,7 +82,7 @@ class Player extends React.Component {
     }
   };
 
-  resetAvatar = e => {
+  resetAvatar = () => {
     this.revokePhotoPreviewObjectIfNeed(this.state.playerPhotoPreview);
     this.setState({ playerPhotoPreview: undefined });
   };
@@ -116,7 +116,7 @@ class Player extends React.Component {
     this.props.onClose();
   };
 
-  requestUserInactivation = e => {
+  requestUserInactivation = () => {
     this.setState({ isUserInactivationRequested: true });
   };
 
