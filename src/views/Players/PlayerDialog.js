@@ -82,6 +82,11 @@ class Player extends React.Component {
     }
   };
 
+  resetAvatar = e => {
+    this.revokePhotoPreviewObjectIfNeed(this.state.playerPhotoPreview);
+    this.setState({ playerPhotoPreview: undefined });
+  };
+
   revokePhotoPreviewObjectIfNeed = () => {
     if (this.state.playerPhotoPreview) {
       URL.revokeObjectURL(this.state.playerPhotoPreview);
@@ -189,6 +194,12 @@ class Player extends React.Component {
                     Upload photo
                   </Button>
                 </label>
+                <Button
+                  onClick={this.resetAvatar}
+                  disabled={!this.state.playerPhotoPreview}
+                >
+                  Cancel
+                </Button>
                 {isFileSizeInvalid ? (
                   <Typography
                     variant="subtitle2"
