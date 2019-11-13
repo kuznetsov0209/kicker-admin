@@ -137,7 +137,7 @@ class Player extends React.Component {
   };
 
   closeMessage = () => {
-    this.setState({ isMessageVisible: false });
+    this.setState({ isMessageVisible: false, message: "" });
   };
 
   render() {
