@@ -17,7 +17,6 @@ import { store as usersStore } from "../../store/userStore";
 
 const DEFAULT_STATE = {
   isLoading: false,
-  isOpenDialog: false,
   isOpenPlayerList1: false,
   isOpenPlayerList2: false,
   selectedPlayer1: "",
@@ -32,15 +31,12 @@ class AddTeamDialog extends React.Component {
     this.state = DEFAULT_STATE;
   }
 
-  get tournamentId() {
-    return this.props.match.params.id;
-  }
-
   async loadUsers() {
+    const { tournamentId } = this.props;
     try {
       this.setState({ isLoading: true });
       await usersStore.getUsers();
-      this.tournament = await tournamentsStore.getTournament(this.tournamentId);
+      this.tournament = await tournamentsStore.getTournament(tournamentId);
       await this.tournament.loadStats();
 
       const existedPlayersIds = this.tournament.usersStats.all.map(
@@ -56,16 +52,14 @@ class AddTeamDialog extends React.Component {
     }
   }
 
-  componentDidMount() {
-    this.loadUsers();
+  componentDidUpdate(prevProps) {
+    if (!prevProps.open && this.props.open) {
+      this.loadUsers();
+    }
   }
 
   handleTeamNameChange = event => {
     this.setState({ teamName: event.target.value });
-  };
-
-  toggleNewTeamDialog = () => {
-    this.setState({ isOpenDialog: !this.state.isOpenDialog });
   };
 
   togglePlayerList1 = () => {
@@ -102,7 +96,7 @@ class AddTeamDialog extends React.Component {
 
   cleanAddTeamForm = () => {
     this.setState(DEFAULT_STATE);
-    this.toggleNewTeamDialog();
+    this.props.onClose();
   };
 
   createNewTeam = () => {
@@ -110,7 +104,7 @@ class AddTeamDialog extends React.Component {
       name: this.state.teamName,
       player1: this.state.selectedPlayer1.id,
       player2: this.state.selectedPlayer2.id,
-      tournament: this.tournamentId
+      tournament: this.props.tournamentId
     };
     console.log(team);
     this.cleanAddTeamForm();
@@ -118,7 +112,7 @@ class AddTeamDialog extends React.Component {
 
   render() {
     const {
-      isOpenDialog,
+      isLoading,
       isOpenPlayerList1,
       isOpenPlayerList2,
       selectedPlayer1,
@@ -127,30 +121,18 @@ class AddTeamDialog extends React.Component {
       availableUsers
     } = this.state;
 
+    const { open, onClose } = this.props;
+
     const isDisabledSaveButton =
       !teamName || !selectedPlayer1 || !selectedPlayer2;
 
-    if (this.state.isLoading) {
-      return <CircularProgress color={"secondary"} size={20} />;
-    }
-
     return (
-      <div style={{ textAlign: "center" }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={this.toggleNewTeamDialog}
-        >
-          ADD NEW TEAM
-        </Button>
-
-        <Dialog
-          open={isOpenDialog}
-          onClose={this.toggleNewTeamDialog}
-          maxWidth="xs"
-          fullWidth
-        >
-          <DialogTitle>Create new team</DialogTitle>
+      <>
+        <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+          <DialogTitle>
+            Create new team
+            {isLoading && <CircularProgress color={"secondary"} size={20} />}
+          </DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
@@ -206,7 +188,7 @@ class AddTeamDialog extends React.Component {
           onClose={this.togglePlayerList2}
           onSelect={this.selectAndClosePlayerList2}
         />
-      </div>
+      </>
     );
   }
 }
