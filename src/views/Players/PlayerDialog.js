@@ -23,6 +23,7 @@ class Player extends React.Component {
     super(props);
     this.state = {
       player: props.player,
+      playerPhotoPreview: undefined,
       message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
@@ -70,6 +71,20 @@ class Player extends React.Component {
         isFileSizeInvalid: file.size > MAX_FILE_SIZE,
         isFileTypeInvalid: !SUPPORTED_FILE_TYPES.includes(file.type)
       });
+      if (
+        file.size < MAX_FILE_SIZE &&
+        SUPPORTED_FILE_TYPES.includes(file.type)
+      ) {
+        this.revokePhotoPreviewObjectIfNeed();
+        const photoUrl = URL.createObjectURL(file);
+        this.setState({ playerPhotoPreview: photoUrl });
+      }
+    }
+  };
+
+  revokePhotoPreviewObjectIfNeed = () => {
+    if (this.state.playerPhotoPreview) {
+      URL.revokeObjectURL(this.state.playerPhotoPreview);
     }
   };
 
@@ -87,10 +102,12 @@ class Player extends React.Component {
 
   closeDialog = () => {
     this.setState({
+      playerPhotoPreview: undefined,
       isDialogClosingRequested: false,
       isFileSizeInvalid: false,
       isFileTypeInvalid: false
     });
+    this.revokePhotoPreviewObjectIfNeed();
     this.props.onClose();
   };
 
@@ -127,6 +144,7 @@ class Player extends React.Component {
     const { classes, open } = this.props;
     const {
       player,
+      playerPhotoPreview,
       message,
       isFileSizeInvalid,
       isFileTypeInvalid
@@ -145,10 +163,14 @@ class Player extends React.Component {
             <DialogContent className={classes.player__content}>
               <div className={classes.player__avatarContainer}>
                 <Avatar
-                  src={player.photoUrl}
+                  src={
+                    player.photoUrl && !playerPhotoPreview
+                      ? player.photoUrl
+                      : playerPhotoPreview
+                  }
                   className={classes.player__avatar}
                 >
-                  {!player.photoUrl && (
+                  {!player.photoUrl && !playerPhotoPreview && (
                     <PersonIcon className={classes.player__avatarIcon} />
                   )}
                 </Avatar>
