@@ -184,7 +184,7 @@ class Player extends React.Component {
                 <label htmlFor="text-button-file">
                   <Button
                     component="span"
-                    className={classes.player__uploadButton}
+                    className={classes.player__uploadPhoto}
                   >
                     Upload photo
                   </Button>
