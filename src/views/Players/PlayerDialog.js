@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -24,6 +25,7 @@ class Player extends React.Component {
     this.state = {
       player: props.player,
       playerPhotoPreview: undefined,
+      playerAvatarWasRemoved: false,
       message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
@@ -45,7 +47,8 @@ class Player extends React.Component {
       this.state.player &&
       (this.state.player.email !== this.props.player.email ||
         this.state.player.name !== this.props.player.name ||
-        this.state.player.photoUrl !== this.props.player.photoUrl)
+        this.state.player.photoUrl !== this.props.player.photoUrl ||
+        this.state.playerPhotoPreview)
     );
   }
 
@@ -82,6 +85,25 @@ class Player extends React.Component {
     }
   };
 
+  resetAvatar = () => {
+    this.revokePhotoPreviewObjectIfNeed(this.state.playerPhotoPreview);
+    this.setState({ playerPhotoPreview: undefined });
+  };
+
+  removeAvatar = () => {
+    this.setState(state => ({
+      player: { ...state.player, photoUrl: null },
+      playerAvatarWasRemoved: true
+    }));
+  };
+
+  restoreAvatar = () => {
+    this.setState(state => ({
+      player: { ...state.player, photoUrl: this.props.player.photoUrl },
+      playerAvatarWasRemoved: false
+    }));
+  };
+
   revokePhotoPreviewObjectIfNeed = () => {
     if (this.state.playerPhotoPreview) {
       URL.revokeObjectURL(this.state.playerPhotoPreview);
@@ -111,7 +133,7 @@ class Player extends React.Component {
     this.props.onClose();
   };
 
-  requestUserInactivation = e => {
+  requestUserInactivation = () => {
     this.setState({ isUserInactivationRequested: true });
   };
 
@@ -145,6 +167,7 @@ class Player extends React.Component {
     const {
       player,
       playerPhotoPreview,
+      playerAvatarWasRemoved,
       message,
       isFileSizeInvalid,
       isFileTypeInvalid
@@ -181,14 +204,28 @@ class Player extends React.Component {
                   hidden
                   onChange={this.handleChangeAvatar}
                 />
-                <label htmlFor="text-button-file">
-                  <Button
-                    component="span"
-                    className={classes.player__uploadButton}
-                  >
-                    Upload photo
+                <ButtonGroup
+                  className={classes.player__uploadPhoto}
+                  size="small"
+                >
+                  {!playerPhotoPreview && !playerAvatarWasRemoved && (
+                    <Button
+                      onClick={this.removeAvatar}
+                      disabled={!player.photoUrl}
+                    >
+                      Remove
+                    </Button>
+                  )}
+                  {playerAvatarWasRemoved && !playerPhotoPreview && (
+                    <Button onClick={this.restoreAvatar}>Restore</Button>
+                  )}
+                  {playerPhotoPreview && (
+                    <Button onClick={this.resetAvatar}>Cancel</Button>
+                  )}
+                  <Button component="label" htmlFor="text-button-file">
+                    Upload
                   </Button>
-                </label>
+                </ButtonGroup>
                 {isFileSizeInvalid ? (
                   <Typography
                     variant="subtitle2"
@@ -215,7 +252,6 @@ class Player extends React.Component {
                 margin="normal"
                 onChange={this.handleChangeName}
               />
-
               <TextField
                 fullWidth
                 color="secondary"
