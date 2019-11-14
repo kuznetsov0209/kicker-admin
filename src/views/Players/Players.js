@@ -22,7 +22,7 @@ class Players extends Component {
   async loadUsersIfNeeded() {
     try {
       this.setState({ isLoading: true });
-      await store.getUsers(this.state.page);
+      await store.getUsers({ page: this.state.page });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -41,12 +41,12 @@ class Players extends Component {
       prevState => ({
         page: prevState.page + 1
       }),
-      () => store.getUsers(this.state.page)
+      () => store.getUsers({ page: this.state.page })
     );
   };
 
   render() {
-    const { users, usersHasMore } = store;
+    const { users, hasMoreUsers } = store;
 
     if (this.state.isLoading) {
       return <CircularProgress style={{ margin: "15px auto" }} />;
@@ -57,7 +57,7 @@ class Players extends Component {
         <DataTable
           data={users}
           loadMore={this.loadMore}
-          hasMore={usersHasMore}
+          hasMore={hasMoreUsers}
           columns={[
             {
               title: "User",

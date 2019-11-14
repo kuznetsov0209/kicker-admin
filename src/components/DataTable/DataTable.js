@@ -7,14 +7,8 @@ import TableBody from "@material-ui/core/TableBody";
 import InfiniteScroll from "react-infinite-scroller";
 
 class DataTable extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { data, columns, loadMore, hasMore } = this.props;
-
-    console.log(hasMore);
 
     return (
       <Table>

@@ -7,16 +7,16 @@ const PAGE_SIZE = 20;
 const UserStore = types
   .model({
     users: types.optional(types.array(User), []),
-    usersHasMore: types.optional(types.boolean, true)
+    hasMoreUsers: types.optional(types.boolean, true)
   })
   .actions(self => {
     return {
-      getUsers: flow(function*(page) {
+      getUsers: flow(function*({ page }) {
         const { users } = yield api.get("/api/users");
         self.users.push(
           ...users.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
         );
-        self.usersHasMore = self.users.length != users.length;
+        self.hasMoreUsers = self.users.length != users.length;
       })
     };
   });
