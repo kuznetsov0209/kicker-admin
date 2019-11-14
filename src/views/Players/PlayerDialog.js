@@ -84,19 +84,14 @@ class Player extends React.Component {
     }
   };
 
-  handleResetOrRemoveAvatar = () => {
-    this.state.playerPhotoPreview ? this.resetAvatar() : this.removeAvatar();
-  };
-
   resetAvatar = () => {
     this.revokePhotoPreviewObjectIfNeed(this.state.playerPhotoPreview);
     this.setState({ playerPhotoPreview: undefined });
   };
 
   removeAvatar = () => {
-    const photoUrl = null;
     this.setState(state => ({
-      player: { ...state.player, photoUrl }
+      player: { ...state.player, photoUrl: null }
     }));
   };
 
@@ -199,17 +194,21 @@ class Player extends React.Component {
                   hidden
                   onChange={this.handleChangeAvatar}
                 />
-                <label htmlFor="text-button-file"></label>
                 <ButtonGroup
                   className={classes.player__uploadPhoto}
                   size="small"
                 >
-                  <Button
-                    onClick={this.handleResetOrRemoveAvatar}
-                    disabled={!player.photoUrl && !playerPhotoPreview}
-                  >
-                    {playerPhotoPreview ? "Cancel" : "Remove"}
-                  </Button>
+                  {!playerPhotoPreview && (
+                    <Button
+                      onClick={this.removeAvatar}
+                      disabled={!player.photoUrl}
+                    >
+                      Remove
+                    </Button>
+                  )}
+                  {playerPhotoPreview && (
+                    <Button onClick={this.resetAvatar}>Cancel</Button>
+                  )}
                   <Button component="label" htmlFor="text-button-file">
                     Upload
                   </Button>
@@ -240,7 +239,6 @@ class Player extends React.Component {
                 margin="normal"
                 onChange={this.handleChangeName}
               />
-              
               <TextField
                 fullWidth
                 color="secondary"
