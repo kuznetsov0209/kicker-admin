@@ -44,9 +44,6 @@ const styles = theme => ({
 class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: this.props.location.pathname
-    };
   }
 
   @computed
@@ -54,23 +51,21 @@ class ScrollableTabsButtonForce extends React.Component {
     return store.authStore.profile;
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  onTabChange = (event, value) => {
     this.props.history.push(value);
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <Logo className={classes.logo} />
             <Tabs
-              value={value}
-              onChange={this.handleChange}
+              value={this.props.location.pathname}
+              onChange={this.onTabChange}
               scrollable="true"
               scrollButtons="on"
               indicatorColor="secondary"
