@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observer } from "mobx-react";
 import { store } from "../../store/userStore";
 import Avatar from "@material-ui/core/Avatar";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -6,20 +7,22 @@ import EditIcon from "@material-ui/icons/Edit";
 import PlayerDialog from "./PlayerDialog";
 import DataTable from "./../../components/DataTable";
 
+@observer
 class Players extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       isPlayerDialogVisible: false,
-      player: null
+      player: null,
+      page: 0
     };
   }
 
   async loadUsersIfNeeded() {
     try {
       this.setState({ isLoading: true });
-      await store.getUsers();
+      await store.getUsers(this.state.page);
     } finally {
       this.setState({ isLoading: false });
     }
@@ -33,7 +36,18 @@ class Players extends Component {
     this.setState({ isPlayerDialogVisible: false });
   };
 
+  loadMore = () => {
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1
+      }),
+      () => store.getUsers(this.state.page)
+    );
+  };
+
   render() {
+    const { users, usersHasMore } = store;
+
     if (this.state.isLoading) {
       return <CircularProgress style={{ margin: "15px auto" }} />;
     }
@@ -41,7 +55,9 @@ class Players extends Component {
     return (
       <>
         <DataTable
-          data={store.users}
+          data={users}
+          loadMore={this.loadMore}
+          hasMore={usersHasMore}
           columns={[
             {
               title: "User",

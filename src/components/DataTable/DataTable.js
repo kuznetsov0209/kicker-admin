@@ -9,47 +9,12 @@ import InfiniteScroll from "react-infinite-scroller";
 class DataTable extends Component {
   constructor(props) {
     super(props);
-
-    // Emulation page load
-    this.state = {
-      allData: props.data,
-      currentData: [],
-      hasMore: true
-    };
   }
 
-  loadMore = page => {
-    const { allData, currentData } = this.state;
-    const start = (page - 1) * 20;
-    const step = 20;
-    const pageSlice = allData.slice(start, start + step);
-
-    if (currentData.length >= allData.length) {
-      this.setState({ hasMore: false });
-    } else {
-      this.setState({
-        currentData: [...currentData, ...pageSlice]
-      });
-    }
-  };
-
   render() {
-    const { columns } = this.props;
-    const { currentData, hasMore } = this.state;
+    const { data, columns, loadMore, hasMore } = this.props;
 
-    const infiniteScrollItems = [];
-
-    currentData.map((row, i) => {
-      infiniteScrollItems.push(
-        <TableRow key={i}>
-          {columns.map((column, k) => (
-            <TableCell key={k}>
-              {column.render ? column.render(row) : row[column.field]}
-            </TableCell>
-          ))}
-        </TableRow>
-      );
-    });
+    console.log(hasMore);
 
     return (
       <Table>
@@ -63,11 +28,20 @@ class DataTable extends Component {
 
         <InfiniteScroll
           element={TableBody}
-          loadMore={this.loadMore}
+          loadMore={loadMore}
+          initialLoad={false}
           hasMore={hasMore}
           pageStart={0}
         >
-          {infiniteScrollItems}
+          {data.map((row, i) => (
+            <TableRow key={i}>
+              {columns.map((column, k) => (
+                <TableCell key={k}>
+                  {column.render ? column.render(row) : row[column.field]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
         </InfiniteScroll>
       </Table>
     );
