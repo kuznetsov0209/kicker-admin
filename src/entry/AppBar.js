@@ -48,6 +48,7 @@ class ScrollableTabsButtonForce extends React.Component {
       isOpenPopup: false,
       value: this.props.location.pathname
     };
+
   }
 
   @computed
@@ -55,6 +56,10 @@ class ScrollableTabsButtonForce extends React.Component {
     return store.authStore.profile;
   }
 
+
+  onTabChange = (event, value) => {
+    this.props.history.push(value);
+  };
   // checkPopup = () => {
   //   const check = setInterval(() => {
   //     const { popup } = this;
@@ -100,23 +105,17 @@ class ScrollableTabsButtonForce extends React.Component {
     }
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-    this.props.history.push(value);
-  };
-
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <Logo className={classes.logo} />
             <Tabs
-              value={value}
-              onChange={this.handleChange}
+              value={this.props.location.pathname}
+              onChange={this.onTabChange}
               scrollable="true"
               scrollButtons="on"
               indicatorColor="secondary"

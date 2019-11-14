@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
-import CircularProgress  from "@material-ui/core/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
@@ -65,17 +65,14 @@ class Tournaments extends Component {
             {
               icon: () => {
                 return (
-                <Button
-                  color="primary"
-                  startIcon={
-                    <AddCircleOutline
-                      color="primary"
-                    />
-                  }
-                >
-                  Add new tournament
-                </Button>
-              )},
+                  <Button
+                    color="primary"
+                    startIcon={<AddCircleOutline color="primary" />}
+                  >
+                    Add new tournament
+                  </Button>
+                );
+              },
               tooltip: "Add Tournament",
               isFreeAction: true,
               onClick: this.handleOpen
@@ -91,7 +88,7 @@ class Tournaments extends Component {
               onClick: () => {}
             }
           ]}
-          data={ store.tournaments.map(tournament => tournament) }
+          data={store.tournaments.map(tournament => tournament)}
           columns={[
             {
               title: "№",
@@ -107,13 +104,15 @@ class Tournaments extends Component {
               title: "Start Date",
               field: "startDate",
               type: "date",
-              render: rowData => dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Finish Date",
               field: "endDate",
               type: "date",
-              render: rowData => dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Status",
