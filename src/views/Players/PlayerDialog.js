@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -45,6 +46,7 @@ class Player extends React.Component {
       this.state.player &&
       (this.state.player.email !== this.props.player.email ||
         this.state.player.name !== this.props.player.name ||
+        this.state.player.photoUrl !== this.props.player.photoUrl ||
         this.state.playerPhotoPreview)
     );
   }
@@ -82,9 +84,20 @@ class Player extends React.Component {
     }
   };
 
+  handleResetOrRemoveAvatar = () => {
+    this.state.playerPhotoPreview ? this.resetAvatar() : this.removeAvatar();
+  };
+
   resetAvatar = () => {
     this.revokePhotoPreviewObjectIfNeed(this.state.playerPhotoPreview);
     this.setState({ playerPhotoPreview: undefined });
+  };
+
+  removeAvatar = () => {
+    const photoUrl = null;
+    this.setState(state => ({
+      player: { ...state.player, photoUrl }
+    }));
   };
 
   revokePhotoPreviewObjectIfNeed = () => {
@@ -186,20 +199,21 @@ class Player extends React.Component {
                   hidden
                   onChange={this.handleChangeAvatar}
                 />
-                <label htmlFor="text-button-file">
-                  <Button
-                    component="span"
-                    className={classes.player__uploadPhoto}
-                  >
-                    Upload photo
-                  </Button>
-                </label>
-                <Button
-                  onClick={this.resetAvatar}
-                  disabled={!this.state.playerPhotoPreview}
+                <label htmlFor="text-button-file"></label>
+                <ButtonGroup
+                  className={classes.player__uploadPhoto}
+                  size="small"
                 >
-                  Cancel
-                </Button>
+                  <Button
+                    onClick={this.handleResetOrRemoveAvatar}
+                    disabled={!player.photoUrl && !playerPhotoPreview}
+                  >
+                    {playerPhotoPreview ? "Cancel" : "Remove"}
+                  </Button>
+                  <Button component="label" htmlFor="text-button-file">
+                    Upload
+                  </Button>
+                </ButtonGroup>
                 {isFileSizeInvalid ? (
                   <Typography
                     variant="subtitle2"
@@ -226,7 +240,7 @@ class Player extends React.Component {
                 margin="normal"
                 onChange={this.handleChangeName}
               />
-
+              
               <TextField
                 fullWidth
                 color="secondary"
