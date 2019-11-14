@@ -25,6 +25,7 @@ class Player extends React.Component {
     this.state = {
       player: props.player,
       playerPhotoPreview: undefined,
+      playerAvatarWasRemoved: false,
       message: "",
       isFileSizeInvalid: false,
       isFileTypeInvalid: false,
@@ -91,7 +92,15 @@ class Player extends React.Component {
 
   removeAvatar = () => {
     this.setState(state => ({
-      player: { ...state.player, photoUrl: null }
+      player: { ...state.player, photoUrl: null },
+      playerAvatarWasRemoved: true
+    }));
+  };
+
+  restoreAvatar = () => {
+    this.setState(state => ({
+      player: { ...state.player, photoUrl: this.props.player.photoUrl },
+      playerAvatarWasRemoved: false
     }));
   };
 
@@ -158,6 +167,7 @@ class Player extends React.Component {
     const {
       player,
       playerPhotoPreview,
+      playerAvatarWasRemoved,
       message,
       isFileSizeInvalid,
       isFileTypeInvalid
@@ -198,13 +208,16 @@ class Player extends React.Component {
                   className={classes.player__uploadPhoto}
                   size="small"
                 >
-                  {!playerPhotoPreview && (
+                  {!playerPhotoPreview && !playerAvatarWasRemoved && (
                     <Button
                       onClick={this.removeAvatar}
                       disabled={!player.photoUrl}
                     >
                       Remove
                     </Button>
+                  )}
+                  {playerAvatarWasRemoved && !playerPhotoPreview && (
+                    <Button onClick={this.restoreAvatar}>Restore</Button>
                   )}
                   {playerPhotoPreview && (
                     <Button onClick={this.resetAvatar}>Cancel</Button>
