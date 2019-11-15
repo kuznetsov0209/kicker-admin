@@ -86,12 +86,12 @@ class TournamentEditForm extends Component {
     try {
       await store.removeTournament(id);
       handleClose();
-    } catch(error) {
+    } catch (error) {
       this.setState({
         alertMessage: `${error.name} ${error.message}`,
         isAlertOpen: true
       });
-    }finally {
+    } finally {
       this.handleRemovingModalClose();
     }
   };
@@ -114,10 +114,11 @@ class TournamentEditForm extends Component {
     let actualState = this.state;
 
     if (
-      firstState.title != actualState.title ||
-      firstState.startDate != actualState.startDate ||
-      firstState.endDate != actualState.endDate ||
-      firstState.isForceFinished != actualState.isForceFinished
+      this.firstState &&
+      (firstState.title != actualState.title ||
+        firstState.startDate != actualState.startDate ||
+        firstState.endDate != actualState.endDate ||
+        firstState.isForceFinished != actualState.isForceFinished)
     ) {
       this.setState({ isExitDialogOpen: true });
     } else {
@@ -166,7 +167,9 @@ class TournamentEditForm extends Component {
             id="EditForm"
           />
           <FormControlLabel
-            control={<Switch onChange={this.handleForceFinish} color="primary" />}
+            control={
+              <Switch onChange={this.handleForceFinish} color="primary" />
+            }
             label="FORCE FINISH"
             labelPlacement="start"
           />
