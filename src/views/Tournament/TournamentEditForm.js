@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import { store } from "../../store/tournamentStore";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -10,13 +9,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Grid } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import TournamentForm from "../../components/TournamentForm";
+import TournamentForm from "../Tournaments/TournamentForm";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
+import ErrorDialog from "../../components/ErrorDialog";
 
-@withRouter
 class TournamentEditForm extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,10 @@ class TournamentEditForm extends Component {
 
       isLoading: false,
       isExitDialogOpen: false,
-      isDeleteModalOpen: false
+      isDeleteModalOpen: false,
+
+      isAlertOpen: false,
+      allertMessage: ""
     };
 
     this.firstState = {};
@@ -56,7 +58,7 @@ class TournamentEditForm extends Component {
     this.firstState = this.state;
   };
 
-  tryToEdit = async () => {
+  tryToEditTournament = async () => {
     const { id, title, startDate, endDate, isForceFinished } = this.state;
     const { handleClose } = this.props;
     try {
@@ -68,31 +70,41 @@ class TournamentEditForm extends Component {
         endDate,
         isForceFinished
       });
+    } catch (error) {
+      this.setState({
+        alertMessage: `${error.name} ${error.message}`,
+        isAlertOpen: true
+      });
     } finally {
       this.setState({ isLoading: false });
       handleClose();
     }
   };
 
-  removeTournament = async id => {
+  tryToRemoveTournament = async id => {
     const { handleClose } = this.props;
     try {
       await store.removeTournament(id);
       handleClose();
-    } finally {
-      this.closeDeleteModal();
+    } catch(error) {
+      this.setState({
+        alertMessage: `${error.name} ${error.message}`,
+        isAlertOpen: true
+      });
+    }finally {
+      this.handleRemovingModalClose();
     }
   };
 
-  openDeleteModal = () => {
+  handleRemovingModalOpen = () => {
     this.setState({ isDeleteModalOpen: true });
   };
 
-  closeDeleteModal = () => {
+  handleRemovingModalClose = () => {
     this.setState({ isDeleteModalOpen: false });
   };
 
-  handleSwitch = e => {
+  handleForceFinish = e => {
     this.setState({ isForceFinished: e.target.checked });
   };
 
@@ -113,16 +125,20 @@ class TournamentEditForm extends Component {
     }
   };
 
-  closeExitDialog = () => {
+  handleExitDialogClose = () => {
     this.setState({ isExitDialogOpen: false });
   };
 
-  handleFormChanges = state => {
+  onFormChange = state => {
     this.setState(state);
   };
 
+  handleAlertClose = () => {
+    this.setState({ isAlertOpen: false });
+  };
+
   render() {
-    const { classes, handleClose, open } = this.props;
+    const { handleClose, open } = this.props;
     return (
       <Dialog
         open={
@@ -146,27 +162,30 @@ class TournamentEditForm extends Component {
             title={this.state.title}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
-            handleChanges={this.handleFormChanges}
+            onChange={this.onFormChange}
+            id="EditForm"
           />
           <FormControlLabel
-            control={<Switch onChange={this.handleSwitch} color="primary" />}
+            control={<Switch onChange={this.handleForceFinish} color="primary" />}
             label="FORCE FINISH"
             labelPlacement="start"
           />
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={this.openDeleteModal}
+            onClick={this.handleRemovingModalOpen}
             variant="outlined"
             color="secondary"
             startIcon={<DeleteIcon />}
+            form="EditForm"
           >
             Remove tournament
           </Button>
           <Button
             variant={"contained"}
             color={"primary"}
-            onClick={this.tryToEdit}
+            onClick={this.tryToEditTournament}
+            form="EditForm"
           >
             {this.state.isLoading ? (
               <CircularProgress color={"secondary"} size={20} />
@@ -178,16 +197,22 @@ class TournamentEditForm extends Component {
         <ConfirmationDialog
           open={this.state.isExitDialogOpen}
           handleConfirm={handleClose}
-          handleClose={this.closeExitDialog}
+          handleClose={this.handleExitDialogClose}
           title="Close popup"
           contentText="Are you sure you want to close the popup? All changes will be lost."
         />
         <ConfirmationDialog
           open={this.state.isDeleteModalOpen}
-          handleConfirm={() => this.removeTournament(this.tournamentId)}
-          handleClose={this.closeDeleteModal}
+          handleConfirm={() => this.tryToRemoveTournament(this.tournamentId)}
+          handleClose={this.handleRemovingModalClose}
           title="Remove tournament"
           contentText="Are you sure you want to remove the tournament?"
+        />
+        <ErrorDialog
+          open={this.state.isAlertOpen}
+          handleClose={this.handleAlertClose}
+          title={"Ошибка"}
+          contentText={this.state.alertMessage}
         />
       </Dialog>
     );
