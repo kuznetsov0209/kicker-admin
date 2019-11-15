@@ -1,29 +1,28 @@
-import React, { forwardRef, Component } from "react";
+import React, { Component } from "react";
+import { observer } from "mobx-react";
 import { store } from "../../store/userStore";
-import MaterialTable from "material-table";
 import Avatar from "@material-ui/core/Avatar";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import SearchIcon from "@material-ui/icons/Search";
 import EditIcon from "@material-ui/icons/Edit";
-import ClearIcon from "@material-ui/icons/Clear";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import PlayerDialog from "./PlayerDialog";
+import DataTable from "./../../components/DataTable";
 
+@observer
 class Players extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       isPlayerDialogVisible: false,
-      player: null
+      player: null,
+      page: 0
     };
   }
 
   async loadUsersIfNeeded() {
     try {
       this.setState({ isLoading: true });
-      await store.getUsers();
+      await store.getUsers({ page: this.state.page });
     } finally {
       this.setState({ isLoading: false });
     }
@@ -37,29 +36,28 @@ class Players extends Component {
     this.setState({ isPlayerDialogVisible: false });
   };
 
+  loadMore = () => {
+    this.setState(
+      prevState => ({
+        page: prevState.page + 1
+      }),
+      () => store.getUsers({ page: this.state.page })
+    );
+  };
+
   render() {
+    const { users, hasMoreUsers } = store;
+
     if (this.state.isLoading) {
       return <CircularProgress style={{ margin: "15px auto" }} />;
     }
 
     return (
       <>
-        <MaterialTable
-          title=""
-          icons={{
-            Search: forwardRef((props, ref) => (
-              <SearchIcon {...props} ref={ref} />
-            )),
-            ResetSearch: forwardRef((props, ref) => (
-              <ClearIcon {...props} ref={ref} />
-            )),
-            NextPage: forwardRef((props, ref) => (
-              <ChevronRightIcon {...props} ref={ref} />
-            )),
-            PreviousPage: forwardRef((props, ref) => (
-              <ChevronLeftIcon {...props} ref={ref} />
-            ))
-          }}
+        <DataTable
+          data={users}
+          loadMore={this.loadMore}
+          hasMore={hasMoreUsers}
           columns={[
             {
               title: "User",
@@ -70,30 +68,23 @@ class Players extends Component {
             },
             {
               title: "Name",
-              field: "name",
-              defaultSort: "asc"
+              field: "name"
             },
             {
               title: "E-mail",
               field: "email"
-            }
-          ]}
-          data={store.users}
-          options={{
-            searchFieldAlignment: "left",
-            actionsColumnIndex: -1,
-            pageSize: 20,
-            pageSizeOptions: [],
-            paginationType: "stepped",
-            sorting: false
-          }}
-          actions={[
+            },
             {
-              icon: () => <EditIcon />,
-              tooltip: "Edit User",
-              onClick: (event, player) => {
-                this.setState({ isPlayerDialogVisible: true, player });
-              }
+              render: rowData => (
+                <EditIcon
+                  onClick={() =>
+                    this.setState({
+                      isPlayerDialogVisible: true,
+                      player: rowData
+                    })
+                  }
+                />
+              )
             }
           ]}
         />
