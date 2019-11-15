@@ -20,6 +20,7 @@ import GroupSharpIcon from "@material-ui/icons/GroupSharp";
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
 import { API_HOST } from "../api";
+import ErrorDialog from "../components/ErrorDialog";
 
 const styles = theme => ({
   root: {
@@ -45,8 +46,7 @@ class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpenPopup: false,
-      value: this.props.location.pathname
+      isAlertOpen: false
     };
     this.authPopup = null;
     this.authEventListener = null;
@@ -61,6 +61,14 @@ class ScrollableTabsButtonForce extends React.Component {
     this.props.history.push(value);
   };
 
+  openAlert = () => {
+    this.setState({ isAlertOpen: true });
+  };
+
+  closeAlert = () => {
+    this.setState({ isAlertOpen: false });
+  };
+
   handleAuthEvent = event => {
     this.setState({ isAuthPopupOpen: false });
 
@@ -68,14 +76,15 @@ class ScrollableTabsButtonForce extends React.Component {
       this.authPopup.close();
     }
 
-    if (event.data.success) {
+    if (event.data.isAuthenticated) {
       store.authStore.loadProfile();
+      window.removeEventListener("message", this.handleAuthEvent);
     } else {
+      this.openAlert();
     }
   };
 
   openAuthPopup = () => {
-    window.removeEventListener("message", this.handleAuthEvent);
     this.authEventListener = window.addEventListener(
       "message",
       this.handleAuthEvent
@@ -141,6 +150,12 @@ class ScrollableTabsButtonForce extends React.Component {
             </div>
           </Toolbar>
         </AppBar>
+        <ErrorDialog
+          open={this.state.isAlertOpen}
+          handleClose={this.closeAlert}
+          title="Authorisation Error"
+          contentText="Authorisation Error. Try logging in again."
+        />
       </div>
     );
   }
