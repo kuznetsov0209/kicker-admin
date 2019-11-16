@@ -49,7 +49,6 @@ class ScrollableTabsButtonForce extends React.Component {
       isAlertOpen: false
     };
     this.authPopup = null;
-    this.authEventListener = null;
   }
 
   @computed
@@ -85,10 +84,7 @@ class ScrollableTabsButtonForce extends React.Component {
   };
 
   openAuthPopup = () => {
-    this.authEventListener = window.addEventListener(
-      "message",
-      this.handleAuthEvent
-    );
+    window.addEventListener("message", this.handleAuthEvent);
 
     this.setState({ isAuthPopupOpen: true });
 
