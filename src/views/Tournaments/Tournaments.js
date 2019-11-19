@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
+import ViewHeadline from "@material-ui/icons/ViewHeadline";
 import MaterialTable from "material-table";
 import { styles } from "./Tournaments.styles";
 import { store } from "../../store/tournamentStore";
@@ -76,6 +77,15 @@ class Tournaments extends Component {
               tooltip: "Add Tournament",
               isFreeAction: true,
               onClick: this.handleOpen
+            },
+            {
+              icon: ViewHeadline,
+              tooltip: "Show details",
+              onClick: (event, rawData) => {
+                this.props.history.push(
+                  this.props.history.location.pathname + "/" + rawData.id
+                );
+              }
             },
             {
               icon: Create,
