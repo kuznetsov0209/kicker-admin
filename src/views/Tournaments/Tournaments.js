@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
@@ -108,13 +109,12 @@ class Tournaments extends Component {
               title: "Title",
               field: "title",
               render: rowData => (
-                <a
+                <Link
                   href={window.location.href + "/" + rowData.id}
-                  style={{ "text-decoration": "none" }}
-                  title="View Details"
+                  className={classes.link}
                 >
                   {rowData.title}
-                </a>
+                </Link>
               )
             },
             {
