@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
 import Delete from "@material-ui/icons/Delete";
-import ViewHeadline from "@material-ui/icons/ViewHeadline";
 import MaterialTable from "material-table";
 import { styles } from "./Tournaments.styles";
 import { store } from "../../store/tournamentStore";
@@ -78,15 +77,15 @@ class Tournaments extends Component {
               isFreeAction: true,
               onClick: this.handleOpen
             },
-            {
-              icon: ViewHeadline,
-              tooltip: "Show details",
-              onClick: (event, rawData) => {
-                this.props.history.push(
-                  this.props.history.location.pathname + "/" + rawData.id
-                );
-              }
-            },
+            // {
+            //   icon: ViewHeadline,
+            //   tooltip: "Show details",
+            //   onClick: (event, rawData) => {
+            //     this.props.history.push(
+            //       this.props.history.location.pathname + "/" + rawData.id
+            //     );
+            //   }
+            // },
             {
               icon: Create,
               tooltip: "Edit Tournament",
@@ -108,7 +107,15 @@ class Tournaments extends Component {
             {
               title: "Title",
               field: "title",
-              render: rowData => rowData.title
+              render: rowData => (
+                <a
+                  href={window.location.href + "/" + rowData.id}
+                  style={{ "text-decoration": "none" }}
+                  title="View Details"
+                >
+                  {rowData.title}
+                </a>
+              )
             },
             {
               title: "Start Date",
