@@ -78,15 +78,6 @@ class Tournaments extends Component {
               isFreeAction: true,
               onClick: this.handleOpen
             },
-            // {
-            //   icon: ViewHeadline,
-            //   tooltip: "Show details",
-            //   onClick: (event, rawData) => {
-            //     this.props.history.push(
-            //       this.props.history.location.pathname + "/" + rawData.id
-            //     );
-            //   }
-            // },
             {
               icon: Create,
               tooltip: "Edit Tournament",
