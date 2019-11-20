@@ -1,4 +1,6 @@
-# Kicker admin panel
+# Kicker's Web Admin Application
+
+Web Admin Application is used to manage data on the kicker website, editing players / matches / tournament tables.
 
 ## Prerequisites
 
