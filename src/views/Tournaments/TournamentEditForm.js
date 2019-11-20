@@ -12,7 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import TournamentForm from "../Tournaments/TournamentForm";
+import TournamentForm from "./TournamentForm";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import ErrorDialog from "../../components/ErrorDialog";
 
