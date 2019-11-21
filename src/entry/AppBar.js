@@ -46,7 +46,7 @@ class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAlertOpen: false
+      isAuthFailed: false
     };
     this.authPopup = null;
   }
@@ -61,32 +61,29 @@ class ScrollableTabsButtonForce extends React.Component {
   };
 
   openAlert = () => {
-    this.setState({ isAlertOpen: true });
+    this.setState({ isAuthFailed: true });
   };
 
   closeAlert = () => {
-    this.setState({ isAlertOpen: false });
+    this.setState({ isAuthFailed: false });
   };
 
-  handleAuthEvent = event => {
-    this.setState({ isAuthPopupOpen: false });
-
-    if (this.authPopup) {
-      this.authPopup.close();
-    }
-
-    if (event.data.isAuthenticated) {
-      store.authStore.loadProfile();
+  handleAuthEvent = async event => {
+    if (event.origin === API_HOST) {
       window.removeEventListener("message", this.handleAuthEvent);
-    } else {
-      this.openAlert();
+      this.authPopup.close();
+
+      if (event.data.isAuthenticated) {
+        await store.authStore.loadProfile();
+        this.closeAlert();
+      } else {
+        this.openAlert();
+      }
     }
   };
 
   openAuthPopup = () => {
     window.addEventListener("message", this.handleAuthEvent);
-
-    this.setState({ isAuthPopupOpen: true });
 
     const width = 600;
     const height = 600;
@@ -105,7 +102,6 @@ class ScrollableTabsButtonForce extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
@@ -147,10 +143,10 @@ class ScrollableTabsButtonForce extends React.Component {
           </Toolbar>
         </AppBar>
         <ErrorDialog
-          open={this.state.isAlertOpen}
+          open={this.state.isAuthFailed}
           handleClose={this.closeAlert}
-          title="Authorisation Error"
-          contentText="Authorisation Error. Try logging in again."
+          title="Something went wrong"
+          contentText="Please try again later"
         />
       </div>
     );
