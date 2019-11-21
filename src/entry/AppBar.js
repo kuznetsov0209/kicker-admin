@@ -75,7 +75,6 @@ class ScrollableTabsButtonForce extends React.Component {
 
       if (event.data.isAuthenticated) {
         await store.authStore.loadProfile();
-        this.closeAlert();
       } else {
         this.openAlert();
       }
