@@ -13,6 +13,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import PersonIcon from "@material-ui/icons/Person";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import Dropzone from "react-dropzone";
 import styles from "./PlayerDialog.style";
 
 const SUPPORTED_FILE_TYPES = ["image/png", "image/jpg", "image/jpeg"];
@@ -66,9 +67,7 @@ class Player extends React.Component {
     }));
   };
 
-  handleChangeAvatar = e => {
-    const [file] = e.target.files;
-
+  handleChangeAvatar = ([file]) => {
     if (file) {
       this.setState({
         isFileSizeInvalid: file.size > MAX_FILE_SIZE,
@@ -172,6 +171,7 @@ class Player extends React.Component {
       isFileSizeInvalid,
       isFileTypeInvalid
     } = this.state;
+
     return (
       <>
         <Dialog
@@ -185,25 +185,31 @@ class Player extends React.Component {
           {player && (
             <DialogContent className={classes.player__content}>
               <div className={classes.player__avatarContainer}>
-                <Avatar
-                  src={
-                    player.photoUrl && !playerPhotoPreview
-                      ? player.photoUrl
-                      : playerPhotoPreview
-                  }
-                  className={classes.player__avatar}
-                >
-                  {!player.photoUrl && !playerPhotoPreview && (
-                    <PersonIcon className={classes.player__avatarIcon} />
+                <Dropzone onDrop={this.handleChangeAvatar}>
+                  {({ getRootProps, getInputProps }) => (
+                    <div {...getRootProps()}>
+                      <Avatar
+                        src={
+                          player.photoUrl && !playerPhotoPreview
+                            ? player.photoUrl
+                            : playerPhotoPreview
+                        }
+                        className={classes.player__avatar}
+                      >
+                        {!player.photoUrl && !playerPhotoPreview && (
+                          <PersonIcon className={classes.player__avatarIcon} />
+                        )}
+                      </Avatar>
+                      <input
+                        {...getInputProps()}
+                        accept="image/jpg,image/png"
+                        id="text-button-file"
+                        type="file"
+                        hidden
+                      />
+                    </div>
                   )}
-                </Avatar>
-                <input
-                  accept="image/jpg,image/png"
-                  id="text-button-file"
-                  type="file"
-                  hidden
-                  onChange={this.handleChangeAvatar}
-                />
+                </Dropzone>
                 <ButtonGroup
                   className={classes.player__uploadPhoto}
                   size="small"
