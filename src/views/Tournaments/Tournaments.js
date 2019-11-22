@@ -102,10 +102,7 @@ class Tournaments extends Component {
               render: rowData => (
                 <LinkMui
                   component={props => (
-                    <Link
-                      to={location => `/tournaments/${rowData.id}`}
-                      {...props}
-                    />
+                    <Link to={`/tournaments/${rowData.id}`} {...props} />
                   )}
                 >
                   {rowData.title}
