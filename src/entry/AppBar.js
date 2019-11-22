@@ -20,6 +20,7 @@ import GroupSharpIcon from "@material-ui/icons/GroupSharp";
 import UserAvatar from "../components/UserAvatar";
 import { store } from "../store";
 import { API_HOST } from "../api";
+import ErrorDialog from "../components/ErrorDialog";
 
 const styles = theme => ({
   root: {
@@ -44,6 +45,10 @@ const styles = theme => ({
 class ScrollableTabsButtonForce extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isAuthFailed: false
+    };
+    this.authPopup = null;
   }
 
   @computed
@@ -55,9 +60,47 @@ class ScrollableTabsButtonForce extends React.Component {
     this.props.history.push(value);
   };
 
+  openAlert = () => {
+    this.setState({ isAuthFailed: true });
+  };
+
+  closeAlert = () => {
+    this.setState({ isAuthFailed: false });
+  };
+
+  handleAuthEvent = async event => {
+    if (event.origin === API_HOST) {
+      window.removeEventListener("message", this.handleAuthEvent);
+      this.authPopup.close();
+
+      if (event.data.isAuthenticated) {
+        await store.authStore.loadProfile();
+      } else {
+        this.openAlert();
+      }
+    }
+  };
+
+  openAuthPopup = () => {
+    window.addEventListener("message", this.handleAuthEvent);
+
+    const width = 600;
+    const height = 600;
+    const left = window.screenLeft + window.innerWidth / 2 - width / 2;
+    const top = window.screenTop + window.innerHeight / 2 - height / 2;
+    const url = `${API_HOST}/auth/google`;
+
+    this.authPopup = window.open(
+      url,
+      "",
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+    scrollbars=no, resizable=no, copyhistory=no, width=${width}, 
+    height=${height}, top=${top}, left=${left}`
+    );
+  };
+
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
@@ -90,7 +133,7 @@ class ScrollableTabsButtonForce extends React.Component {
                   size="medium"
                   color="secondary"
                   variant="contained"
-                  href={`${API_HOST}/auth/google`}
+                  onClick={this.openAuthPopup}
                 >
                   Login
                 </Button>
@@ -98,6 +141,12 @@ class ScrollableTabsButtonForce extends React.Component {
             </div>
           </Toolbar>
         </AppBar>
+        <ErrorDialog
+          open={this.state.isAuthFailed}
+          handleClose={this.closeAlert}
+          title="Something went wrong"
+          contentText="Please try again later"
+        />
       </div>
     );
   }
