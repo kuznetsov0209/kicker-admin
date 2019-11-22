@@ -1,14 +1,14 @@
-# Kicker's Web Admin Application
+# Kicker Admin
 
 Web Admin Application is used to manage data on the kicker website, editing players / matches / tournament tables.
 
 ## Prerequisites
 
-- Install [Kicker Backend](https://github.com/kuznetsov0209/kicker-backend)
+- [Install Node.js](https://nodejs.org)
 
-- Run [Kicker Backend](https://github.com/kuznetsov0209/kicker-backend) services
+- [Install Yarn](https://yarnpkg.com/en/docs/install)
 
-- Prepare [Kicker Backend](https://github.com/kuznetsov0209/kicker-backend) database
+- [Run API server](https://github.com/kuznetsov0209/kicker-backend)
 
 ## Install project's dependencies
 
