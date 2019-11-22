@@ -12,6 +12,8 @@ import { store } from "../../store/tournamentStore";
 import dateFormat from "dateformat";
 import { withRouter } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
+import Tournament from "./TournamentEditForm";
+import TournamentEditForm from "./TournamentEditForm";
 
 @withStyles(styles)
 @withRouter
@@ -22,7 +24,11 @@ class Tournaments extends Component {
 
     this.state = {
       isLoading: true,
-      open: false
+      open: false,
+      isLoading: true,
+      isTournamentDialogVisible: false,
+      tournament: null,
+      page: 0
     };
   }
 
@@ -38,6 +44,18 @@ class Tournaments extends Component {
     });
   };
 
+  setTournamentData = data => {
+    this.setState({
+      isTournamentDialogVisible: true,
+      tournament: data
+    });
+  };
+  closeTournamentDialog = () => {
+    this.setState({
+      isTournamentDialogVisible: false,
+      tournament: null
+    });
+  };
   async loadTournamentsIfNeeded() {
     try {
       this.setState({ isLoading: true });
@@ -80,7 +98,9 @@ class Tournaments extends Component {
             {
               icon: Create,
               tooltip: "Edit Tournament",
-              onClick: () => {}
+              onClick: (e, rowData) => {
+                this.setTournamentData(rowData);
+              }
             },
             {
               icon: Delete,
@@ -139,6 +159,13 @@ class Tournaments extends Component {
           <TournamentAddForm
             handleClose={this.handleClose}
             open={this.state.open}
+          />
+        )}
+        {this.state.isTournamentDialogVisible && (
+          <TournamentEditForm
+            onClose={this.closeTournamentDialog}
+            open={this.state.isTournamentDialogVisible}
+            tournament={this.state.tournament}
           />
         )}
       </React.Fragment>

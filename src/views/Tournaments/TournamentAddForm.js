@@ -7,7 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { store } from "../../store/tournamentStore";
 import TournamentForm from "./TournamentForm";
-import ErrorDialog from "../../components/ErrorDialog"
+import ErrorDialog from "../../components/ErrorDialog";
 
 class TournamentAddForm extends Component {
   constructor(props) {
@@ -78,7 +78,7 @@ class TournamentAddForm extends Component {
             )}
           </Button>
         </DialogActions>
-        <ErrorDialog 
+        <ErrorDialog
           open={this.state.isAlertOpen}
           handleClose={this.handleAlertClose}
           title={"Ошибка при создании турнира"}
