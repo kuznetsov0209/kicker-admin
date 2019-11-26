@@ -179,22 +179,29 @@ class Player extends React.Component {
           <div
             {...getRootProps()}
             className={cn(classes.player__dropZone, {
-              [classes.player__dropZoneActive]: isDragActive
+              [classes.player__dropZoneOpen]: open
             })}
           >
-            <Typography
-              className={cn(classes.player__dropZoneText, {
-                [classes.player__dropZoneTextActive]: isDragActive
+            <div
+              className={cn(classes.player__dropZoneInner, {
+                [classes.player__dropZoneInnerActive]: isDragActive
               })}
             >
-              Drop here!
-            </Typography>
+              <Typography
+                className={cn(classes.player__dropZoneText, {
+                  [classes.player__dropZoneTextActive]: isDragActive
+                })}
+              >
+                Drop here!
+              </Typography>
+            </div>
             <Dialog
               open={open}
               onClose={this.requestDialogClosing}
               className={classes.player}
               fullWidth={true}
               maxWidth="xs"
+              disablePortal={true}
             >
               <DialogTitle>Edit player information</DialogTitle>
               {player && (
