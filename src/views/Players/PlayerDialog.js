@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -13,6 +14,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import PersonIcon from "@material-ui/icons/Person";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import Dropzone from "react-dropzone";
 import styles from "./PlayerDialog.style";
 
 const SUPPORTED_FILE_TYPES = ["image/png", "image/jpg", "image/jpeg"];
@@ -66,9 +68,7 @@ class Player extends React.Component {
     }));
   };
 
-  handleChangeAvatar = e => {
-    const [file] = e.target.files;
-
+  handleChangeAvatar = ([file]) => {
     if (file) {
       this.setState({
         isFileSizeInvalid: file.size > MAX_FILE_SIZE,
@@ -172,140 +172,164 @@ class Player extends React.Component {
       isFileSizeInvalid,
       isFileTypeInvalid
     } = this.state;
+
     return (
-      <>
-        <Dialog
-          open={open}
-          onClose={this.requestDialogClosing}
-          className={classes.player}
-          fullWidth={true}
-          maxWidth="xs"
-        >
-          <DialogTitle>Edit player information</DialogTitle>
-          {player && (
-            <DialogContent className={classes.player__content}>
-              <div className={classes.player__avatarContainer}>
-                <Avatar
-                  src={
-                    player.photoUrl && !playerPhotoPreview
-                      ? player.photoUrl
-                      : playerPhotoPreview
-                  }
-                  className={classes.player__avatar}
-                >
-                  {!player.photoUrl && !playerPhotoPreview && (
-                    <PersonIcon className={classes.player__avatarIcon} />
-                  )}
-                </Avatar>
-                <input
-                  accept="image/jpg,image/png"
-                  id="text-button-file"
-                  type="file"
-                  hidden
-                  onChange={this.handleChangeAvatar}
-                />
-                <ButtonGroup
-                  className={classes.player__uploadPhoto}
-                  size="small"
-                >
-                  {!playerPhotoPreview && !playerAvatarWasRemoved && (
-                    <Button
-                      onClick={this.removeAvatar}
-                      disabled={!player.photoUrl}
+      <Dropzone noClick={true} onDrop={this.handleChangeAvatar}>
+        {({ getRootProps, getInputProps, isDragActive }) => (
+          <div
+            {...getRootProps()}
+            className={cn(classes.player__dropZone, {
+              [classes.player__dropZoneOpen]: open
+            })}
+          >
+            <div
+              className={cn(classes.player__dropZoneInner, {
+                [classes.player__dropZoneInnerActive]: isDragActive
+              })}
+            >
+              <Typography
+                className={cn(classes.player__dropZoneText, {
+                  [classes.player__dropZoneTextActive]: isDragActive
+                })}
+              >
+                Drop here!
+              </Typography>
+            </div>
+            <Dialog
+              open={open}
+              onClose={this.requestDialogClosing}
+              className={classes.player}
+              fullWidth={true}
+              maxWidth="xs"
+              disablePortal={true}
+            >
+              <DialogTitle>Edit player information</DialogTitle>
+              {player && (
+                <DialogContent className={classes.player__content}>
+                  <div className={classes.player__avatarContainer}>
+                    <Avatar
+                      src={
+                        player.photoUrl && !playerPhotoPreview
+                          ? player.photoUrl
+                          : playerPhotoPreview
+                      }
+                      className={classes.player__avatar}
                     >
-                      Remove
-                    </Button>
-                  )}
-                  {playerAvatarWasRemoved && !playerPhotoPreview && (
-                    <Button onClick={this.restoreAvatar}>Restore</Button>
-                  )}
-                  {playerPhotoPreview && (
-                    <Button onClick={this.resetAvatar}>Cancel</Button>
-                  )}
-                  <Button component="label" htmlFor="text-button-file">
-                    Upload
-                  </Button>
-                </ButtonGroup>
-                {isFileSizeInvalid ? (
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
+                      {!player.photoUrl && !playerPhotoPreview && (
+                        <PersonIcon className={classes.player__avatarIcon} />
+                      )}
+                    </Avatar>
+                    <input
+                      {...getInputProps()}
+                      accept="image/jpg,image/png"
+                      id="text-button-file"
+                      type="file"
+                      hidden
+                    />
+                    <ButtonGroup
+                      className={classes.player__uploadPhoto}
+                      size="small"
+                    >
+                      {!playerPhotoPreview && !playerAvatarWasRemoved && (
+                        <Button
+                          onClick={this.removeAvatar}
+                          disabled={!player.photoUrl}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                      {playerAvatarWasRemoved && !playerPhotoPreview && (
+                        <Button onClick={this.restoreAvatar}>Restore</Button>
+                      )}
+                      {playerPhotoPreview && (
+                        <Button onClick={this.resetAvatar}>Cancel</Button>
+                      )}
+                      <Button component="label" htmlFor="text-button-file">
+                        Upload
+                      </Button>
+                    </ButtonGroup>
+                    {isFileSizeInvalid ? (
+                      <Typography
+                        variant="subtitle2"
+                        gutterBottom
+                        color="secondary"
+                      >
+                        File size exceeds 3 Mb.
+                      </Typography>
+                    ) : null}
+                    {isFileTypeInvalid ? (
+                      <Typography
+                        variant="subtitle2"
+                        gutterBottom
+                        color="secondary"
+                      >
+                        You can upload only .png or .jpg file.
+                      </Typography>
+                    ) : null}
+                  </div>
+                  <TextField
+                    fullWidth
+                    label="Player name"
+                    value={player.name || ""}
+                    margin="normal"
+                    onChange={this.handleChangeName}
+                  />
+                  <TextField
+                    fullWidth
                     color="secondary"
-                  >
-                    File size exceeds 3 Mb.
-                  </Typography>
-                ) : null}
-                {isFileTypeInvalid ? (
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    color="secondary"
-                  >
-                    You can upload only .png or .jpg file.
-                  </Typography>
-                ) : null}
-              </div>
-              <TextField
-                fullWidth
-                label="Player name"
-                value={player.name || ""}
-                margin="normal"
-                onChange={this.handleChangeName}
+                    label="E-mail"
+                    value={player.email || ""}
+                    margin="normal"
+                    onChange={this.handleChangeEmail}
+                    type="email"
+                  />
+                </DialogContent>
+              )}
+              <DialogActions className={classes.player__buttonContainer}>
+                <Button
+                  className={classes.player__inactivateButton}
+                  variant="outlined"
+                  color="secondary"
+                  startIcon={<CancelIcon />}
+                  onClick={this.requestUserInactivation}
+                >
+                  Make player inactive
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.saveChanges}
+                  disabled={!this.isPlayerChanged}
+                >
+                  Save
+                </Button>
+              </DialogActions>
+              <ConfirmationDialog
+                open={this.state.isDialogClosingRequested}
+                handleClose={this.cancelDialogClosing}
+                title="Close popup"
+                contentText="Are you sure you want to close the popup? All changes will be lost."
+                handleConfirm={this.closeDialog}
               />
-              <TextField
-                fullWidth
-                color="secondary"
-                label="E-mail"
-                value={player.email || ""}
-                margin="normal"
-                onChange={this.handleChangeEmail}
-                type="email"
+              <ConfirmationDialog
+                open={this.state.isUserInactivationRequested}
+                handleClose={this.cancelUserInactivation}
+                title="Make player inactive"
+                contentText={`Are you sure you want to make player ${
+                  player ? player.name : ""
+                } inactive?`}
+                handleConfirm={this.inactivateUser}
               />
-            </DialogContent>
-          )}
-          <DialogActions className={classes.player__buttonContainer}>
-            <Button
-              className={classes.player__inactivateButton}
-              variant="outlined"
-              color="secondary"
-              startIcon={<CancelIcon />}
-              onClick={this.requestUserInactivation}
-            >
-              Make player inactive
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.saveChanges}
-              disabled={!this.isPlayerChanged}
-            >
-              Save
-            </Button>
-          </DialogActions>
-          <ConfirmationDialog
-            open={this.state.isDialogClosingRequested}
-            handleClose={this.cancelDialogClosing}
-            title="Close popup"
-            contentText="Are you sure you want to close the popup? All changes will be lost."
-            handleConfirm={this.closeDialog}
-          />
-          <ConfirmationDialog
-            open={this.state.isUserInactivationRequested}
-            handleClose={this.cancelUserInactivation}
-            title="Make player inactive"
-            contentText={`Are you sure you want to make player ${
-              player ? player.name : ""
-            } inactive?`}
-            handleConfirm={this.inactivateUser}
-          />
-        </Dialog>
-        <Snackbar
-          open={this.state.isMessageVisible}
-          autoHideDuration={3000}
-          onClose={this.closeMessage}
-          message={message}
-        />
-      </>
+            </Dialog>
+            <Snackbar
+              open={this.state.isMessageVisible}
+              autoHideDuration={3000}
+              onClose={this.closeMessage}
+              message={message}
+            />
+          </div>
+        )}
+      </Dropzone>
     );
   }
 }
