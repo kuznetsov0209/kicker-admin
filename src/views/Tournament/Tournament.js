@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { observable } from "mobx";
 import { withRouter } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from "@material-ui/icons/Add";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import dateFormat from "dateformat";
 import { store } from "../../store/tournamentStore";
 import Standings from "./Standings";
@@ -81,16 +81,15 @@ class Tournament extends React.Component {
             >
               Edit Tournament
             </Button>
-            <Button
-              style={{ marginTop: "10px" }}
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-            >
-              ADD NEW TEAM
-            </Button>
           </div>
         </div>
+        <Button
+          style={{ marginTop: "10px", marginBotton: "10px" }}
+          color="primary"
+          startIcon={<AddCircleOutlineIcon />}
+        >
+          Add New Team
+        </Button>
         <Standings tournament={this.tournament} />
         <div
           style={{
