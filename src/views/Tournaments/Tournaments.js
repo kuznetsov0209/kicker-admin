@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
-import CircularProgress  from "@material-ui/core/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import LinkMui from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
@@ -10,7 +11,7 @@ import MaterialTable from "material-table";
 import { styles } from "./Tournaments.styles";
 import { store } from "../../store/tournamentStore";
 import dateFormat from "dateformat";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
 
 @withStyles(styles)
@@ -65,17 +66,14 @@ class Tournaments extends Component {
             {
               icon: () => {
                 return (
-                <Button
-                  color="primary"
-                  startIcon={
-                    <AddCircleOutline
-                      color="primary"
-                    />
-                  }
-                >
-                  Add new tournament
-                </Button>
-              )},
+                  <Button
+                    color="primary"
+                    startIcon={<AddCircleOutline color="primary" />}
+                  >
+                    Add new tournament
+                  </Button>
+                );
+              },
               tooltip: "Add Tournament",
               isFreeAction: true,
               onClick: this.handleOpen
@@ -91,7 +89,7 @@ class Tournaments extends Component {
               onClick: () => {}
             }
           ]}
-          data={ store.tournaments.map(tournament => tournament) }
+          data={store.tournaments.map(tournament => tournament)}
           columns={[
             {
               title: "№",
@@ -101,19 +99,29 @@ class Tournaments extends Component {
             {
               title: "Title",
               field: "title",
-              render: rowData => rowData.title
+              render: rowData => (
+                <LinkMui
+                  component={props => (
+                    <Link to={`/tournaments/${rowData.id}`} {...props} />
+                  )}
+                >
+                  {rowData.title}
+                </LinkMui>
+              )
             },
             {
               title: "Start Date",
               field: "startDate",
               type: "date",
-              render: rowData => dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Finish Date",
               field: "endDate",
               type: "date",
-              render: rowData => dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Status",
