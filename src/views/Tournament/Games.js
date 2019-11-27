@@ -37,11 +37,16 @@ class Games extends Component {
               <Typography align="center" variant="subtitle1">
                 {team1.name} — {team2.name}
               </Typography>
+
               {gamesResultsGrouped[tournamentGameId] && (
                 <List className={classes.tournamentList}>
                   {gamesResultsGrouped[tournamentGameId].map(
                     (gameResult, index) => (
-                      <Game key={index} gameResult={gameResult} />
+                      <Game
+                        key={index}
+                        gameResult={gameResult}
+                        tournamentGameId={tournamentGameId}
+                      />
                     )
                   )}
                 </List>

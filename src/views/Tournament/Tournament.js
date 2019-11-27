@@ -83,6 +83,7 @@ class Tournament extends React.Component {
             </Button>
           </div>
         </div>
+
         <Button
           style={{ marginTop: "10px", marginBotton: "10px" }}
           color="primary"
@@ -90,7 +91,9 @@ class Tournament extends React.Component {
         >
           Add New Team
         </Button>
+
         <Standings tournament={this.tournament} />
+
         <div
           style={{
             margin: "60px 0 16px",
@@ -101,6 +104,7 @@ class Tournament extends React.Component {
           <Typography component="span">Filter by team</Typography>
           <TournamentSelect tournament={this.tournament} />
         </div>
+
         <Games tournament={this.tournament} />
 
         {this.tournament.gamesResults.length === 0 &&

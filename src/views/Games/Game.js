@@ -14,6 +14,7 @@ import ErrorDialog from "../../components/ErrorDialog";
 import { store } from "../../store";
 import GameIsLinkedWithTournamentError from "../../apiErrors";
 import styles from "./Game.style";
+import LinkIcon from "@material-ui/icons/Link";
 
 @withStyles(styles)
 class Game extends Component {
@@ -37,6 +38,26 @@ class Game extends Component {
     } finally {
       this.closeDeleteModal();
     }
+  };
+
+  renderActionButton = () => {
+    if (this.props.onLinkGame)
+      return (
+        <Button
+          variant="contained"
+          size="small"
+          color="primary"
+          onClick={this.onLinkGame}
+        >
+          <LinkIcon />
+        </Button>
+      );
+
+    return (
+      <Button size="small" color="primary" onClick={this.openDeleteModal}>
+        Delete
+      </Button>
+    );
   };
 
   openDeleteModal = () => {
@@ -149,11 +170,7 @@ class Game extends Component {
             </div>
           </CardContent>
 
-          <CardActions>
-            <Button size="small" color="primary" onClick={this.openDeleteModal}>
-              Delete
-            </Button>
-          </CardActions>
+          <CardActions>{this.renderActionButton()}</CardActions>
         </Card>
 
         <ConfirmationDialog
@@ -166,7 +183,10 @@ class Game extends Component {
               <br />
               {redUsers} - {blueUsers}
               <br />
-              {dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")}
+              {dateFormat(
+                new Date(game.createdAt),
+                "ddd, hh:MM, mmm dS, yyyy "
+              )}
             </>
           }
           title="Remove game"
