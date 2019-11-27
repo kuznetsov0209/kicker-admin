@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
-import CircularProgress  from "@material-ui/core/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
@@ -12,6 +12,7 @@ import { store } from "../../store/tournamentStore";
 import dateFormat from "dateformat";
 import { withRouter } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
+import { Link } from "react-router-dom";
 
 @withStyles(styles)
 @withRouter
@@ -36,6 +37,12 @@ class Tournaments extends Component {
     this.setState({
       open: true
     });
+  };
+
+  handleTournamentEdit = param => {
+    var clickedTournament = JSON.parse(localStorage.getItem("tournament"));
+    var path = `/tournaments/${clickedTournament.id}`;
+    this.props.history.push(path);
   };
 
   async loadTournamentsIfNeeded() {
@@ -65,17 +72,14 @@ class Tournaments extends Component {
             {
               icon: () => {
                 return (
-                <Button
-                  color="primary"
-                  startIcon={
-                    <AddCircleOutline
-                      color="primary"
-                    />
-                  }
-                >
-                  Add new tournament
-                </Button>
-              )},
+                  <Button
+                    color="primary"
+                    startIcon={<AddCircleOutline color="primary" />}
+                  >
+                    Add new tournament
+                  </Button>
+                );
+              },
               tooltip: "Add Tournament",
               isFreeAction: true,
               onClick: this.handleOpen
@@ -83,7 +87,7 @@ class Tournaments extends Component {
             {
               icon: Create,
               tooltip: "Edit Tournament",
-              onClick: () => {}
+              onClick: this.handleTournamentEdit
             },
             {
               icon: Delete,
@@ -91,7 +95,7 @@ class Tournaments extends Component {
               onClick: () => {}
             }
           ]}
-          data={ store.tournaments.map(tournament => tournament) }
+          data={store.tournaments.map(tournament => tournament)}
           columns={[
             {
               title: "№",
@@ -101,19 +105,28 @@ class Tournaments extends Component {
             {
               title: "Title",
               field: "title",
-              render: rowData => rowData.title
+              render: rowData => (
+                <Button
+                  component={Link}
+                  to={`/tournaments/${rowData.tableData.id}`}
+                >
+                  {rowData.title}
+                </Button>
+              )
             },
             {
               title: "Start Date",
               field: "startDate",
               type: "date",
-              render: rowData => dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.startDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Finish Date",
               field: "endDate",
               type: "date",
-              render: rowData => dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
+              render: rowData =>
+                dateFormat(rowData.endDate, "dddd, mmmm dS, yyyy")
             },
             {
               title: "Status",
