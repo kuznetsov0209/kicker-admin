@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import LinkMui from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import AddCircleOutline from "@material-ui/icons/AddCircleOutline";
 import Create from "@material-ui/icons/Create";
@@ -10,9 +11,8 @@ import MaterialTable from "material-table";
 import { styles } from "./Tournaments.styles";
 import { store } from "../../store/tournamentStore";
 import dateFormat from "dateformat";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import TournamentAddForm from "./TournamentAddForm";
-import { Link } from "react-router-dom";
 
 @withStyles(styles)
 @withRouter
@@ -106,9 +106,13 @@ class Tournaments extends Component {
               title: "Title",
               field: "title",
               render: rowData => (
-                <Button component={Link} to={`/tournaments/${rowData.id}`}>
+                <LinkMui
+                  component={props => (
+                    <Link to={`/tournaments/${rowData.id}`} {...props} />
+                  )}
+                >
                   {rowData.title}
-                </Button>
+                </LinkMui>
               )
             },
             {

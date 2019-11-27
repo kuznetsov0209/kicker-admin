@@ -51,10 +51,7 @@ class Games extends Component {
           {store.games.length ? (
             <List classes={{ root: classes.games__list }}>
               {store.games.map(game => (
-                <Game
-                  key={game.id}
-                  game={game}
-                />
+                <Game key={game.id} game={game} />
               ))}
             </List>
           ) : (
