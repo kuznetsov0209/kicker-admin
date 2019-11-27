@@ -32,26 +32,24 @@ const TournamentSelect = ({ tournament }) => {
   };
 
   return (
-    <div>
-      <FormControl className={classes.formControl}>
-        <Select
-          variant="outlined"
-          classes={{ select: classes.select }}
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          value={team}
-          onChange={handleChange}
-        >
-          <MenuItem value="all">All teams</MenuItem>
-          {tournament.stats.map((item, index) => (
-            <MenuItem key={index} value={index}>
-              {item.team.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl className={classes.formControl}>
+      <Select
+        variant="outlined"
+        classes={{ select: classes.select }}
+        open={open}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        value={team}
+        onChange={handleChange}
+      >
+        <MenuItem value="all">All teams</MenuItem>
+        {tournament.stats.map((item, index) => (
+          <MenuItem key={index} value={index}>
+            {item.team.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

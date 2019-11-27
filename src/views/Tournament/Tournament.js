@@ -99,7 +99,7 @@ class Tournament extends React.Component {
             alignItems: "center"
           }}
         >
-          <Typography component="span">See games of:</Typography>
+          <Typography component="span">Filter by team</Typography>
           <TournamentSelect tournament={this.tournament} />
         </div>
         <Games tournament={this.tournament} />

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { List, Typography } from "@material-ui/core";
 import LinkGameDialog from "./LinkGameDialog";
 import Game from "./Game";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./Games.style";
 
 function groupBy(arr, prop) {
   return arr.reduce((result, item) => {
@@ -14,13 +16,14 @@ function groupBy(arr, prop) {
   }, {});
 }
 
+@withStyles(styles)
 class Games extends Component {
   state = {
     isLinkDialogVisible: false
   };
 
   render() {
-    const { tournament } = this.props;
+    const { tournament, classes } = this.props;
     const gamesResultsGrouped = tournament.gamesResults
       ? groupBy(tournament.gamesResults, "tournamentGameId")
       : {};
@@ -35,14 +38,7 @@ class Games extends Component {
                 {team1.name} — {team2.name}
               </Typography>
               {gamesResultsGrouped[tournamentGameId] && (
-                <List
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexWrap: "wrap"
-                  }}
-                >
+                <List className={classes.tournamentList}>
                   {gamesResultsGrouped[tournamentGameId].map(
                     (gameResult, index) => (
                       <Game key={index} gameResult={gameResult} />
@@ -50,7 +46,7 @@ class Games extends Component {
                   )}
                 </List>
               )}
-              {/* TODO: Нету в новом дизайне */}
+              {/* TODO: Нет в новом дизайне */}
               {/* <Button
                   variant="text"
                   color="primary"
