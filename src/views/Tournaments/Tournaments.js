@@ -106,10 +106,7 @@ class Tournaments extends Component {
               title: "Title",
               field: "title",
               render: rowData => (
-                <Button
-                  component={Link}
-                  to={`/tournaments/${rowData.tableData.id}`}
-                >
+                <Button component={Link} to={`/tournaments/${rowData.id}`}>
                   {rowData.title}
                 </Button>
               )
