@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import defaultTheme from "@material-ui/core/styles/defaultTheme";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Container } from "@material-ui/core";
 import localeRu from "date-fns/locale/ru";
 import Games from "../views/Games";
 import Players from "../views/Players";
