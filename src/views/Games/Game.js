@@ -47,7 +47,7 @@ class Game extends Component {
           variant="contained"
           size="small"
           color="primary"
-          onClick={this.onLinkGame}
+          onClick={this.props.onLinkGame}
         >
           <LinkIcon />
         </Button>

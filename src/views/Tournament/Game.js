@@ -81,31 +81,43 @@ class Game extends Component {
             }}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Button
-                className={classes.link}
-                variant="contained"
-                size="small"
-                color="primary"
-                onClick={() => {
-                  this.setState({
-                    isLinkDialogOpen: true,
-                    team1: gameResult.team1,
-                    team2: gameResult.team2,
-                    tournamentGameId: tournamentGameId
-                  });
-                }}
-              >
-                <LinkIcon />
-              </Button>
+              {!game && (
+                <Button
+                  className={classes.link}
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  onClick={() => {
+                    this.setState({
+                      isLinkDialogOpen: true,
+                      team1: gameResult.team1,
+                      team2: gameResult.team2,
+                      tournamentGameId: tournamentGameId
+                    });
+                  }}
+                >
+                  <LinkIcon />
+                </Button>
+              )}
 
-              <Button
-                className={classes.link}
-                variant="contained"
-                size="small"
-                color="secondary"
-              >
-                <LinkOffIcon />
-              </Button>
+              {game && (
+                <Button
+                  className={classes.link}
+                  variant="contained"
+                  size="small"
+                  color="secondary"
+                  onClick={() => {
+                    this.setState({
+                      isLinkDialogOpen: true,
+                      team1: gameResult.team1,
+                      team2: gameResult.team2,
+                      tournamentGameId: tournamentGameId
+                    });
+                  }}
+                >
+                  <LinkOffIcon />
+                </Button>
+              )}
 
               <ListItemText style={{ margin: "0" }}>
                 {game ? (
