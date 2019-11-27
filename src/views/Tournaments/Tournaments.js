@@ -39,10 +39,10 @@ class Tournaments extends Component {
     });
   };
 
-  handleTournamentEdit = () => {
-    // var clickedTournamentId = 0; //TODO: get the real tournament's id
-    // var path = `/tournaments/${clickedTournamentId}`;
-    // this.props.history.push(path);
+  handleTournamentEdit = (event, tournament) => {
+    var clickedTournamentId = tournament.id; //TODO: get the real tournament's id
+    var path = `/tournaments/${clickedTournamentId}`;
+    this.props.history.push(path);
   };
 
   async loadTournamentsIfNeeded() {
