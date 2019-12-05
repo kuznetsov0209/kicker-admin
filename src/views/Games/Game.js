@@ -166,7 +166,10 @@ class Game extends Component {
               <br />
               {redUsers} - {blueUsers}
               <br />
-              {dateFormat(new Date(game.createdAt), "ddd, hh:MM, mmm dS, yyyy ")}
+              {dateFormat(
+                new Date(game.createdAt),
+                "ddd, hh:MM, mmm dS, yyyy "
+              )}
             </>
           }
           title="Remove game"
