@@ -37,8 +37,8 @@ const store = types
 
 @observer
 class TournamentForm extends Component {
-  componentDidMount() {
-    const { team1, team2 } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const { team1, team2 } = nextProps;
     store.loadGames({ team1, team2 });
   }
 
@@ -62,7 +62,11 @@ class TournamentForm extends Component {
             <List style={{ width: "100%" }}>
               {store.games.map(game => (
                 <React.Fragment>
-                  <Game key={game.id} game={game} />
+                  <Game
+                    key={game.id}
+                    game={game}
+                    onLinkGame={() => this.linkGame(game.id)}
+                  />
                   <div
                     style={{
                       flex: 1,
@@ -70,14 +74,7 @@ class TournamentForm extends Component {
                       alignItems: "center",
                       justifyContent: "center"
                     }}
-                  >
-                    <Button
-                      variant="text"
-                      onClick={() => this.linkGame(game.id)}
-                    >
-                      LINK
-                    </Button>
-                  </div>
+                  ></div>
                 </React.Fragment>
               ))}
             </List>

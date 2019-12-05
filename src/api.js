@@ -28,11 +28,11 @@ const api = {
       body: JSON.stringify(body)
     });
   },
-  delete: async path => {
+  delete: async (path) => {
     return await request(path, {
       method: "delete"
     });
-  }
+  },
 };
 
 export default api;

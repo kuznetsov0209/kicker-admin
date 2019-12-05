@@ -39,6 +39,12 @@ class Tournaments extends Component {
     });
   };
 
+  handleTournamentEdit = (event, tournament) => {
+    var clickedTournamentId = tournament.id; //TODO: get the real tournament's id
+    var path = `/tournaments/${clickedTournamentId}`;
+    this.props.history.push(path);
+  };
+
   async loadTournamentsIfNeeded() {
     try {
       this.setState({ isLoading: true });
@@ -81,7 +87,7 @@ class Tournaments extends Component {
             {
               icon: Create,
               tooltip: "Edit Tournament",
-              onClick: () => {}
+              onClick: this.handleTournamentEdit
             },
             {
               icon: Delete,

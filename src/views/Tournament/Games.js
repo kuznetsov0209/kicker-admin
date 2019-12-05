@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { List, Typography, Button } from "@material-ui/core";
+import { List, Typography } from "@material-ui/core";
 import LinkGameDialog from "./LinkGameDialog";
 import Game from "./Game";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./Games.style";
 
 function groupBy(arr, prop) {
   return arr.reduce((result, item) => {
@@ -14,19 +16,20 @@ function groupBy(arr, prop) {
   }, {});
 }
 
+@withStyles(styles)
 class Games extends Component {
   state = {
     isLinkDialogVisible: false
   };
 
   render() {
-    const { tournament } = this.props;
+    const { tournament, classes } = this.props;
     const gamesResultsGrouped = tournament.gamesResults
       ? groupBy(tournament.gamesResults, "tournamentGameId")
       : {};
 
     return (
-      <React.Fragment>
+      <>
         {Object.keys(gamesResultsGrouped).map(tournamentGameId => {
           const { team1, team2 } = gamesResultsGrouped[tournamentGameId][0];
           return (
@@ -34,25 +37,22 @@ class Games extends Component {
               <Typography align="center" variant="subtitle1">
                 {team1.name} — {team2.name}
               </Typography>
+
               {gamesResultsGrouped[tournamentGameId] && (
-                <List style={{ width: "100%" }}>
+                <List className={classes.tournamentList}>
                   {gamesResultsGrouped[tournamentGameId].map(
                     (gameResult, index) => (
-                      <Game key={index} gameResult={gameResult} />
+                      <Game
+                        key={index}
+                        gameResult={gameResult}
+                        tournamentGameId={tournamentGameId}
+                      />
                     )
                   )}
                 </List>
               )}
-              <div
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: 40
-                }}
-              >
-                <Button
+              {/* TODO: Нет в новом дизайне */}
+              {/* <Button
                   variant="text"
                   color="primary"
                   onClick={() =>
@@ -65,8 +65,7 @@ class Games extends Component {
                   }
                 >
                   Link game
-                </Button>
-              </div>
+                </Button> */}
             </div>
           );
         })}
@@ -80,7 +79,7 @@ class Games extends Component {
             handleClose={() => this.setState({ isLinkDialogVisible: false })}
           />
         )}
-      </React.Fragment>
+      </>
     );
   }
 }
