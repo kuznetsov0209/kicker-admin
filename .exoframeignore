@@ -1,0 +1,6 @@
+src
+docker
+dist
+.github
+.git
+node_modules

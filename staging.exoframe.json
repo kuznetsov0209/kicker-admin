@@ -1,0 +1,11 @@
+{
+  "name": "kicker-admin-frontend-staging",
+  "restart": "on-failure:2",
+  "domain": "staging-admin.kicker.mercury.office",
+  "port": "80",
+  "project": "kicker-admin-frontend",
+  "compress": true,
+  "letsencrypt": false,
+  "template": "image",
+  "image": "zmeiko/kicker-admin-frontend:staging-latest"
+}
