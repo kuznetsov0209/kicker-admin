@@ -14,6 +14,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import styles from "./PlayerDialog.style";
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 
 const SUPPORTED_FILE_TYPES = ["image/png", "image/jpg", "image/jpeg"];
 const MAX_FILE_SIZE = 3 * 1024 * 1024;
@@ -22,6 +24,8 @@ const MAX_FILE_SIZE = 3 * 1024 * 1024;
 class Player extends React.Component {
   constructor(props) {
     super(props);
+    this.imagePreviewCanvasRef = React.createRef();
+    this.cropAvatar = "";
     this.state = {
       player: props.player,
       playerPhotoPreview: undefined,
@@ -31,7 +35,14 @@ class Player extends React.Component {
       isFileTypeInvalid: false,
       isDialogClosingRequested: false,
       isUserInactivationRequested: false,
-      isMessageVisible: false
+      isMessageVisible: false,
+      isDialogCropToggle: false,
+      crop: {
+        aspect: 1 / 1,
+        unit: "%",
+        width: 50,
+        height: 50
+      }
     };
   }
 
@@ -81,6 +92,7 @@ class Player extends React.Component {
         this.revokePhotoPreviewObjectIfNeed();
         const photoUrl = URL.createObjectURL(file);
         this.setState({ playerPhotoPreview: photoUrl });
+        this.handleToggleCropAvatarDialog();
       }
     }
   };
@@ -116,6 +128,10 @@ class Player extends React.Component {
     } else {
       this.closeDialog();
     }
+  };
+
+  handleToggleCropAvatarDialog = () => {
+    this.setState({ isDialogCropToggle: !this.state.isDialogCropToggle });
   };
 
   cancelDialogClosing = () => {
@@ -162,6 +178,53 @@ class Player extends React.Component {
     this.setState({ isMessageVisible: false, message: "" });
   };
 
+  handleImageLoaded = image => {
+    console.log(image);
+  };
+  handleOnCropChange = crop => {
+    this.setState({ crop: crop });
+  };
+  handleOnCropComplete = crop => {
+    const canvasRef = this.imagePreviewCanvasRef.current;
+    const { playerPhotoPreview } = this.state;
+    this.cropAvatar = this.image64toCanvasRef(
+      canvasRef,
+      playerPhotoPreview,
+      crop
+    );
+  };
+
+  handleOnSave = () => {
+    this.setState({ playerPhotoPreview: this.cropAvatar });
+    this.handleToggleCropAvatarDialog();
+  };
+
+  image64toCanvasRef = (canvasRef, image64, pixelCrop) => {
+    const canvas = canvasRef;
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
+
+    const ctx = canvas.getContext("2d");
+    const image = new Image();
+    image.src = image64;
+    image.onload = function() {
+      ctx.drawImage(
+        image,
+        pixelCrop.x,
+        pixelCrop.y,
+        pixelCrop.width,
+        pixelCrop.height,
+        0,
+        0,
+        pixelCrop.width,
+        pixelCrop.height
+      );
+    };
+
+    const base64Image = canvas.toDataURL("image/jpeg", 1.0);
+    return base64Image;
+  };
+
   render() {
     const { classes, open } = this.props;
     const {
@@ -204,6 +267,46 @@ class Player extends React.Component {
                   hidden
                   onChange={this.handleChangeAvatar}
                 />
+                <Dialog
+                  onClose={this.handleToggleCropAvatarDialog}
+                  open={this.state.isDialogCropToggle}
+                >
+                  <DialogTitle>Crop Avatar</DialogTitle>
+                  {playerPhotoPreview ? (
+                    <div>
+                      <ReactCrop
+                        onImageLoaded={this.handleImageLoaded}
+                        src={playerPhotoPreview}
+                        crop={this.state.crop}
+                        onComplete={this.handleOnCropComplete}
+                        onChange={this.handleOnCropChange}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div>
+                    <br />
+                    <canvas ref={this.imagePreviewCanvasRef}></canvas>
+                    <br />
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleToggleCropAvatarDialog}
+                        variant="outlined"
+                        color="primary"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={this.handleOnSave}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Save
+                      </Button>
+                    </DialogActions>
+                  </div>
+                </Dialog>
                 <ButtonGroup
                   className={classes.player__uploadPhoto}
                   size="small"
