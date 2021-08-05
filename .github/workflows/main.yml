@@ -17,18 +17,18 @@ jobs:
 
       - name: Define var
         run: |
-          echo "::set-env name=IMAGE_NAME::${DOCKER_LOGIN}/kicker-admin-frontend"
-          echo "::set-env name=PACKAGE_VERSION::$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)"
+          echo "IMAGE_NAME=${DOCKER_LOGIN}/kicker-admin-frontend" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)" >> $GITHUB_ENV
 
       - name: Build the Docker container image
         run: |
-          echo $IMAGE_NAME
-          echo $PACKAGE_VERSION
+          echo ${{ env.IMAGE_NAME }}
+          echo ${{ env.PACKAGE_VERSION }}
           docker build \
-           --cache-from ${IMAGE_NAME}:latest \
-           --build-arg API_HOST="http://api.kicker.mercury.office" \
-           -t ${IMAGE_NAME}:$PACKAGE_VERSION \
-           -t ${IMAGE_NAME}:latest \
+           --cache-from ${{ env.IMAGE_NAME }}:latest \
+           --build-arg API_HOST="http://api.kicker.mercdev.com" \
+           -t ${{ env.IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} \
+           -t ${{ env.IMAGE_NAME }}:latest \
            .
 
       - name: Push the Docker container image
@@ -36,8 +36,8 @@ jobs:
           echo $PACKAGE_VERSION
 
           docker login --username ${DOCKER_LOGIN} -p ${{ secrets.DOCKER_HUB_TOKEN }}
-          docker push ${IMAGE_NAME}:$PACKAGE_VERSION
-          docker push ${IMAGE_NAME}:latest
+          docker push ${{ env.IMAGE_NAME }}:${{ env.PACKAGE_VERSION }}
+          docker push ${{ env.IMAGE_NAME }}:latest
 
   deploy:
     name: Deploy
