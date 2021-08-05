@@ -7,5 +7,5 @@
   "compress": true,
   "letsencrypt": false,
   "template": "image",
-  "image": "zmeiko/kicker-admin-frontend:latest"
+  "image": "kickermercdev/kicker-admin-frontend:latest"
 }
