@@ -26,7 +26,7 @@ jobs:
           echo ${{ env.PACKAGE_VERSION }}
           docker build \
            --cache-from ${{ env.IMAGE_NAME }}:latest \
-           --build-arg API_HOST="http://api.kicker.mercdev.com" \
+           --build-arg API_HOST="https://api.kicker.mercdev.com" \
            -t ${{ env.IMAGE_NAME }}:${{ env.PACKAGE_VERSION }} \
            -t ${{ env.IMAGE_NAME }}:latest \
            .
